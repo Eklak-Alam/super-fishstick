@@ -1,35 +1,38 @@
 import api from '@/lib/axios';
 
 export const authService = {
-  // Login User
+  // Login & Save Tokens
   async login(credentials) {
-    // We expect { email, password }
     const response = await api.post('/auth/login', credentials);
-    
-    if (response.data?.data?.accessToken) {
-      localStorage.setItem('token', response.data.data.accessToken);
-      localStorage.setItem('refreshToken', response.data.data.refreshToken);
-    }
+    const { accessToken, refreshToken, user } = response.data.data;
+
+    if (accessToken) localStorage.setItem('accessToken', accessToken);
+    if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
+    if (user) localStorage.setItem('user', JSON.stringify(user));
+
     return response.data;
   },
 
-  // Register User
+  // Register
   async register(userData) {
-    // We expect { fullName, email, password }
     const response = await api.post('/auth/register', userData);
     return response.data;
   },
 
-  // Get Current Profile
+  // Get Profile
   async getProfile() {
     const response = await api.get('/auth/me');
     return response.data;
   },
 
-  // Logout
+  // Logout (Wipes everything)
   logout() {
-    localStorage.removeItem('token');
+    // 1. Remove from LocalStorage
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    
+    // 2. Redirect manually to ensure full page reset
     window.location.href = '/login';
   }
 };

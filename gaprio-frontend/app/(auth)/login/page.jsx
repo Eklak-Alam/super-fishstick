@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // Added useEffect
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,6 +14,14 @@ export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // --- REDIRECT IF LOGGED IN ---
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+        router.push('/dashboard');
+    }
+  }, [router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +40,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen pt-32 w-full flex items-center justify-center bg-[#020202] relative overflow-hidden p-4">
       
-      {/* Background Ambient Glow */}
+      {/* Background */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-900/20 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05] pointer-events-none" />
 
@@ -44,14 +52,7 @@ export default function LoginPage() {
       >
         <div className="mb-8 text-center">
             <div className="w-12 h-12 flex items-center justify-center mx-auto mb-6">
-                <Image
-                    src="/logo.png"
-                    alt="Gaprio Logo"
-                    width={44}       // perfect size like your old 8x8 box
-                    height={34}
-                    className="object-contain"
-                    priority
-                  />
+                <Image src="/logo.png" alt="Gaprio Logo" width={44} height={34} className="object-contain" priority />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
             <p className="text-gray-400 text-sm">Enter your credentials to access Gaprio.</p>
@@ -76,7 +77,6 @@ export default function LoginPage() {
             />
 
             <div className="flex justify-end">
-                {/* FIXED: Changed 'class' to 'className' here */}
                 <Link href="/forgot-password" className="text-xs text-purple-400 hover:text-purple-300 transition-colors">
                     Forgot password?
                 </Link>

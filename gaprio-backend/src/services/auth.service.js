@@ -117,6 +117,22 @@ class AuthService {
 
         return { message: 'Password updated successfully' };
     }
+    
+    // 4. Get Profile (Updated)
+    static async getProfile(userId) {
+        const user = await UserModel.findById(userId);
+        if (!user) {
+            const error = new Error('User not found');
+            error.statusCode = 404;
+            throw error;
+        }
+
+        // Fetch connections
+        const connections = await UserModel.getConnections(userId);
+        
+        // Return combined data
+        return { ...user, connections };
+    }
 }
 
 module.exports = AuthService;

@@ -1,6 +1,10 @@
 const express = require('express');
 const cors = require('cors');
+
+// --- FIXED IMPORTS (Removed 'src/' prefix) ---
 const authRoutes = require('./routes/auth.routes');
+const platformRoutes = require('./routes/platform.routes');
+const integrationRoutes = require('./routes/integration.routes');
 const errorHandler = require('./middlewares/error.middleware');
 
 const app = express();
@@ -13,16 +17,15 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
-// ==========================================
 // 2. EXPRESS 5 FIX: PRE-FLIGHT CHECK
-// ==========================================
-// We use /.*/ (Regex) instead of '*' (String) to fix the crash
 app.options(/.*/, cors()); 
 
 app.use(express.json());
 
 // 3. Routes
 app.use('/api/auth', authRoutes);
+app.use('/api', platformRoutes); // Handles /api/auth/google
+app.use('/api/integrations', integrationRoutes); 
 
 // 4. Health Check
 app.get('/', (req, res) => {

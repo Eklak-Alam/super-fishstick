@@ -41,6 +41,17 @@ class UserModel {
         const [result] = await db.execute(sql, [newPasswordHash, id]);
         return result.affectedRows > 0;
     }
+
+    // New: Fetch connections (Google, Slack, etc.) for a user
+    static async getConnections(userId) {
+        const sql = `
+            SELECT provider, provider_user_id, metadata, created_at 
+            FROM user_connections 
+            WHERE user_id = ?
+        `;
+        const [rows] = await db.execute(sql, [userId]);
+        return rows;
+    }
 }
 
 module.exports = UserModel;

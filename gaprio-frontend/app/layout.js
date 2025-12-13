@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
       <body className="antialiased">
         <QueryProvider>
           <SmoothScroll>
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
             <Footer />
           </SmoothScroll>

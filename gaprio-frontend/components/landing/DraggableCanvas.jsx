@@ -1,25 +1,25 @@
 'use client';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { MessageSquare, CheckSquare, Mail, Video, FileText, FileSpreadsheet, Database, Cpu, Globe, Activity } from 'lucide-react';
+import { MessageSquare, CheckSquare, Mail, Video, FileText, FileSpreadsheet, Database, Activity } from 'lucide-react';
 import Image from 'next/image';
 
 // --- Configuration ---
 const tools = [
-  { id: 'slack', label: 'Slack', icon: MessageSquare, x: -350, y: -200, color: '#4A154B', bg: 'bg-[#4A154B]' },
-  { id: 'asana', label: 'Asana', icon: CheckSquare, x: 0, y: -280, color: '#F06A6A', bg: 'bg-[#F06A6A]' },
-  { id: 'jira', label: 'Jira', icon: Database, x: 350, y: -200, color: '#0052CC', bg: 'bg-[#0052CC]' },
-  { id: 'gmail', label: 'Gmail', icon: Mail, x: -400, y: 0, color: '#EA4335', bg: 'bg-[#EA4335]' },
-  { id: 'word', label: 'Word', icon: FileText, x: 400, y: 0, color: '#2B579A', bg: 'bg-[#2B579A]' },
-  { id: 'excel', label: 'Excel', icon: FileSpreadsheet, x: 300, y: 220, color: '#217346', bg: 'bg-[#217346]' },
-  { id: 'meet', label: 'Meet', icon: Video, x: -300, y: 220, color: '#00AC47', bg: 'bg-[#00AC47]' },
+  { id: 'slack', index: 1, label: 'Slack', icon: MessageSquare, image: '/companylogo/slack.png', x: -350, y: -200, color: '#4A154B', bg: 'bg-[#4A154B]' },
+  { id: 'asana', index: 2, label: 'Asana', icon: CheckSquare, image: '/companylogo/asana.png', x: 0, y: -280, color: '#F06A6A', bg: 'bg-[#F06A6A]' },
+  { id: 'jira', index: 3, label: 'Jira', icon: Database, image: null, x: 350, y: -200, color: '#0052CC', bg: 'bg-[#0052CC]' },
+  { id: 'gmail', index: 4, label: 'Gmail', icon: Mail, image: null, x: -400, y: 0, color: '#EA4335', bg: 'bg-[#EA4335]' },
+  { id: 'word', index: 5, label: 'Word', icon: FileText, image: null, x: 400, y: 0, color: '#2B579A', bg: 'bg-[#2B579A]' },
+  { id: 'excel', index: 6, label: 'Excel', icon: FileSpreadsheet, image: null, x: 300, y: 220, color: '#217346', bg: 'bg-[#217346]' },
+  { id: 'meet', index: 7, label: 'Meet', icon: Video, image: '/companylogo/googlemeet.webp', x: -300, y: 220, color: '#00AC47', bg: 'bg-[#00AC47]' },
 ];
 
 export default function DraggableCanvas() {
   const containerRef = useRef(null);
 
   return (
-    <section className="relative min-h-[80vh] w-full bg-[#020202] flex flex-col items-center justify-center py-20 overflow-hidden border-t border-white/5">
+    <section className="relative min-h-[90vh] w-full bg-[#020202] flex flex-col items-center justify-center py-20 overflow-hidden border-t border-white/5">
       
       {/* --- Ambient Background --- */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.03),transparent_70%)]" />
@@ -35,17 +35,14 @@ export default function DraggableCanvas() {
           Total <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Connectivity.</span>
         </h2>
         <p className="text-sm md:text-xl text-gray-400 max-w-lg mx-auto leading-relaxed">
-          Gaprio maintains the state of your work across every app. Drag a node to see the connection.
+          Gaprio maintains the state of your work across Platforms.
         </p>
       </div>
 
       {/* --- The Infinite Canvas --- */}
-      {/* MOBILE FIX: scale-[0.6] shrinks the whole physics system to fit on phone screens.
-          touch-action-none prevents page scrolling when dragging nodes.
-      */}
       <div 
         ref={containerRef} 
-        className="relative w-full max-w-[1400px] h-[600px] md:h-[900px] flex items-center justify-center cursor-crosshair scale-[0.6] md:scale-100 origin-center touch-none"
+        className="relative w-full max-w-[1400px] h-[600px] md:h-[900px] flex items-center justify-center cursor-crosshair scale-[0.6] md:scale-100 origin-center touch-none select-none"
       >
         
         {/* Central Gaprio Node (The Hub) */}
@@ -55,14 +52,15 @@ export default function DraggableCanvas() {
            <div className="absolute inset-4 rounded-full border border-purple-500/20 animate-[ping_3s_linear_infinite_1s]" />
            
            <Image
-                                           src="/logo.png"
-                                           alt="Gaprio Logo"
-                                           width={44}       // perfect size like your old 8x8 box
-                                           height={34}
-                                           className="object-contain"
-                                           priority
-                                         />
-           <span className="font-bold text-white text-[10px] md:text-xs uppercase tracking-widest">Gaprio</span>
+              src="/logo.png"
+              alt="Gaprio Logo"
+              width={44}
+              height={34}
+              className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]"
+              priority
+              draggable={false}
+           />
+           <span className="font-bold text-white text-[10px] md:text-xs uppercase tracking-widest mt-1">Gaprio</span>
         </div>
 
         {/* Draggable Tool Nodes */}
@@ -121,7 +119,6 @@ function DraggableNode({ tool, containerRef }) {
                     strokeWidth="3"
                     strokeLinecap="round"
                     fill="none"
-                    // REMOVED INITIAL ANIMATION to fix visibility bug
                 />
             </svg>
 
@@ -133,16 +130,28 @@ function DraggableNode({ tool, containerRef }) {
                 style={{ x, y }} // Bind physics
                 whileHover={{ scale: 1.1, cursor: 'grab' }}
                 whileDrag={{ scale: 1.15, cursor: 'grabbing', zIndex: 100 }}
-                // Added touch-none here as well to ensure drag works on mobile without scrolling page
+                // Preserved ORIGINAL styling as requested (bg, rounded, shadow, border)
                 className={`absolute w-20 h-20 md:w-24 md:h-24 ${tool.bg} rounded-3xl flex flex-col items-center justify-center shadow-2xl z-20 border border-white/20 backdrop-blur-md group touch-none`}
             >
-                {/* Icon */}
-                <tool.icon className="text-white w-7 h-7 md:w-9 md:h-9 mb-2 drop-shadow-md group-hover:scale-110 transition-transform duration-300" />
+                {/* Image OR Icon Logic */}
+                <div className="relative w-8 h-8 md:w-10 md:h-10 mb-2 transition-transform duration-300 group-hover:scale-110">
+                    {tool.image ? (
+                        <Image 
+                            src={tool.image} 
+                            alt={tool.label} 
+                            fill 
+                            draggable={false}
+                            className="object-contain drop-shadow-md pointer-events-none"
+                        />
+                    ) : (
+                        <tool.icon className="w-full h-full text-white drop-shadow-md pointer-events-none" />
+                    )}
+                </div>
                 
-                {/* Label */}
+                {/* Label (Preserved) */}
                 <span className="text-[9px] md:text-[10px] text-white font-bold uppercase tracking-wider">{tool.label}</span>
                 
-                {/* Glass Reflection Effect */}
+                {/* Glass Reflection Effect (Preserved) */}
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
             </motion.div>
         </>

@@ -3,17 +3,140 @@ import { motion, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { MessageSquare, CheckSquare, Mail, Video, FileText, FileSpreadsheet, Database, Activity } from 'lucide-react';
 import Image from 'next/image';
+import { FcCollaboration } from 'react-icons/fc';
 
 // --- Configuration (Orange/Amber Palette) ---
 const tools = [
-  { id: 'slack', index: 1, label: 'Slack', icon: MessageSquare, image: '/companylogo/slack.png', x: -350, y: -200, color: '#f97316', bg: 'bg-[#0a0a0a]' }, // Orange-500
-  { id: 'asana', index: 2, label: 'Asana', icon: CheckSquare, image: '/companylogo/asana.png', x: 0, y: -280, color: '#ea580c', bg: 'bg-[#0a0a0a]' }, // Deep Orange
-  { id: 'jira', index: 3, label: 'Jira', icon: Database, image: '/companylogo/jira.jpeg', x: 350, y: -200, color: '#d97706', bg: 'bg-[#0a0a0a]' }, // Amber
-  { id: 'gmail', index: 4, label: 'Gmail', icon: Mail, image: '/companylogo/gmail.jpg', x: -400, y: 0, color: '#dc2626', bg: 'bg-[#0a0a0a]' }, // Red
-  { id: 'word', index: 5, label: 'Word', icon: FileText, image: '/companylogo/msword.jpg', x: 400, y: 0, color: '#f59e0b', bg: 'bg-[#0a0a0a]' }, // Amber
-  { id: 'excel', index: 6, label: 'Excel', icon: FileSpreadsheet, image: '/companylogo/msexcel.png', x: 300, y: 220, color: '#fbbf24', bg: 'bg-[#0a0a0a]' }, // Gold
-  { id: 'meet', index: 7, label: 'Meet', icon: Video, image: '/companylogo/googlemeet.webp', x: -300, y: 220, color: '#ea580c', bg: 'bg-[#0a0a0a]' }, // Orange
+  // 🔹 Top Row
+  {
+    id: 'slack',
+    index: 1,
+    label: 'Slack',
+    icon: MessageSquare,
+    image: '/companylogo/slack.png',
+    x: -300,
+    y: -240,
+    color: '#f97316',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'asana',
+    index: 2,
+    label: 'Asana',
+    icon: CheckSquare,
+    image: '/companylogo/asana.png',
+    x: 1,
+    y: -300, // ⛔ not 0
+    color: '#ea580c',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'jira',
+    index: 3,
+    label: 'Jira',
+    icon: Database,
+    image: '/companylogo/jira.png',
+    x: 300,
+    y: -240,
+    color: '#d97706',
+    bg: 'bg-[#0a0a0a]',
+  },
+
+  // 🔹 Middle Row
+  {
+    id: 'gmail',
+    index: 4,
+    label: 'Gmail',
+    icon: Mail,
+    image: '/companylogo/gmail.png',
+    x: -420,
+    y: 0,
+    color: '#dc2626',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'ms365',
+    index: 5,
+    label: 'MS 365',
+    icon: Video,
+    image: '/companylogo/microsoft.webp',
+    x: 420,
+    y: 0,
+    color: '#2563eb',
+    bg: 'bg-[#0a0a0a]',
+  },
+
+  // 🔹 Bottom Row
+  {
+    id: 'meet',
+    index: 6,
+    label: 'Google Meet',
+    icon: Video,
+    image: '/companylogo/googlemeet.webp',
+    x: -300,
+    y: 240,
+    color: '#ea580c',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'drive',
+    index: 7,
+    label: 'Drive',
+    icon: Video,
+    image: '/companylogo/drive.png',
+    x: 10,
+    y: 300,
+    color: '#22c55e',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'clickup',
+    index: 8,
+    label: 'ClickUp',
+    icon: Video,
+    image: '/companylogo/clickup.png',
+    x: 300,
+    y: 240,
+    color: '#7c3aed',
+    bg: 'bg-[#0a0a0a]',
+  },
+
+  // 🔹 Extra Tools (Inner Ring)
+  {
+    id: 'zoho',
+    index: 9,
+    label: 'Zoho',
+    icon: FcCollaboration,
+    image: '/companylogo/zoho.png',
+    x: -180,
+    y: 120,
+    color: '#ef4444',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'word',
+    index: 10,
+    label: 'Word',
+    icon: FileText,
+    image: '/companylogo/msword.png',
+    x: 180,
+    y: 120,
+    color: '#2563eb',
+    bg: 'bg-[#0a0a0a]',
+  },
+  {
+    id: 'excel',
+    index: 11,
+    label: 'Excel',
+    icon: FileSpreadsheet,
+    image: '/companylogo/msexcel.png',
+    x: -10,
+    y: 140,
+    color: '#16a34a',
+    bg: 'bg-[#0a0a0a]',
+  },
 ];
+
 
 export default function DraggableCanvas() {
   const containerRef = useRef(null);

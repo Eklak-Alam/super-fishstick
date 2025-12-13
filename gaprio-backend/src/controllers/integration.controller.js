@@ -1,6 +1,6 @@
 const GoogleService = require('../services/providers/google.service');
 
-// 1. Get Dashboard Data (Updated to include Calendar)
+// Get Dashboard Data (Emails, Files, Meetings)
 exports.getGoogleData = async (req, res) => {
     try {
         const [emails, files, meetings] = await Promise.all([
@@ -12,11 +12,12 @@ exports.getGoogleData = async (req, res) => {
         res.status(200).json({ success: true, data: { emails, files, meetings } });
     } catch (error) {
         console.error("Fetch Error:", error);
-        res.status(200).json({ success: true, data: { emails: [], files: [], meetings: [], connected: false } });
+        // Return empty structure on error to prevent frontend crash
+        res.status(200).json({ success: true, data: { emails: [], files: [], meetings: [] } });
     }
 };
 
-// 2. Send Email
+// Send Email
 exports.sendEmail = async (req, res, next) => {
     try {
         await GoogleService.sendEmail(req.user.id, req.body);
@@ -26,7 +27,7 @@ exports.sendEmail = async (req, res, next) => {
     }
 };
 
-// 3. Create Meeting
+// Create Calendar Meeting
 exports.createMeeting = async (req, res, next) => {
     try {
         const meeting = await GoogleService.createMeeting(req.user.id, req.body);

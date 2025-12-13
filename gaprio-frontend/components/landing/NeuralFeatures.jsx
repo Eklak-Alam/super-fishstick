@@ -1,16 +1,16 @@
 'use client';
 import { motion } from 'framer-motion';
-import { Zap, MessageSquare, FileText, CheckSquare, Database, Mail, FileSpreadsheet, ArrowRight, Activity } from 'lucide-react';
+import { MessageSquare, FileText, CheckSquare, Database, Mail, FileSpreadsheet, Activity } from 'lucide-react';
+import Image from 'next/image';
 
 export default function NeuralFeatures() {
   return (
     <section className="relative min-h-screen bg-[#020202] py-20 md:py-32 flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
       
       {/* --- Atmospheric Background --- */}
-      {/* 1. Technical Grid */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.03]" />
       
-      {/* 2. Deep Glow */}
+      {/* Deep Orange Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       {/* --- Header --- */}
@@ -29,7 +29,7 @@ export default function NeuralFeatures() {
       {/* --- The Circuit Board --- */}
       <div className="relative w-full max-w-7xl px-4 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
         
-        {/* Left Column: INPUTS (Sources) */}
+        {/* Left Column: INPUTS */}
         <div className="flex flex-col gap-6 relative z-10 order-2 lg:order-1">
             <NodeCard icon={MessageSquare} title="Slack" sub="Unstructured Chat" color="text-purple-400" align="right" delay={0} />
             <NodeCard icon={Mail} title="Gmail" sub="Inbound Requests" color="text-red-400" align="right" delay={0.1} />
@@ -43,16 +43,22 @@ export default function NeuralFeatures() {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_70%)]" />
             <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:20px_20px] opacity-[0.02]" />
             
-            {/* The Reactor Core */}
-            <div className="relative z-10 w-32 h-32 lg:w-40 lg:h-40 bg-[#0a0a0a] border border-white/10 rounded-full flex items-center justify-center shadow-[0_0_60px_rgba(249,115,22,0.2)] ring-1 ring-white/10">
+            {/* The Reactor Core (Central Hub) */}
+            <div className="relative z-10 w-40 h-40 lg:w-48 lg:h-48 bg-[#0a0a0a] border border-white/10 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(234,88,12,0.25)] ring-1 ring-white/10">
                 
-                {/* Spinning Rings */}
-                <div className="absolute inset-0 rounded-full border border-orange-500/20 border-t-orange-500/50 animate-[spin_8s_linear_infinite]" />
+                {/* Spinning Rings - Orange/Amber */}
+                <div className="absolute inset-0 rounded-full border border-orange-500/30 border-t-orange-500/60 animate-[spin_8s_linear_infinite]" />
                 <div className="absolute inset-4 rounded-full border border-white/5 border-b-white/20 animate-[spin_12s_linear_infinite_reverse]" />
                 
-                {/* Center Icon */}
-                <div className="relative z-10 bg-gradient-to-br from-orange-500 to-amber-600 w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg rotate-45">
-                    <Zap className="w-8 h-8 text-white -rotate-45 fill-white" />
+                {/* Center LOGO Image */}
+                <div className="relative z-10 w-20 h-20 lg:w-24 lg:h-24">
+                    <Image 
+                        src="/logo.png" 
+                        alt="Gaprio Core" 
+                        fill
+                        className="object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+                        priority
+                    />
                 </div>
             </div>
 
@@ -80,7 +86,7 @@ export default function NeuralFeatures() {
             </div>
         </div>
 
-        {/* Right Column: OUTPUTS (Destinations) */}
+        {/* Right Column: OUTPUTS */}
         <div className="flex flex-col gap-6 relative z-10 order-3">
             <NodeCard icon={CheckSquare} title="Asana" sub="Create Tasks" color="text-red-400" align="left" delay={0.3} />
             <NodeCard icon={Database} title="Jira" sub="Engineering Tickets" color="text-blue-500" align="left" delay={0.4} />

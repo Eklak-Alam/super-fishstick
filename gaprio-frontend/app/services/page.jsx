@@ -160,4 +160,4 @@ function DraggableCard({ item, onDrop }) {
             <span className="font-medium text-white">{item.label}</span>
         </motion.div>
     )
-}
+}   

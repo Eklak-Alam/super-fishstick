@@ -1,5 +1,4 @@
-export const dynamic = 'force-dynamic'; // ADD THIS LINE
-'use client';
+'use client'; // THIS MUST BE FIRST LINE
 
 import { useEffect, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';

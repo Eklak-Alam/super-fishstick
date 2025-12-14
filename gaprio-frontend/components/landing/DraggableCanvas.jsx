@@ -1,142 +1,67 @@
 'use client';
 import { motion, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { MessageSquare, CheckSquare, Mail, Video, FileText, FileSpreadsheet, Database, Activity } from 'lucide-react';
+import { MessageSquare, CheckSquare, Mail, Video, FileText, FileSpreadsheet, Database, Activity, Layout } from 'lucide-react';
 import Image from 'next/image';
 import { FcCollaboration } from 'react-icons/fc';
 
-// --- Configuration (Orange/Amber Palette) ---
 const tools = [
-  // 🔹 Top Row
-  {
-    id: 'slack',
-    index: 1,
-    label: 'Slack',
-    icon: MessageSquare,
-    image: '/companylogo/slack.png',
-    x: -300,
-    y: -240,
-    color: '#f97316',
-    bg: 'bg-[#0a0a0a]',
-  },
-  {
-    id: 'asana',
-    index: 2,
-    label: 'Asana',
-    icon: CheckSquare,
-    image: '/companylogo/asana.png',
-    x: 1,
-    y: -300, // ⛔ not 0
-    color: '#ea580c',
-    bg: 'bg-[#0a0a0a]',
-  },
-  {
-    id: 'jira',
-    index: 3,
-    label: 'Jira',
-    icon: Database,
-    image: '/companylogo/jira.png',
-    x: 300,
-    y: -240,
-    color: '#d97706',
-    bg: 'bg-[#0a0a0a]',
+  // 1. Top Center (Management)
+  { 
+    id: 'asana', index: 1, label: 'Asana', icon: CheckSquare, 
+    image: '/companylogo/asana.png', 
+    x: 1, y: -290, 
+    color: '#ea580c', bg: 'bg-[#0a0a0a]' 
   },
 
-  // 🔹 Middle Row
-  {
-    id: 'gmail',
-    index: 4,
-    label: 'Gmail',
-    icon: Mail,
-    image: '/companylogo/gmail.png',
-    x: -420,
-    y: 0,
-    color: '#dc2626',
-    bg: 'bg-[#0a0a0a]',
-  },
-  {
-    id: 'ms365',
-    index: 5,
-    label: 'MS 365',
-    icon: Video,
-    image: '/companylogo/microsoft.webp',
-    x: 420,
-    y: 0,
-    color: '#2563eb',
-    bg: 'bg-[#0a0a0a]',
+  // 2. Top Right (Engineering)
+  { 
+    id: 'jira', index: 2, label: 'Jira', icon: Database, 
+    image: '/companylogo/jira.png', 
+    x: 280, y: -180, 
+    color: '#d97706', bg: 'bg-[#0a0a0a]' 
   },
 
-  // 🔹 Bottom Row
-  {
-    id: 'meet',
-    index: 6,
-    label: 'Google Meet',
-    icon: Video,
-    image: '/companylogo/googlemeet.webp',
-    x: -300,
-    y: 240,
-    color: '#ea580c',
-    bg: 'bg-[#0a0a0a]',
-  },
-  {
-    id: 'drive',
-    index: 7,
-    label: 'Drive',
-    icon: Video,
-    image: '/companylogo/drive.png',
-    x: 10,
-    y: 300,
-    color: '#22c55e',
-    bg: 'bg-[#0a0a0a]',
-  },
-  {
-    id: 'clickup',
-    index: 8,
-    label: 'ClickUp',
-    icon: Video,
-    image: '/companylogo/clickup.png',
-    x: 300,
-    y: 240,
-    color: '#7c3aed',
-    bg: 'bg-[#0a0a0a]',
+  // 3. Right (Enterprise)
+  { 
+    id: 'ms365', index: 3, label: 'MS 365', icon: Video, 
+    image: '/companylogo/microsoft.webp', 
+    x: 420, y: 20, 
+    color: '#2563eb', bg: 'bg-[#0a0a0a]' 
   },
 
-  // 🔹 Extra Tools (Inner Ring)
-  {
-    id: 'zoho',
-    index: 9,
-    label: 'Zoho',
-    icon: FcCollaboration,
-    image: '/companylogo/zoho.png',
-    x: -180,
-    y: 120,
-    color: '#ef4444',
-    bg: 'bg-[#0a0a0a]',
+  // 4. Bottom Right (Tasks)
+  { 
+    id: 'clickup', index: 4, label: 'ClickUp', icon: Layout, 
+    image: '/companylogo/clickup.png', 
+    x: 240, y: 240, 
+    color: '#7c3aed', bg: 'bg-[#0a0a0a]' 
   },
-  {
-    id: 'word',
-    index: 10,
-    label: 'Word',
-    icon: FileText,
-    image: '/companylogo/msword.png',
-    x: 180,
-    y: 120,
-    color: '#2563eb',
-    bg: 'bg-[#0a0a0a]',
+
+  // 5. Bottom Left (Collaboration)
+  { 
+    id: 'zoho', index: 5, label: 'Zoho', icon: FcCollaboration, 
+    image: '/companylogo/zoho.png', 
+    x: -240, y: 240, 
+    color: '#ef4444', bg: 'bg-[#0a0a0a]' 
   },
-  {
-    id: 'excel',
-    index: 11,
-    label: 'Excel',
-    icon: FileSpreadsheet,
-    image: '/companylogo/msexcel.png',
-    x: -10,
-    y: 140,
-    color: '#16a34a',
-    bg: 'bg-[#0a0a0a]',
+
+  // 6. Left (Email/Cloud)
+  { 
+    id: 'Google', index: 6, label: 'Google', icon: Mail, 
+    image: '/companylogo/google.webp', 
+    x: -420, y: 20, 
+    color: '#dc2626', bg: 'bg-[#0a0a0a]' 
+  },
+
+  // 7. Top Left (Chat)
+  { 
+    id: 'slack', index: 7, label: 'Slack', icon: MessageSquare, 
+    image: '/companylogo/slack.png', 
+    x: -280, y: -180, 
+    color: '#f97316', bg: 'bg-[#0a0a0a]' 
   },
 ];
-
 
 export default function DraggableCanvas() {
   const containerRef = useRef(null);
@@ -247,8 +172,8 @@ function DraggableNode({ tool, containerRef }) {
                 dragConstraints={containerRef}
                 dragElastic={0.2}
                 style={{ x, y }}
-                whileHover={{ scale: 1.1, cursor: 'grab' }}
-                whileDrag={{ scale: 1.15, cursor: 'grabbing', zIndex: 100 }}
+                whileHover={{ cursor: 'grab' }}
+                whileDrag={{ cursor: 'grabbing', zIndex: 100 }}
                 // Card Styling: Dark background, border, shadow, glass effect
                 className={`absolute w-20 h-20 md:w-24 md:h-24 ${tool.bg} rounded-3xl flex flex-col items-center justify-center shadow-2xl z-20 border border-white/20 backdrop-blur-md group touch-none`}
             >
@@ -275,7 +200,7 @@ function DraggableNode({ tool, containerRef }) {
                 <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/20 to-transparent pointer-events-none" />
                 
                 {/* Orange Hover Border Effect */}
-                <div className="absolute inset-0 rounded-3xl border border-orange-500/0 group-hover:border-orange-500/30 transition-colors pointer-events-none" />
+                {/* <div className="absolute inset-0 rounded-3xl border border-orange-500/0 group-hover:border-orange-500/30 transition-colors pointer-events-none" /> */}
             </motion.div>
         </>
     );

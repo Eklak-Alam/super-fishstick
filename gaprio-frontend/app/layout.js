@@ -48,7 +48,7 @@ export const metadata = {
     siteName: 'Gaprio',
     images: [
       {
-        url: '/og-image.png', // Create this in /public folder
+        url: '/logo.png', // Create this in /public folder
         width: 1200,
         height: 630,
         alt: 'Gaprio - AI Workspace',
@@ -59,7 +59,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Gaprio | The AI Workspace',
     description: 'Connect everything. Automate anything. Boost productivity with AI-powered workspace.',
-    images: ['/twitter-image.png'], // Create this in /public folder
+    images: ['/logo.png'], // Create this in /public folder
     creator: '@gaprio',
   },
   viewport: {

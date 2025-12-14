@@ -43,7 +43,7 @@ export const metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://gaprio.in',
-    title: 'Gaprio | The AI Workspace',
+    title: 'Gaprio',
     description: 'Connect everything. Automate anything. Boost productivity with AI-powered workspace.',
     siteName: 'Gaprio',
     images: [

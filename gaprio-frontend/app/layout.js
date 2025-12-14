@@ -20,7 +20,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata = {
   title: {
-    default: 'Gaprio | The AI Workspace',
+    default: 'Gaprio',
     template: '%s | Gaprio',
   },
   description: 'Connect everything. Automate anything. Boost productivity with AI-powered workspace.',

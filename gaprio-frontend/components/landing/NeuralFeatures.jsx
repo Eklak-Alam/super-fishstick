@@ -5,23 +5,23 @@ import Image from 'next/image';
 
 export default function NeuralFeatures() {
   return (
-    <section className="relative min-h-screen bg-[#020202] py-20 md:py-32 flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
+    <section className="relative min-h-screen bg-[#020202] py-24 md:py-40 flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
       
       {/* --- Atmospheric Background --- */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.03]" />
       
       {/* Deep Orange Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] md:w-[800px] h-[50vh] md:h-[800px] bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       {/* --- Header --- */}
-      <div className="relative z-10 text-center mb-24 px-4 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 text-[11px] font-bold text-orange-200 uppercase tracking-widest mb-8">
-            <Activity size={12} className="text-orange-400" /> System Architecture v2.0
+      <div className="relative z-10 text-center mb-16 md:mb-24 px-4 max-w-4xl mx-auto">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 text-[11px] font-bold text-orange-200 uppercase tracking-widest mb-8 shadow-[0_0_20px_-5px_rgba(249,115,22,0.3)]">
+            <Activity size={12} className="text-orange-400 animate-pulse" /> Neural Architecture v2.0
         </div>
-        <h2 className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tighter leading-[1.1]">
+        <h2 className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tighter leading-[1.05]">
           The Central <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Processing Unit.</span>
         </h2>
-        <p className="text-zinc-400 max-w-2xl mx-auto text-lg font-light leading-relaxed">
+        <p className="text-zinc-400 max-w-2xl mx-auto text-base md:text-lg font-light leading-relaxed">
           Data flows in. Intelligence flows out. Gaprio sits in the middle, translating noise into structured action.
         </p>
       </div>
@@ -37,26 +37,27 @@ export default function NeuralFeatures() {
         </div>
 
         {/* Center Column: THE CORE */}
-        <div className="relative h-[450px] lg:h-[600px] bg-[#050505] border border-white/10 rounded-[2.5rem] flex flex-col items-center justify-center shadow-[0_0_100px_-20px_rgba(249,115,22,0.15)] z-20 overflow-hidden order-1 lg:order-2 mb-12 lg:mb-0">
+        <div className="relative h-[400px] lg:h-[600px] bg-[#050505] border border-white/10 rounded-[2.5rem] flex flex-col items-center justify-center shadow-[0_0_100px_-20px_rgba(249,115,22,0.15)] z-20 overflow-hidden order-1 lg:order-2 mb-12 lg:mb-0 group">
             
             {/* Core Background Animation */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03),transparent_70%)]" />
-            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:20px_20px] opacity-[0.02]" />
+            <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:20px_20px] opacity-[0.04]" />
             
             {/* The Reactor Core (Central Hub) */}
-            <div className="relative z-10 w-40 h-40 lg:w-48 lg:h-48 bg-[#0a0a0a] border border-white/10 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(234,88,12,0.25)] ring-1 ring-white/10">
+            <div className="relative z-10 w-40 h-40 lg:w-56 lg:h-56 bg-[#0a0a0a] border border-white/10 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(234,88,12,0.25)] ring-1 ring-white/10">
                 
-                {/* Spinning Rings - Orange/Amber */}
-                <div className="absolute inset-0 rounded-full border border-orange-500/30 border-t-orange-500/60 animate-[spin_8s_linear_infinite]" />
-                <div className="absolute inset-4 rounded-full border border-white/5 border-b-white/20 animate-[spin_12s_linear_infinite_reverse]" />
+                {/* Spinning Rings - Layered for Depth */}
+                <div className="absolute inset-0 rounded-full border border-orange-500/30 border-t-orange-500/80 animate-[spin_8s_linear_infinite]" />
+                <div className="absolute inset-4 rounded-full border border-white/5 border-b-white/30 animate-[spin_12s_linear_infinite_reverse]" />
+                <div className="absolute inset-8 rounded-full border border-amber-500/20 border-l-amber-500/60 animate-[spin_5s_linear_infinite]" />
                 
                 {/* Center LOGO Image */}
-                <div className="relative z-10 w-20 h-20 lg:w-24 lg:h-24">
+                <div className="relative z-10 w-20 h-20 lg:w-28 lg:h-28">
                     <Image 
                         src="/logo.png" 
                         alt="Gaprio Core" 
                         fill
-                        className="object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]"
+                        className="object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]"
                         priority
                     />
                 </div>
@@ -64,25 +65,27 @@ export default function NeuralFeatures() {
 
             {/* Status Indicator */}
             <div className="mt-12 text-center">
-                <h3 className="text-xl font-bold text-white tracking-tight">Gaprio Neural Core</h3>
-                <div className="flex items-center justify-center gap-2 mt-3 bg-white/5 px-4 py-1.5 rounded-full border border-white/5 w-fit mx-auto">
-                    <span className="relative flex h-2 w-2">
+                <h3 className="text-xl font-bold text-white tracking-tight mb-2">Gaprio Neural Core</h3>
+                <div className="flex items-center justify-center gap-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/5 w-fit mx-auto backdrop-blur-md">
+                    <span className="relative flex h-2.5 w-2.5">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
                     </span>
-                    <span className="text-[10px] font-mono text-green-400 tracking-widest uppercase">System Online</span>
+                    <span className="text-[10px] font-mono text-green-400 tracking-widest uppercase font-bold">System Online</span>
                 </div>
             </div>
 
             {/* Data Beams (Desktop Visuals) */}
             <div className="hidden lg:block absolute inset-0 pointer-events-none">
-                <Beam x="left-[-10%]" y="top-[30%]" delay={0} />
-                <Beam x="left-[-10%]" y="top-[50%]" delay={2} />
-                <Beam x="left-[-10%]" y="top-[70%]" delay={4} />
+                {/* Left Beams (Incoming) */}
+                <Beam x="left-0" y="top-[25%]" delay={0} />
+                <Beam x="left-0" y="top-[50%]" delay={2} />
+                <Beam x="left-0" y="top-[75%]" delay={4} />
                 
-                <Beam x="right-[-10%]" y="top-[30%]" delay={1} direction="left" />
-                <Beam x="right-[-10%]" y="top-[50%]" delay={3} direction="left" />
-                <Beam x="right-[-10%]" y="top-[70%]" delay={5} direction="left" />
+                {/* Right Beams (Outgoing) */}
+                <Beam x="right-0" y="top-[25%]" delay={1} direction="left" />
+                <Beam x="right-0" y="top-[50%]" delay={3} direction="left" />
+                <Beam x="right-0" y="top-[75%]" delay={5} direction="left" />
             </div>
         </div>
 
@@ -106,28 +109,40 @@ function NodeCard({ icon: Icon, title, sub, color, align, delay }) {
             initial={{ opacity: 0, x: align === 'right' ? -20 : 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay }}
-            className={`p-6 rounded-2xl bg-[#0a0a0a] border border-white/10 hover:border-orange-500/30 transition-all duration-300 flex items-center gap-5 group w-full ${align === 'right' ? 'lg:ml-auto lg:text-right flex-row-reverse' : 'lg:mr-auto'}`}
+            className={`
+                relative p-5 rounded-2xl bg-[#0a0a0a] border border-white/10 
+                hover:border-orange-500/30 transition-all duration-300 
+                flex items-center gap-5 group w-full overflow-hidden
+                ${align === 'right' ? 'lg:ml-auto lg:text-right flex-row-reverse' : 'lg:mr-auto'}
+            `}
         >
-            <div className={`p-3.5 rounded-xl bg-white/5 ${color} group-hover:scale-110 transition-transform duration-300 shadow-inner`}>
+            {/* Hover Shine Effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out pointer-events-none" />
+
+            <div className={`p-3.5 rounded-xl bg-white/5 ${color} group-hover:scale-110 transition-transform duration-300 shadow-inner relative z-10`}>
                 <Icon size={22} />
             </div>
-            <div className="flex-1">
+            <div className="flex-1 relative z-10">
                 <h4 className="text-white font-bold text-base">{title}</h4>
-                <p className="text-zinc-500 text-xs font-mono tracking-wide uppercase mt-1">{sub}</p>
+                <p className="text-zinc-500 text-xs font-mono tracking-wide uppercase mt-1 group-hover:text-zinc-400 transition-colors">{sub}</p>
             </div>
+            
             {/* Connector Line (Decorative) */}
-            <div className={`hidden lg:block w-8 h-[1px] bg-white/10 group-hover:bg-orange-500/50 transition-colors ${align === 'right' ? 'mr-[-24px]' : 'ml-[-24px]'}`} />
+            <div className={`hidden lg:block w-12 h-[1px] bg-white/10 absolute top-1/2 ${align === 'right' ? 'right-[-48px]' : 'left-[-48px]'} group-hover:bg-orange-500/50 transition-colors`} />
+            <div className={`hidden lg:block w-1.5 h-1.5 rounded-full bg-[#0a0a0a] border border-white/20 absolute top-1/2 -translate-y-1/2 ${align === 'right' ? 'right-[-6px]' : 'left-[-6px]'} group-hover:border-orange-500 transition-colors`} />
         </motion.div>
     )
 }
 
 function Beam({ x, y, delay, direction = 'right' }) {
     return (
-        <motion.div 
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: [0, 1, 0], scaleX: [0, 1, 0], x: direction === 'right' ? [0, 100] : [0, -100] }}
-            transition={{ duration: 3, repeat: Infinity, delay: delay, ease: "easeInOut" }}
-            className={`absolute ${y} ${x} h-[1px] w-24 bg-gradient-to-r from-transparent via-orange-500 to-transparent z-0 origin-left`}
-        />
+        <div className={`absolute ${y} ${x} w-[15%] h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent overflow-hidden`}>
+            <motion.div 
+                initial={{ x: direction === 'right' ? '-100%' : '100%' }}
+                animate={{ x: direction === 'right' ? '100%' : '-100%' }}
+                transition={{ duration: 2, repeat: Infinity, delay: delay, ease: "linear" }}
+                className="w-full h-full bg-gradient-to-r from-transparent via-orange-500 to-transparent shadow-[0_0_10px_#f97316]"
+            />
+        </div>
     )
 }

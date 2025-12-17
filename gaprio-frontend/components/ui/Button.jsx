@@ -1,35 +1,40 @@
 'use client';
 import { motion } from 'framer-motion';
 
-export default function Button({ children, onClick, className = "", variant = "primary", disabled }) {
-  const baseStyle = "group relative px-6 py-3 rounded-xl font-medium text-sm md:text-base transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed";
+export default function Button({ children, onClick, className = "", variant = "primary" }) {
   
-  const variants = {
-    // Primary: A rich gradient orange with a 'bottom lip' shadow for depth
-    primary: `
-      bg-gradient-to-b from-orange-500 to-orange-600 
-      text-white 
-    `,
-    // Outline: Glassmorphism with a subtle orange hover tint
-    outline: `
-      bg-white/5 border border-white/10 text-gray-300 
-      hover:bg-white/10 hover:text-white hover:border-orange-500/30 
-      backdrop-blur-sm
-    `,
-  };
+  // --- VARIANT 1: THE ORBIT BEAM (Primary) ---
+  // A spinning beam of light travels around the border. 
+  // It looks premium, not cartoonish, because the line is thin (1px) and the speed is smooth.
+  if (variant === 'primary') {
+    return (
+      <button 
+        onClick={onClick}
+        className={`relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-slate-50 group ${className}`}
+      >
+        {/* The Spinning Gradient Beam (The Moving Border) */}
+        <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#0000_0%,#f97316_50%,#0000_100%)] opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
+        
+        {/* The Inner Button Content (Dark Core) */}
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050505] px-8 py-1 text-sm font-medium text-white backdrop-blur-3xl transition-colors duration-300 group-hover:bg-[#0a0a0a]">
+          {children}
+        </span>
+      </button>
+    );
+  }
 
+  // --- VARIANT 2: THE MIRROR SHINE (Secondary) ---
+  // A "Glass" button where a beam of light reflects across it on hover (Mirror effect).
   return (
     <motion.button
-      whileHover={!disabled ? { y: -1 } : {}}
-      whileTap={!disabled ? { y: 1, scale: 0.98 } : {}}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyle} ${variants[variant]} ${className}`}
+      className={`relative h-12 px-8 rounded-full text-sm font-medium text-zinc-300 border border-white/10 bg-white/5 overflow-hidden group transition-all hover:text-white hover:border-white/20 hover:bg-white/10 ${className}`}
     >
-      {/* Optional: Add a subtle shine effect on hover for primary */}
-      {variant === 'primary' && (
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-      )}
+      {/* The Mirror Shine Effect */}
+      {/* This gradient sits off-screen (-left-full) and slides across on hover */}
+      <div className="absolute top-0 -left-[100%] w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-[shine_1s_ease-in-out]" />
       
       <span className="relative z-10 flex items-center gap-2">
         {children}

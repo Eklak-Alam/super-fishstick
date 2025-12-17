@@ -15,9 +15,6 @@ export default function NeuralFeatures() {
 
       {/* --- Header --- */}
       <div className="relative z-10 text-center mb-16 md:mb-24 px-4 max-w-4xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 text-[11px] font-bold text-orange-200 uppercase tracking-widest mb-8 shadow-[0_0_20px_-5px_rgba(249,115,22,0.3)]">
-            <Activity size={12} className="text-orange-400 animate-pulse" /> Neural Architecture v2.0
-        </div>
         <h2 className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tighter leading-[1.05]">
           The Central <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Processing Unit.</span>
         </h2>

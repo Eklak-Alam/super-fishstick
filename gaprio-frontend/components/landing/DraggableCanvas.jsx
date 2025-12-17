@@ -75,10 +75,7 @@ export default function DraggableCanvas() {
 
       {/* --- Header --- */}
       <div className="text-center mb-10 md:mb-24 z-10 pointer-events-none px-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-orange-500/20 bg-orange-950/20 backdrop-blur-md mb-6 shadow-[0_0_15px_rgba(249,115,22,0.1)]">
-            <Activity size={12} className="text-orange-500 animate-pulse" />
-            <span className="text-[10px] font-bold text-orange-200 uppercase tracking-widest">Live Integration Sandbox</span>
-        </div>
+
         <h2 className="text-4xl md:text-7xl font-bold text-white mb-4 tracking-tight">
           Total <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Connectivity.</span>
         </h2>

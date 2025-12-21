@@ -77,15 +77,14 @@ export default function Hero() {
             <motion.h1 variants={itemAnim} className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-[1.05]">
                 The AI Brain <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-200 to-amber-500">
-                    for your Enterprise.
+                    for Your Enterprise
                 </span>
             </motion.h1>
 
             {/* Subtext */}
             <motion.p variants={itemAnim} className="text-base sm:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed font-light">
-                An AI-native intelligence layer that connects your tools, understands context, and automates work across your enterprise.
+                One intelligent layer that understands your work, connects your tools, and turns everyday operations into automated workflows.            
             </motion.p>
-
             {/* Buttons */}
             <motion.div variants={itemAnim} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 <Button variant="primary" className="w-full sm:w-auto min-w-[160px]">

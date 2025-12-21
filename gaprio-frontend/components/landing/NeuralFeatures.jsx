@@ -1,7 +1,8 @@
 'use client';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, FileText, CheckSquare, Database, Mail, FileSpreadsheet, Activity } from 'lucide-react';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
 
 export default function NeuralFeatures() {
   return (
@@ -9,8 +10,6 @@ export default function NeuralFeatures() {
       
       {/* --- Atmospheric Background --- */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.03]" />
-      
-      {/* Deep Orange Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] md:w-[800px] h-[50vh] md:h-[800px] bg-[radial-gradient(circle,rgba(249,115,22,0.08)_0%,transparent_70%)] pointer-events-none" />
 
       {/* --- Header --- */}
@@ -19,7 +18,7 @@ export default function NeuralFeatures() {
           The Central <br/> <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Processing Unit.</span>
         </h2>
         <p className="text-zinc-400 max-w-2xl mx-auto text-base md:text-lg font-light leading-relaxed">
-          Data flows in. Intelligence flows out. Gaprio sits in the middle, translating noise into structured action.
+            Gaprio sits at the center of your workflows, converting scattered inputs into structured and actionable outcomes.
         </p>
       </div>
 
@@ -42,8 +41,7 @@ export default function NeuralFeatures() {
             
             {/* The Reactor Core (Central Hub) */}
             <div className="relative z-10 w-40 h-40 lg:w-56 lg:h-56 bg-[#0a0a0a] border border-white/10 rounded-full flex flex-col items-center justify-center shadow-[0_0_80px_rgba(234,88,12,0.25)] ring-1 ring-white/10">
-                
-                {/* Spinning Rings - Layered for Depth */}
+                {/* Spinning Rings */}
                 <div className="absolute inset-0 rounded-full border border-orange-500/30 border-t-orange-500/80 animate-[spin_8s_linear_infinite]" />
                 <div className="absolute inset-4 rounded-full border border-white/5 border-b-white/30 animate-[spin_12s_linear_infinite_reverse]" />
                 <div className="absolute inset-8 rounded-full border border-amber-500/20 border-l-amber-500/60 animate-[spin_5s_linear_infinite]" />
@@ -60,26 +58,33 @@ export default function NeuralFeatures() {
                 </div>
             </div>
 
-            {/* Status Indicator */}
-            <div className="mt-12 text-center">
-                <h3 className="text-xl font-bold text-white tracking-tight mb-2">Gaprio Neural Core</h3>
-                <div className="flex items-center justify-center gap-2 bg-white/5 px-4 py-1.5 rounded-full border border-white/5 w-fit mx-auto backdrop-blur-md">
-                    <span className="relative flex h-2.5 w-2.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
-                    </span>
-                    <span className="text-[10px] font-mono text-green-400 tracking-widest uppercase font-bold">System Online</span>
+            {/* --- UPDATED SECTION: Live Status Indicator --- */}
+            <div className="mt-10 lg:mt-12 text-center w-full max-w-[280px]">
+                <h3 className="text-xl font-bold text-white tracking-tight mb-3">Gaprio Neural Core</h3>
+                
+                {/* Live Activity Box */}
+                <div className="bg-[#0f0f0f] border border-white/10 rounded-xl p-3 backdrop-blur-md shadow-inner">
+                    <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
+                         <div className="flex items-center gap-2">
+                             <div className="relative flex h-2 w-2">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                             </div>
+                             <span className="text-[10px] font-mono text-zinc-400 tracking-wider">LIVE FEED</span>
+                         </div>
+                         <span className="text-[10px] font-mono text-orange-400 font-bold">12ms</span>
+                    </div>
+                    
+                    {/* The Typing Text Component */}
+                    <LiveProcessingText />
                 </div>
             </div>
 
             {/* Data Beams (Desktop Visuals) */}
             <div className="hidden lg:block absolute inset-0 pointer-events-none">
-                {/* Left Beams (Incoming) */}
                 <Beam x="left-0" y="top-[25%]" delay={0} />
                 <Beam x="left-0" y="top-[50%]" delay={2} />
                 <Beam x="left-0" y="top-[75%]" delay={4} />
-                
-                {/* Right Beams (Outgoing) */}
                 <Beam x="right-0" y="top-[25%]" delay={1} direction="left" />
                 <Beam x="right-0" y="top-[50%]" delay={3} direction="left" />
                 <Beam x="right-0" y="top-[75%]" delay={5} direction="left" />
@@ -98,7 +103,45 @@ export default function NeuralFeatures() {
   );
 }
 
-// --- Sub-Components ---
+// --- NEW COMPONENT: Live Text Switcher ---
+function LiveProcessingText() {
+    const actions = [
+        "Parsing intent from Slack...",
+        "Structuring unstructured data...",
+        "Querying vector database...",
+        "Drafting Asana task payload...",
+        "Syncing context to Jira...",
+        "Optimizing workflow route..."
+    ];
+    const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setIndex((prev) => (prev + 1) % actions.length);
+        }, 2200); // Changes every 2.2 seconds
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <div className="h-6 overflow-hidden relative flex items-center justify-center">
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-xs font-mono text-zinc-300 w-full text-left truncate"
+                >
+                    <span className="text-orange-500 mr-2">{'>'}</span>
+                    {actions[index]}
+                </motion.div>
+            </AnimatePresence>
+        </div>
+    );
+}
+
+// --- Existing Sub-Components (Unchanged) ---
 
 function NodeCard({ icon: Icon, title, sub, color, align, delay }) {
     return (
@@ -113,7 +156,6 @@ function NodeCard({ icon: Icon, title, sub, color, align, delay }) {
                 ${align === 'right' ? 'lg:ml-auto lg:text-right flex-row-reverse' : 'lg:mr-auto'}
             `}
         >
-            {/* Hover Shine Effect */}
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out pointer-events-none" />
 
             <div className={`p-3.5 rounded-xl bg-white/5 ${color} group-hover:scale-110 transition-transform duration-300 shadow-inner relative z-10`}>
@@ -124,7 +166,6 @@ function NodeCard({ icon: Icon, title, sub, color, align, delay }) {
                 <p className="text-zinc-500 text-xs font-mono tracking-wide uppercase mt-1 group-hover:text-zinc-400 transition-colors">{sub}</p>
             </div>
             
-            {/* Connector Line (Decorative) */}
             <div className={`hidden lg:block w-12 h-[1px] bg-white/10 absolute top-1/2 ${align === 'right' ? 'right-[-48px]' : 'left-[-48px]'} group-hover:bg-orange-500/50 transition-colors`} />
             <div className={`hidden lg:block w-1.5 h-1.5 rounded-full bg-[#0a0a0a] border border-white/20 absolute top-1/2 -translate-y-1/2 ${align === 'right' ? 'right-[-6px]' : 'left-[-6px]'} group-hover:border-orange-500 transition-colors`} />
         </motion.div>

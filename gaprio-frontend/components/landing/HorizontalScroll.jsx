@@ -12,7 +12,7 @@ const steps = [
     id: '01', 
     title: "The Trigger", 
     subtitle: "Signal Detected",
-    desc: "Gaprio intercepts a client request in Slack. It parses intent, urgency, and required stakeholders instantly.",
+    desc: "A client sends a request in Slack. Gaprio understands intent, urgency, and the people who need to act.",
     icon: MessageSquare,
     // Gradient: Deep Orange -> Bright Amber
     color: "from-orange-600 to-amber-500"
@@ -21,7 +21,7 @@ const steps = [
     id: '02', 
     title: "The Brain", 
     subtitle: "Context Retrieval",
-    desc: "It queries vector databases for similar past contracts and drafts a highly specific response in Google Docs.",
+    desc: "Gaprio searches your documents, knowledge base, and past work to retrieve the exact context required for the task.",
     icon: FileText,
     // Gradient: Amber -> Yellow/Gold
     color: "from-amber-500 to-yellow-500"
@@ -30,7 +30,7 @@ const steps = [
     id: '03', 
     title: "The Action", 
     subtitle: "Orchestration",
-    desc: "Gaprio books a meeting in Outlook, invites the client, and creates a linked Jira ticket for Engineering.",
+    desc: "Gaprio coordinates next steps across your tools, from drafting documents to scheduling meetings and creating tickets.",
     icon: Calendar,
     // Gradient: Red -> Orange (High urgency feel)
     color: "from-red-600 to-orange-500"
@@ -39,7 +39,7 @@ const steps = [
     id: '04', 
     title: "The Result", 
     subtitle: "Execution",
-    desc: "Zero friction. You receive a single notification: 'Workflow ready for approval'. One click, done.",
+    desc: "You receive a single notification saying “Workflow ready for approval.” One click completes the process across every connected system.",
     icon: CheckCircle,
     // Gradient: Green -> Emerald (Success state, kept green for semantic correctness)
     color: "from-emerald-500 to-green-400"
@@ -101,10 +101,7 @@ export default function HorizontalScroll() {
             </h2>
             
             <p className="text-zinc-400 max-w-lg text-lg leading-relaxed font-light">
-                Gaprio doesn't just chat. It moves data between silos so you don't have to. 
-                <span className="text-white block mt-4 font-medium flex items-center gap-2">
-                    Scroll to trace the execution <ArrowRight size={14} className="text-orange-500"/>
-                </span>
+                Gaprio works quietly between your apps, orchestrating tasks, context, and communication so your teams stay focused on real work.
             </p>
         </div>
 

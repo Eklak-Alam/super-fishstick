@@ -1,127 +1,125 @@
 'use client';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Globe, Cpu, Zap, Lock, Key, CheckCircle2 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Shield, Cpu, Zap, Globe, Lock, Send, Command } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Canvas, useFrame, extend } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 
+// --- MAIN COMPONENT ---
 export default function BentoGrid() {
   return (
-    <section className="py-20 md:py-32 px-4 max-w-7xl mx-auto">
+    <section className="py-12 md:py-24 px-4 md:px-8 max-w-7xl mx-auto bg-black text-white overflow-hidden">
       
       {/* Header */}
-      <div className="mb-12 md:mb-20 text-center md:text-left">
-        <h2 className="text-4xl md:text-7xl font-bold text-white mb-6 tracking-tighter leading-[1.05]">
-          Everything you need. <br /> 
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-700">
-            Nothing you don't.
-          </span>
+      <div className="mb-10 md:mb-20">
+        <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
+          Gaprio <span className="text-zinc-600">Infrastructure</span>
         </h2>
+        <p className="text-zinc-400 text-lg md:text-xl max-w-2xl leading-relaxed">
+           The foundation for your next generation software. Performant, secure, and globally distributed.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-auto md:auto-rows-[420px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-auto">
         
-        {/* --- 1. AI CORE (Large) --- */}
-        <BentoCard className="md:col-span-2 min-h-[360px]">
-          <div className="p-6 md:p-10 h-full flex flex-col justify-between relative z-20">
-            <div className="relative z-10 flex-1 flex flex-col">
-              <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6 mb-4">
-                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shadow-[0_0_30px_-10px_rgba(249,115,22,0.3)] shrink-0">
-                    <Cpu size={24} className="text-orange-500 md:w-7 md:h-7" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white">Agentic AI Core</h3>
-              </div>
-              <p className="text-zinc-400 text-sm md:text-lg leading-relaxed max-w-md">
-                Autonomous agents that handle complex workflows. They think, plan, and execute across your stack.
-              </p>
-            </div>
-            
-            {/* Widget: AI Chat */}
-            <div className="mt-8 md:absolute md:bottom-8 md:right-8 w-full md:w-[320px]">
-                <AgentChatWidget />
-            </div>
-          </div>
-        </BentoCard>
-
-        {/* --- 2. SECURITY (Small) - With Key Animation --- */}
-        <BentoCard className="min-h-[360px]">
-          <div className="p-6 md:p-8 h-full flex flex-col relative z-20">
-            
-            {/* NEW: Key Unlock Animation */}
-            <LockPickAnimation />
-            
-            <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6 mb-4 relative z-10">
-                <div className="w-12 h-12 rounded-2xl bg-green-500/10 border border-green-500/20 flex items-center justify-center shrink-0">
-                    <Shield size={24} className="text-green-500" />
-                </div>
-                <h3 className="text-xl md:text-2xl font-bold text-white">Enterprise Security</h3>
-            </div>
-
-            <p className="text-zinc-400 text-sm leading-relaxed mb-auto relative z-10">
-                SOC2 Type II Certified. Unauthorized access attempts are instantly blocked.
-            </p>
-            
-            <div className="relative z-10 mt-8 pt-6 border-t border-white/5">
-                <div className="flex justify-between text-[10px] text-zinc-500 mb-2 font-mono uppercase tracking-widest">
-                    <span>System Status</span>
-                    <span className="text-green-500 animate-pulse">Secure</span>
-                </div>
-                <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden relative">
-                    <div className="absolute inset-0 bg-green-500/30"></div>
-                </div>
-            </div>
-          </div>
-        </BentoCard>
-
-        {/* --- 3. REAL-TIME SYNC (Small) --- */}
-        <BentoCard className="min-h-[360px]">
-          <div className="p-6 md:p-8 h-full flex flex-col relative z-20">
-            <div className="relative z-20">
-                <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6 mb-4">
-                    <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0">
-                        <Globe size={24} className="text-blue-500" />
+        {/* --- 1. AGENTIC AI CORE --- */}
+        <BentoCard className="md:col-span-2 min-h-[400px]">
+          <div className="p-6 md:p-8 h-full flex flex-col md:flex-row gap-6 md:gap-8">
+            <div className="flex-1 flex flex-col justify-start relative z-10">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]">
+                        <Cpu size={24} />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold text-white">Global Sync</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-white">Agentic AI Core</h3>
                 </div>
-                <p className="text-zinc-400 text-sm leading-relaxed">Updates propagate instantly across US, EU, and Asia regions.</p>
+                <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
+                    Purpose-built AI agents that understand tasks, plan next steps, and execute multi-step workflows across your stack.
+                </p>
             </div>
-            {/* Live Map */}
-            <div className="absolute inset-0 top-[30%] opacity-80 pointer-events-none">
-                <LiveSyncMap />
+            
+            {/* Terminal */}
+            <div className="w-full md:w-[380px] h-[220px] md:h-full shrink-0 relative z-10">
+                <CommandTerminal />
             </div>
           </div>
         </BentoCard>
 
-        {/* --- 4. PERFORMANCE (Large) --- */}
-        <BentoCard className="md:col-span-2 min-h-[360px]">
-            <div className="p-6 md:p-10 h-full flex flex-col justify-between relative z-20">
-                <div className="flex flex-col md:flex-row justify-between gap-8 z-20">
-                    <div className="max-w-lg">
-                        <div className="flex flex-row md:flex-col items-center md:items-start gap-4 md:gap-6 mb-4">
-                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shadow-[0_0_30px_-10px_rgba(249,115,22,0.3)] shrink-0">
-                                <Zap size={24} className="text-orange-500 md:w-7 md:h-7" />
-                            </div>
-                            <h3 className="text-2xl md:text-3xl font-bold text-white">Lightning Fast</h3>
-                        </div>
-                        <p className="text-zinc-400 text-sm md:text-lg leading-relaxed">
-                            Built on Rust for millisecond latency. Live performance monitoring included.
-                        </p>
+        {/* --- 2. ENTERPRISE SECURITY --- */}
+        <BentoCard className="min-h-[380px]">
+          <div className="h-full flex flex-col relative overflow-hidden">
+            
+            <div className="relative z-20 p-6 md:p-8 bg-gradient-to-b from-black/80 via-black/40 to-transparent">
+                <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-500 backdrop-blur-md">
+                        <Shield size={24} />
                     </div>
-                    {/* Stats */}
-                    <div className="flex gap-8 items-start pt-2">
-                        <div>
-                            <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mb-1">Latency</p>
-                            <p className="text-2xl md:text-3xl font-bold text-white font-mono">12ms</p>
+                    <h3 className="text-xl md:text-2xl font-bold drop-shadow-md text-white">Enterprise Security</h3>
+                </div>
+                <p className="text-zinc-300 text-sm leading-relaxed max-w-[95%]">
+                    Designed with strict access controls, data isolation, and encryption to meet enterprise security expectations.
+                </p>
+            </div>
+            
+            <div className="absolute inset-0 flex items-center justify-center z-10 pt-16">
+                <StasisFieldVisual />
+            </div>
+
+            <div className="relative z-20 mt-auto mx-6 mb-6 md:mx-8 md:mb-8 pt-4 border-t border-white/5 flex justify-between items-center bg-black/40 backdrop-blur-md p-3 rounded-lg border border-white/5">
+                <span className="text-[10px] md:text-xs text-zinc-500 font-mono uppercase">Status</span>
+                <span className="text-[10px] md:text-xs text-emerald-500 font-mono font-bold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"/>
+                    SECURE
+                </span>
+            </div>
+          </div>
+        </BentoCard>
+
+        {/* --- 3. GLOBAL SYNC --- */}
+        <BentoCard className="min-h-[400px] overflow-hidden bg-[#050505] p-0">
+            <div className="absolute inset-0 z-0">
+                <GlobeHighVis />
+            </div>
+
+            <div className="absolute top-0 left-0 p-6 md:p-8 w-full z-10 pointer-events-none bg-gradient-to-b from-black/90 via-black/60 to-transparent pb-24">
+                <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-500 backdrop-blur-md">
+                        <Globe size={24} />
+                    </div>
+                    <h3 className="text-xl md:text-2xl font-bold drop-shadow-lg text-white">Global Sync</h3>
+                </div>
+                <p className="text-zinc-300 text-sm drop-shadow-md max-w-[90%]">
+                    Tasks, documents, and workflows stay aligned across teams and regions without delays or inconsistencies.
+                </p>
+            </div>
+        </BentoCard>
+
+        {/* --- 4. PERFORMANCE --- */}
+        <BentoCard className="md:col-span-2 min-h-[340px]">
+            <div className="p-6 md:p-8 h-full flex flex-col">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 relative z-20">
+                    <div className="flex items-center gap-4">
+                        <div className="p-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-500">
+                            <Zap size={24} />
                         </div>
                         <div>
-                            <p className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mb-1">Throughput</p>
-                            <p className="text-2xl md:text-3xl font-bold text-white font-mono">10k/s</p>
+                            <h3 className="text-xl md:text-2xl font-bold">Lightning Fast</h3>
+                            <p className="text-zinc-500 text-sm max-w-sm mt-1">
+                                Built on Rust for millisecond latency. Live performance monitoring included.
+                            </p>
                         </div>
                     </div>
+                    <div className="text-left md:text-right bg-zinc-900/50 p-3 rounded-xl border border-white/5 w-full md:w-auto">
+                        <div className="text-3xl font-mono font-bold text-white">12<span className="text-zinc-500 text-lg">ms</span></div>
+                        <div className="text-xs text-green-500 uppercase tracking-widest font-mono">Global Latency</div>
+                    </div>
                 </div>
-
-                {/* VISUAL: Live Monitor Graph */}
-                <div className="absolute bottom-0 left-0 right-0 h-48 z-10">
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent z-20" />
-                    <LiveMonitorGraph />
+                
+                <div className="flex-1 w-full bg-zinc-900/30 rounded-xl border border-white/5 relative overflow-hidden h-[160px]">
+                    <div className="absolute inset-0 grid grid-cols-[repeat(20,minmax(0,1fr))] gap-[1px] opacity-10 pointer-events-none">
+                         {[...Array(20)].map((_,i) => <div key={i} className="bg-zinc-500 h-full w-[1px]" />)}
+                    </div>
+                    <LiveSpectrum />
                 </div>
             </div>
         </BentoCard>
@@ -131,157 +129,364 @@ export default function BentoGrid() {
   );
 }
 
-// --- HELPER COMPONENTS ---
 
-// Plain Card (No Spotlight Border)
-function BentoCard({ children, className }) {
+// ------------------------------------------------------------------
+// PART 1: HIGH-VISIBILITY 3D GLOBE
+// ------------------------------------------------------------------
+
+function GlobeHighVis() {
+  const [GlobeClass, setGlobeClass] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    import('three-globe').then((mod) => {
+      if (mounted) {
+        setGlobeClass(() => mod.default);
+        extend({ ThreeGlobe: mod.default });
+      }
+    }).catch(err => console.log("Error loading globe", err));
+
+    return () => { mounted = false; };
+  }, []);
+
+  const globeConfig = {
+    pointSize: 1,
+    globeColor: "#1e293b", 
+    showAtmosphere: true,
+    atmosphereColor: "#f97316",
+    atmosphereAltitude: 0.25, 
+    emissive: "#1e293b",
+    emissiveIntensity: 0.2, 
+    shininess: 0.9,
+    polygonColor: "rgba(255,255,255,1)", 
+    ambientLight: "#ffffff", 
+    directionalLeftLight: "#ffffff",
+    directionalTopLight: "#ffffff",
+    pointLight: "#ffffff",
+    arcTime: 2000,
+    arcLength: 0.9,
+    rings: 1,
+    maxRings: 3,
+  };
+
+  const arcsData = [
+    { startLat: 37.7749, startLng: -122.4194, endLat: 40.7128, endLng: -74.006, color: "#fb923c" },
+    { startLat: 51.5072, startLng: -0.1276, endLat: 28.6139, endLng: 77.209, color: "#fb923c" },
+    { startLat: -33.8688, startLng: 151.2093, endLat: 1.3521, endLng: 103.8198, color: "#38bdf8" },
+    { startLat: 40.7128, startLng: -74.006, endLat: 51.5072, endLng: -0.1276, color: "#fb923c" }, 
+    { startLat: 35.6762, startLng: 139.6503, endLat: 37.7749, endLng: -122.4194, color: "#fb923c" },
+    { startLat: 1.3521, startLng: 103.8198, endLat: 35.6762, endLng: 139.6503, color: "#fb923c" },
+  ];
+
+  if (!GlobeClass) return <div className="w-full h-full bg-[#1e293b] animate-pulse" />;
+
   return (
-    <motion.div 
-      transition={{ duration: 0.3, ease: "easeOut" }}
-      className={`relative rounded-[2rem] border border-white/10 bg-[#0a0a0a] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] ${className}`}
-    >
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
-      {children}
-    </motion.div>
+    <Canvas camera={{ position: [0, 0, 320], fov: 45 }}>
+      <ambientLight color={globeConfig.ambientLight} intensity={1} />
+      <directionalLight color={globeConfig.directionalLeftLight} position={[-400, 100, 400]} intensity={1} />
+      <directionalLight color={globeConfig.directionalTopLight} position={[-200, 500, 200]} intensity={1} />
+      <pointLight color={globeConfig.pointLight} position={[-200, 500, 200]} intensity={1.5} />
+      
+      <GlobeContentHighVis GlobeClass={GlobeClass} globeConfig={globeConfig} data={arcsData} />
+      
+      <OrbitControls 
+        enablePan={false} 
+        enableZoom={false} 
+        minDistance={320} 
+        maxDistance={320} 
+        enableRotate={true}
+        autoRotate={false} 
+      />
+    </Canvas>
   );
 }
 
-// 1. Agent Chat
-function AgentChatWidget() {
-    const [step, setStep] = useState(0);
+function GlobeContentHighVis({ GlobeClass, globeConfig, data }) {
+  const globeRef = useRef();
+  const [countries, setCountries] = useState(null);
+  const globeObjRef = useRef(null);
+  
+  // --- PHYSICS CONFIGURATION ---
+  const speedRef = useRef(0.0006); 
+  const baseSpeed = 0.0006;        // Idle speed
+  const boostSpeed = 0.002;        // MAX scroll speed (Very subtle now)
+  const smoothness = 0.01;         // Lower = smoother/slower slowdown (0.01 is very liquid)
+
+  if (!globeObjRef.current && GlobeClass) {
+      globeObjRef.current = new GlobeClass();
+  }
+  const globeObj = globeObjRef.current;
+
+  useEffect(() => {
+    fetch('https://raw.githubusercontent.com/vasturiano/three-globe/master/example/country-polygons/ne_110m_admin_0_countries.geojson')
+      .then(res => res.json())
+      .then(setCountries)
+      .catch(err => console.error("Globe data load failed", err));
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      speedRef.current = boostSpeed;
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useFrame(() => {
+    if (globeRef.current) {
+      // Lerp: Smoothly drift from current speed back to baseSpeed
+      speedRef.current = THREE.MathUtils.lerp(speedRef.current, baseSpeed, smoothness);
+      globeRef.current.rotation.y += speedRef.current;
+    }
+  });
+
+  useEffect(() => {
+    if (!globeObj || !countries) return;
+
+    globeObj
+      .hexPolygonsData(countries.features)
+      .hexPolygonResolution(3)
+      .hexPolygonMargin(0.6) 
+      .showAtmosphere(globeConfig.showAtmosphere)
+      .atmosphereColor(globeConfig.atmosphereColor)
+      .atmosphereAltitude(globeConfig.atmosphereAltitude)
+      .hexPolygonColor(() => globeConfig.polygonColor);
+
+    globeObj
+      .arcsData(data)
+      .arcStartLat((d) => d.startLat)
+      .arcStartLng((d) => d.startLng)
+      .arcEndLat((d) => d.endLat)
+      .arcEndLng((d) => d.endLng)
+      .arcColor((d) => d.color)
+      .arcAltitude(0.25)
+      .arcStroke(0.8) 
+      .arcDashLength(globeConfig.arcLength)
+      .arcDashGap(2) 
+      .arcDashAnimateTime(globeConfig.arcTime);
+
+    const globeMaterial = globeObj.globeMaterial();
+    globeMaterial.color = new THREE.Color(globeConfig.globeColor);
+    globeMaterial.emissive = new THREE.Color(globeConfig.emissive);
+    globeMaterial.emissiveIntensity = globeConfig.emissiveIntensity;
+    globeMaterial.shininess = globeConfig.shininess;
+
+  }, [countries, data, globeConfig, globeObj]);
+
+  if (!globeObj) return null;
+
+  return <primitive object={globeObj} ref={globeRef} />;
+}
+
+
+// ------------------------------------------------------------------
+// PART 2: STASIS FIELD VISUAL
+// ------------------------------------------------------------------
+
+function StasisFieldVisual() {
+    const [threats, setThreats] = useState([]);
+    const SAFE_ZONE_RADIUS = 50; 
+
     useEffect(() => {
-        const interval = setInterval(() => setStep((s) => (s + 1) % 3), 2000);
-        return () => clearInterval(interval);
-    }, []);
-
-    const steps = [
-        { title: "Parsing Request...", color: "bg-zinc-800 text-zinc-400" },
-        { title: "Calling Jira API...", color: "bg-blue-900/30 text-blue-400 border-blue-500/30" },
-        { title: "Task Created Successfully", color: "bg-green-900/30 text-green-400 border-green-500/30" },
-    ];
-
-    return (
-        <div className="bg-[#050505] border border-white/10 rounded-2xl p-4 shadow-2xl relative overflow-hidden">
-            <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white font-bold text-xs">AI</div>
-                <div className="text-xs font-bold text-white">Gaprio Agent</div>
-            </div>
-            <div className="space-y-3">
-                <div className="text-xs text-zinc-400 bg-white/5 p-2 rounded-lg rounded-tl-none">
-                    Create a Jira ticket for the new bug report.
-                </div>
-                <div className={`flex items-center gap-2 text-xs p-2 rounded-lg border transition-all duration-300 ${steps[step].color}`}>
-                    {step === 0 && <span className="w-2 h-2 rounded-full bg-zinc-500 animate-pulse" />}
-                    {step === 1 && <span className="w-2 h-2 rounded-full bg-blue-500 animate-spin" />}
-                    {step === 2 && <CheckCircle2 size={12} />}
-                    {steps[step].title}
-                </div>
-            </div>
-        </div>
-    );
-}
-
-// 2. Lock Pick Animation (The Key Trying to Open)
-function LockPickAnimation() {
-    return (
-        <div className="absolute top-0 right-0 w-full h-full pointer-events-none overflow-hidden">
-            {/* Background Glow */}
-            <div className="absolute -top-10 -right-10 w-64 h-64 bg-green-900/10 blur-[80px] rounded-full" />
-            
-            <div className="absolute top-10 right-10">
-                <div className="relative w-24 h-24 flex items-center justify-center">
-                    
-                    {/* The Lock */}
-                    <motion.div className="relative z-10 text-green-500">
-                        <Lock size={64} />
-                    </motion.div>
-
-                    {/* The Key (Intruder) Animation Loop */}
-                    <motion.div
-                        animate={{ 
-                            x: [40, 0, 0, 0, 40], // Move In -> Wait -> Shake -> Move Out
-                            rotate: [0, 0, -10, 10, 0], // Shake while trying
-                            opacity: [0, 1, 1, 1, 0] 
-                        }}
-                        transition={{ 
-                            duration: 3, 
-                            repeat: Infinity, 
-                            times: [0, 0.2, 0.4, 0.6, 1],
-                            repeatDelay: 1 
-                        }}
-                        className="absolute right-[-20px] top-1/2 -translate-y-1/2 z-20 text-red-500"
-                    >
-                        <Key size={32} className="rotate-[-90deg]" />
-                    </motion.div>
-
-                    {/* Shield Flash (Denial) */}
-                    <motion.div
-                        animate={{ opacity: [0, 0, 0.8, 0, 0], scale: [1, 1, 1.2, 1, 1] }}
-                        transition={{ duration: 3, repeat: Infinity, times: [0, 0.4, 0.5, 0.6, 1], repeatDelay: 1 }}
-                        className="absolute inset-0 bg-red-500/20 rounded-full blur-xl z-0"
-                    />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-// 3. Live Sync Map
-function LiveSyncMap() {
-    return (
-        <div className="w-full h-full relative">
-            <svg className="w-full h-full absolute inset-0" viewBox="0 0 100 50" preserveAspectRatio="none">
-                <path d="M 20 25 Q 35 10 50 15" fill="none" stroke="#ea580c" strokeWidth="0.5" strokeDasharray="3 3" className="opacity-30" />
-                <circle r="1" fill="#fbbf24">
-                    <animateMotion dur="3s" repeatCount="indefinite" path="M 20 25 Q 35 10 50 15" />
-                </circle>
-                <path d="M 50 15 Q 65 20 80 35" fill="none" stroke="#ea580c" strokeWidth="0.5" strokeDasharray="3 3" className="opacity-30" />
-                <circle r="1" fill="#fbbf24">
-                    <animateMotion dur="3s" begin="1.5s" repeatCount="indefinite" path="M 50 15 Q 65 20 80 35" />
-                </circle>
-                <circle cx="20" cy="25" r="2" fill="#ea580c" className="animate-pulse" />
-                <circle cx="50" cy="15" r="2" fill="#ea580c" className="animate-pulse" />
-                <circle cx="80" cy="35" r="2" fill="#ea580c" className="animate-pulse" />
-            </svg>
-        </div>
-    );
-}
-
-// 4. Live Monitor Graph
-function LiveMonitorGraph() {
-    const [path, setPath] = useState('');
-    useEffect(() => {
-        let data = Array(40).fill(50);
         const interval = setInterval(() => {
-            data.shift();
-            const time = Date.now() / 1000;
-            const value = 50 + Math.sin(time * 2) * 20 + Math.random() * 10;
-            data.push(value);
-            const d = data.map((point, i) => {
-                const x = (i / (data.length - 1)) * 100;
-                return `${i === 0 ? 'M' : 'L'} ${x} ${100 - point}`;
-            }).join(' ');
-            setPath(d);
-        }, 50);
+            const id = Date.now();
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 140; 
+            const startX = Math.cos(angle) * distance;
+            const startY = Math.sin(angle) * distance;
+            
+            const endX = Math.cos(angle) * SAFE_ZONE_RADIUS;
+            const endY = Math.sin(angle) * SAFE_ZONE_RADIUS;
+
+            setThreats(prev => [...prev, { id, startX, startY, endX, endY, angle }]);
+
+            setTimeout(() => {
+                setThreats(prev => prev.filter(t => t.id !== id));
+            }, 2000); 
+        }, 600); 
         return () => clearInterval(interval);
     }, []);
-    if (!path) return null;
+
     return (
-        <div className="w-full h-full relative overflow-hidden">
-            <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                    <linearGradient id="monitor-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#f97316" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#f97316" stopOpacity="0" />
-                    </linearGradient>
-                </defs>
-                <path d={`${path} L 100 100 L 0 100 Z`} fill="url(#monitor-gradient)" className="transition-all duration-75 ease-linear" />
-                <path d={path} fill="none" stroke="#f97316" strokeWidth="1.5" className="transition-all duration-75 ease-linear" />
-            </svg>
-            <div className="absolute top-2 right-2 flex items-center gap-1.5 px-2 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                <span className="text-[10px] font-bold text-orange-400 uppercase tracking-wider">Live</span>
+        <div className="relative w-full h-full flex items-center justify-center">
+            <div className="absolute w-[100px] h-[100px] rounded-full border border-emerald-500/30 bg-emerald-900/5 flex items-center justify-center z-10 shadow-[0_0_30px_rgba(16,185,129,0.1)]">
+                 <div className="relative z-20 w-10 h-10 bg-black/80 rounded-xl border border-emerald-500/50 flex items-center justify-center">
+                    <Lock size={18} className="text-emerald-400" />
+                </div>
+            </div>
+
+            <AnimatePresence>
+                {threats.map(threat => (
+                    <motion.div
+                        key={threat.id}
+                        initial={{ x: threat.startX, y: threat.startY, opacity: 1, scale: 1 }}
+                        animate={{ 
+                            x: [threat.startX, threat.endX, threat.endX], 
+                            y: [threat.startY, threat.endY, threat.endY], 
+                            opacity: [1, 1, 0], 
+                            scale: [1, 1, 0]
+                        }} 
+                        transition={{ 
+                            duration: 1.2, 
+                            times: [0, 0.6, 1], 
+                            ease: "circOut" 
+                        }}
+                        className="absolute w-1.5 h-1.5 bg-red-500 rounded-sm shadow-[0_0_10px_#ef4444] z-20"
+                        style={{ rotate: threat.angle * (180/Math.PI) }}
+                    >
+                         <motion.div 
+                            animate={{ opacity: [0, 1, 0], scale: [1, 3, 0] }}
+                            transition={{ delay: 0.72, duration: 0.2 }}
+                            className="absolute inset-0 bg-white rounded-full"
+                         />
+                    </motion.div>
+                ))}
+            </AnimatePresence>
+            
+            <motion.div 
+                animate={{ scale: [1, 1.1, 1], opacity: [0.1, 0.4, 0.1] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+                className="absolute w-[100px] h-[100px] rounded-full border border-emerald-500/50"
+            />
+        </div>
+    );
+}
+
+
+// ------------------------------------------------------------------
+// PART 3: COMMAND TERMINAL (FIXED EXTENSION ERRORS)
+// ------------------------------------------------------------------
+
+function CommandTerminal() {
+    const [lines, setLines] = useState([
+        { type: 'log', text: 'Gaprio Core v2.4...' },
+        { type: 'success', text: '✓ Connected' },
+        { type: 'cmd', text: 'Start session' },
+        { type: 'ai', text: 'Agent Active. Waiting...' }
+    ]);
+    const [input, setInput] = useState('');
+    const scrollRef = useRef(null);
+
+    useEffect(() => {
+        if(scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }, [lines]);
+
+    const handleEnter = (e) => {
+        if (e.key === 'Enter' && input.trim()) {
+            setLines(prev => [...prev, { type: 'cmd', text: input }]);
+            setInput('');
+            setTimeout(() => {
+                 setLines(prev => [...prev, { type: 'ai', text: 'Processing...' }]);
+            }, 600);
+        }
+    }
+
+    return (
+        <div className="h-full bg-[#0c0c0e] border border-white/10 rounded-xl flex flex-col font-mono text-xs md:text-sm overflow-hidden shadow-2xl relative w-full">
+            <div className="flex items-center gap-2 px-4 py-2 border-b border-white/5 bg-white/5">
+                <div className="w-2 h-2 rounded-full bg-red-500/50" />
+                <div className="w-2 h-2 rounded-full bg-yellow-500/50" />
+                <div className="w-2 h-2 rounded-full bg-green-500/50" />
+                <span className="ml-auto text-zinc-600 text-[10px] font-bold tracking-widest">TERMINAL</span>
+            </div>
+
+            <div ref={scrollRef} className="flex-1 p-4 space-y-2 overflow-y-auto">
+                {lines.map((l, i) => (
+                    <div key={i} className={`flex gap-3 ${
+                        l.type === 'cmd' ? 'text-white font-bold' : 
+                        l.type === 'success' ? 'text-emerald-400' : 
+                        l.type === 'ai' ? 'text-orange-400' : 'text-zinc-500'
+                    }`}>
+                        <span className="shrink-0 opacity-50">
+                            {l.type === 'cmd' ? '>' : l.type === 'ai' ? '*' : '#'}
+                        </span>
+                        <span>{l.text}</span>
+                    </div>
+                ))}
+            </div>
+
+            <div className="p-3 bg-zinc-900/80 border-t border-white/5 backdrop-blur-md">
+                <div className="relative group">
+                    <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                        <Command size={12} className="text-zinc-500 group-focus-within:text-orange-500 transition-colors" />
+                    </div>
+                    {/* ADDED suppressHydrationWarning to Input */}
+                    <input 
+                        suppressHydrationWarning={true}
+                        type="text" 
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={handleEnter}
+                        className="w-full bg-[#050505] border border-zinc-700 text-white rounded-lg py-2 pl-9 pr-9 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all placeholder-zinc-600 text-xs md:text-sm"
+                        placeholder="Command..."
+                    />
+                    {/* ADDED suppressHydrationWarning to Button */}
+                    <button 
+                        suppressHydrationWarning={true}
+                        className="absolute inset-y-0 right-3 flex items-center text-zinc-500 hover:text-white transition-colors"
+                    >
+                        <Send size={12} />
+                    </button>
+                </div>
             </div>
         </div>
     );
+}
+
+// --- SHARED ---
+
+function LiveSpectrum() {
+    return (
+        <div className="w-full h-full flex items-end justify-between gap-1 pb-0 px-2">
+            {[...Array(40)].map((_, i) => (
+                <Bar key={i} />
+            ))}
+        </div>
+    );
+}
+
+function Bar() {
+    const [config, setConfig] = useState({
+        height: "50%",
+        duration: 4
+    });
+
+    useEffect(() => {
+        setConfig({
+            height: Math.floor(Math.random() * 80) + 20 + "%",
+            duration: Math.random() * 3 + 3
+        });
+    }, []);
+
+    return (
+        <motion.div 
+            className="w-full bg-indigo-500 rounded-t-[1px] opacity-60"
+            animate={{ 
+                height: ["20%", config.height, "20%"] 
+            }}
+            transition={{ 
+                duration: config.duration, 
+                repeat: Infinity, 
+                ease: "easeInOut",
+                repeatType: "mirror" 
+            }}
+        />
+    );
+}
+
+
+function BentoCard({ children, className }) {
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className={`relative rounded-3xl border border-white/10 bg-[#09090b] shadow-2xl overflow-hidden hover:border-white/20 transition-all duration-300 ${className}`}
+    >
+      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
+      {children}
+    </motion.div>
+  );
 }

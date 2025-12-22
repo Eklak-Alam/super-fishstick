@@ -134,11 +134,7 @@ export default function Hero() {
             <motion.p variants={itemAnim} className="text-base sm:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed font-light">
                 One intelligent layer that understands your work, connects your tools, and turns everyday operations into automated workflows.            
             </motion.p>
-            
-            {/* --- UPDATED BUTTONS (Dark & Orange) --- */}
-            // Inside Hero.js
 
-{/* ... inside the return statement ... */}
 
 <motion.div variants={itemAnim} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center">
     

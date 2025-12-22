@@ -136,24 +136,33 @@ export default function Hero() {
             </motion.p>
             
             {/* --- UPDATED BUTTONS (Dark & Orange) --- */}
-            <motion.div variants={itemAnim} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center">
-                
-                {/* 1. START FREE TRIAL ("Magma" Rotating Border) */}
-                <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-slate-50 group shadow-[0_0_20px_-5px_rgba(249,115,22,0.5)]">
-                    {/* The Conic Gradient: Zinc-900 -> Orange-500 -> Zinc-900 */}
-                    <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#27272a_0%,#f97316_50%,#27272a_100%)]" />
-                    <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050201] px-8 py-1 text-sm font-medium text-white backdrop-blur-3xl gap-2 transition-colors hover:bg-zinc-900">
-                        Start Free Trial <ArrowRight size={16} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
-                    </span>
-                </button>
-                
-                {/* 2. VIEW DOCUMENTATION (Simple Border) */}
-                <button className="group relative h-12 px-8 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700 hover:border-orange-500/50 hover:bg-zinc-900/50 hover:text-white transition-all duration-300 flex items-center justify-center gap-2">
-                    <PlayCircle size={16} className="text-orange-500 group-hover:scale-110 transition-transform" /> 
-                    View Documentation
-                </button>
+            // Inside Hero.js
 
-            </motion.div>
+{/* ... inside the return statement ... */}
+
+<motion.div variants={itemAnim} className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center">
+    
+    {/* 1. START FREE TRIAL */}
+    <button 
+        suppressHydrationWarning={true} // <--- FIX 1
+        className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-slate-50 group shadow-[0_0_20px_-5px_rgba(249,115,22,0.5)]"
+    >
+        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#27272a_0%,#f97316_50%,#27272a_100%)]" />
+        <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-[#050201] px-8 py-1 text-sm font-medium text-white backdrop-blur-3xl gap-2 transition-colors hover:bg-zinc-900">
+            Start Free Trial <ArrowRight size={16} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
+        </span>
+    </button>
+    
+    {/* 2. VIEW DOCUMENTATION */}
+    <button 
+        suppressHydrationWarning={true} // <--- FIX 2
+        className="group relative h-12 px-8 rounded-full text-sm font-medium text-zinc-300 border border-zinc-700 hover:border-orange-500/50 hover:bg-zinc-900/50 hover:text-white transition-all duration-300 flex items-center justify-center gap-2"
+    >
+        <PlayCircle size={16} className="text-orange-500 group-hover:scale-110 transition-transform" /> 
+        View Documentation
+    </button>
+
+</motion.div>
         </motion.div>
       </motion.div>
       

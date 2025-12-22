@@ -30,7 +30,6 @@
 
 /* 2. Prevent Horizontal Scroll Globally */
 html, body {
-  overflow-x: hidden;
   width: 100%;
   overscroll-behavior-y: none; /* Disables bounce on Mac */
 }

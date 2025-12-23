@@ -6,4 +6,9 @@ const platformController = require('../controllers/platform.controller');
 router.get('/auth/google', platformController.googleAuth);
 router.get('/auth/google/callback', platformController.googleCallback);
 
+
+// Slack Auth Routes
+router.get('/auth/slack', platformController.slackAuth);
+router.get('/auth/slack/callback', platformController.slackCallback);
+
 module.exports = router;

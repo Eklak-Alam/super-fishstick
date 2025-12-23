@@ -53,7 +53,7 @@ export default function LoginPage() {
             <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 relative">
                 {/* Glow behind logo */}
                 <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full" />
-                <Image src="/logo.png" alt="Gaprio Logo" width={50} height={40} className="object-contain relative z-10" priority />
+                <Image src="/logo1.png" alt="Gaprio Logo" width={50} height={40} className="object-contain relative z-10" priority />
             </div>
             <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
             <p className="text-zinc-400 text-sm">Enter your credentials to access the Neural Core.</p>

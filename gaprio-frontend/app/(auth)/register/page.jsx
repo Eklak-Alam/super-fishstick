@@ -7,6 +7,7 @@ import { User, Mail, Lock, ArrowRight, Zap } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import Image from 'next/image';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -53,14 +54,15 @@ export default function RegisterPage() {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative z-10"
       >
-        <div className="mb-8 text-center">
-            {/* Header Icon: Orange/Amber Gradient */}
-            <div className="w-14 h-14 bg-gradient-to-br from-orange-500/10 to-amber-500/10 rounded-2xl border border-orange-500/20 flex items-center justify-center mx-auto mb-6 shadow-inner">
-                <Zap className="text-orange-500 w-7 h-7 fill-orange-500/20" />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Create Account</h1>
-            <p className="text-zinc-400 text-sm">Join the AI-native workspace revolution.</p>
-        </div>
+        <div className="mb-10 text-center">
+                    <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 relative">
+                        {/* Glow behind logo */}
+                        <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full" />
+                        <Image src="/logo1.png" alt="Gaprio Logo" width={50} height={40} className="object-contain relative z-10" priority />
+                    </div>
+                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
+                    <p className="text-zinc-400 text-sm">Enter your credentials to access the Neural Core.</p>
+                </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
             <Input icon={User} name="fullName" type="text" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required />

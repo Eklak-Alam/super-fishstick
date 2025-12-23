@@ -48,3 +48,38 @@ html, body {
 .animate-shine {
   animation: shine-move 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
+
+.input-std {
+  @apply w-full bg-white/5 p-3 rounded-lg border border-white/10 text-white outline-none focus:border-orange-500/50 transition-colors;
+}
+.btn-primary {
+  @apply bg-white text-black font-bold py-3 rounded-lg hover:bg-zinc-200 transition-colors;
+}
+
+@layer components {
+  /* Premium Input Style */
+  .input-field {
+    @apply w-full bg-[#050505] p-3.5 rounded-xl border border-white/10 text-white outline-none focus:border-orange-500/50 focus:bg-white/5 transition-all text-sm placeholder:text-zinc-600 shadow-inner;
+  }
+  
+  /* Primary Button Style */
+  .btn-primary {
+    @apply bg-white text-black font-bold py-3 px-4 rounded-xl hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-white/5 active:scale-[0.98];
+  }
+}
+
+/* Custom Scrollbar for Dark Mode */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}

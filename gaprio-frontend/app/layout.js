@@ -152,13 +152,13 @@ export default function RootLayout({ children }) {
               Skip to main content
             </a>
             
-            <Navbar />
+            {/* <Navbar /> */}
             
             <main id="main-content" className="min-h-screen">
               {children}
             </main>
             
-            <Footer />
+            {/* <Footer /> */}
             
             {/* Accessibility improvements */}
             <div 

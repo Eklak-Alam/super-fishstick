@@ -131,6 +131,7 @@ class GoogleService {
         return response.data.items || [];
     }
 
+// FIX: Enhanced Meeting Creation to ensure Google Meet Link generation
     static async createMeeting(userId, { summary, description, startTime, endTime }) {
         const auth = await this.getAuthenticatedClient(userId);
         const calendar = google.calendar({ version: 'v3', auth });
@@ -140,15 +141,19 @@ class GoogleService {
             description,
             start: { dateTime: new Date(startTime).toISOString() },
             end: { dateTime: new Date(endTime).toISOString() },
+            // This chunk tells Google "Please make a video call"
             conferenceData: {
-                createRequest: { requestId: Math.random().toString(36).substring(7) }
+                createRequest: {
+                    requestId: Math.random().toString(36).substring(7),
+                    conferenceSolutionKey: { type: 'hangoutsMeet' }
+                }
             }
         };
 
         const response = await calendar.events.insert({
             calendarId: 'primary',
             resource: event,
-            conferenceDataVersion: 1 // Important for generating Meet link
+            conferenceDataVersion: 1 // REQUIRED for Meet Links to work
         });
 
         return response.data;

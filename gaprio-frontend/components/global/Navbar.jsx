@@ -42,7 +42,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-3 z-50 group min-w-[120px]">
             <div className="relative w-8 h-8 flex-shrink-0">
                 <Image
-                    src="/logo.png"
+                    src="/logo1.png"
                     alt="Gaprio Logo"
                     fill
                     className="object-contain drop-shadow-[0_0_15px_rgba(249,115,22,0.4)]"

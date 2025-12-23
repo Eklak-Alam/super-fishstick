@@ -73,7 +73,7 @@ export default function Footer() {
                 <div className="col-span-2 md:col-span-5 flex flex-col items-start justify-center mb-4 md:mb-0">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="relative w-8 h-8 md:w-10 md:h-10">
-                            <Image src="/logo.png" alt="Gaprio" fill className="object-contain" />
+                            <Image src="/logo1.png" alt="Gaprio" fill className="object-contain" />
                         </div>
                         <span className="text-2xl md:text-3xl font-bold text-white tracking-tight">Gaprio</span>
                     </div>

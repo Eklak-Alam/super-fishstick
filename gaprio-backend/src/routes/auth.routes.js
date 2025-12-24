@@ -8,6 +8,8 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 router.post('/refresh-token', authController.refreshToken);
 router.post('/logout', authController.logout);
+router.post('/verify-email', authController.verifyEmail);
+router.post('/resend-code', authController.resendCode);
 
 // Protected Routes (Token Required 🔒)
 // The 'protect' middleware checks the token before letting the user pass

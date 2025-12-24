@@ -52,6 +52,24 @@ class UserModel {
         const [rows] = await db.execute(sql, [userId]);
         return rows;
     }
+
+    // Add inside UserModel class
+    static async saveOTP(userId, otp) {
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
+        const sql = `UPDATE users SET otp_code = ?, otp_expires_at = ? WHERE id = ?`;
+        await db.execute(sql, [otp, expiresAt, userId]);
+    }
+
+    static async verifyUser(userId) {
+        const sql = `UPDATE users SET is_verified = TRUE, otp_code = NULL, otp_expires_at = NULL WHERE id = ?`;
+        await db.execute(sql, [userId]);
+    }
+
+    static async getOTP(userId) {
+        const sql = `SELECT otp_code, otp_expires_at FROM users WHERE id = ?`;
+        const [rows] = await db.execute(sql, [userId]);
+        return rows[0];
+    }
 }
 
 module.exports = UserModel;

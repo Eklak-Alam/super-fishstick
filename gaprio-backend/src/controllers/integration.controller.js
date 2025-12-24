@@ -1,5 +1,10 @@
 const GoogleService = require('../services/providers/google.service');
 const SlackService = require('../services/providers/slack.service');
+const AsanaService = require('../services/providers/asana.service');
+
+// ==========================================
+// 🟢 GOOGLE INTEGRATIONS
+// ==========================================
 
 // Get Dashboard Data (Emails, Files, Meetings)
 exports.getGoogleData = async (req, res) => {
@@ -12,7 +17,7 @@ exports.getGoogleData = async (req, res) => {
 
         res.status(200).json({ success: true, data: { emails, files, meetings } });
     } catch (error) {
-        console.error("Fetch Error:", error);
+        console.error("Google Fetch Error:", error.message);
         // Return empty structure on error to prevent frontend crash
         res.status(200).json({ success: true, data: { emails: [], files: [], meetings: [] } });
     }
@@ -31,17 +36,17 @@ exports.sendEmail = async (req, res, next) => {
 // Create Calendar Meeting
 exports.createMeeting = async (req, res, next) => {
     try {
-        const meeting = await GoogleService.createMeeting(req.user.id, req.body);
-        res.status(200).json({ success: true, data: meeting });
+        await GoogleService.createMeeting(req.user.id, req.body);
+        res.status(200).json({ success: true, message: 'Meeting scheduled successfully' });
     } catch (error) {
         next(error);
     }
 };
 
 
-
-
-// SLACK
+// ==========================================
+// 🟣 SLACK INTEGRATIONS
+// ==========================================
 
 // Get Slack Channels
 exports.getSlackData = async (req, res, next) => {
@@ -50,7 +55,6 @@ exports.getSlackData = async (req, res, next) => {
         res.status(200).json({ success: true, data: { channels } });
     } catch (error) {
         console.error("Slack Fetch Error:", error.message);
-        // Return empty if not connected so dashboard doesn't break
         res.status(200).json({ success: true, data: { channels: [] } });
     }
 };
@@ -62,5 +66,28 @@ exports.sendSlackMessage = async (req, res, next) => {
         res.status(200).json({ success: true, message: 'Message sent to Slack' });
     } catch (error) {
         next(error);
+    }
+};
+
+
+// ==========================================
+// 🟠 ASANA INTEGRATIONS
+// ==========================================
+
+// Get Asana Data (Projects & Tasks)
+exports.getAsanaData = async (req, res) => {
+    try {
+        const [projects, tasks] = await Promise.all([
+            AsanaService.getProjects(req.user.id),
+            AsanaService.getTasks(req.user.id)
+        ]);
+
+        res.status(200).json({ 
+            success: true, 
+            data: { projects, tasks } 
+        });
+    } catch (error) {
+        console.error("Asana Data Error:", error.message);
+        res.status(200).json({ success: true, data: { projects: [], tasks: [] } });
     }
 };

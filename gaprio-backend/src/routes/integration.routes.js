@@ -11,4 +11,6 @@ router.post('/google/calendar/create', protect, integrationController.createMeet
 router.get('/slack/channels', protect, integrationController.getSlackData);
 router.post('/slack/message', protect, integrationController.sendSlackMessage);
 
-module.exports = router;
+router.get('/asana/dashboard', protect, integrationController.getAsanaData);
+
+module.exports = router; 

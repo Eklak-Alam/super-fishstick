@@ -11,4 +11,9 @@ router.get('/auth/google/callback', platformController.googleCallback);
 router.get('/auth/slack', platformController.slackAuth);
 router.get('/auth/slack/callback', platformController.slackCallback);
 
+
+// Asana Auth Routes
+router.get('/auth/asana', platformController.asanaAuth);
+router.get('/auth/asana/callback', platformController.asanaCallback);
+
 module.exports = router;

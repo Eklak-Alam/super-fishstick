@@ -31,7 +31,6 @@
 /* 2. Prevent Horizontal Scroll Globally */
 html, body {
   width: 100%;
-  overscroll-behavior-y: none; /* Disables bounce on Mac */
 }
 
 /* 3. Noise Texture Utility */

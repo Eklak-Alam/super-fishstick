@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { User, Mail, Lock, ArrowRight, Zap } from 'lucide-react';
+import { User, Mail, Lock } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -16,80 +16,61 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-        router.push('/dashboard');
-    }
+    if (localStorage.getItem('accessToken')) router.push('/dashboard');
   }, [router]);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     try {
-      await authService.register(formData);
-      await authService.login({ email: formData.email, password: formData.password });
-      router.push('/dashboard');
+        await authService.register(formData);
+        router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed');
+        setError(err.response?.data?.error || 'Registration failed');
     } finally {
-      setLoading(false);
+        setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-20 w-full flex items-center justify-center bg-[#020202] relative overflow-hidden p-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] p-6 font-sans">
       
-      {/* Background: Amber/Red glow for creation energy */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-600/10 blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
+      <div className="absolute top-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/20 via-[#050505] to-[#050505] pointer-events-none" />
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative z-10"
+        initial={{ opacity: 0, scale: 0.98 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        className="w-full max-w-[400px] relative z-10"
       >
-        <div className="mb-10 text-center">
-                    <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 relative">
-                        {/* Glow behind logo */}
-                        <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full" />
-                        <Image src="/logo1.png" alt="Gaprio Logo" width={50} height={40} className="object-contain relative z-10" priority />
-                    </div>
-                    <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
-                    <p className="text-zinc-400 text-sm">Enter your credentials to access the Neural Core.</p>
-                </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-            <Input icon={User} name="fullName" type="text" placeholder="Full Name" value={formData.fullName} onChange={handleChange} required />
-            <Input icon={Mail} name="email" type="email" placeholder="Work Email" value={formData.email} onChange={handleChange} required />
-            <Input icon={Lock} name="password" type="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
-
-            {error && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium">
-                    {error}
-                </div>
-            )}
-
-            <Button className="w-full h-12 group !rounded-xl" variant="primary">
-                {loading ? 'Creating Account...' : (
-                    <span className="flex items-center justify-center gap-2">
-                        Get Started <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                )}
-            </Button>
-        </form>
-
-        <div className="mt-8 text-center text-sm text-zinc-500">
-            Already have an account?{' '}
-            <Link href="/login" className="text-white hover:text-orange-400 transition-colors font-medium hover:underline decoration-orange-500/50 underline-offset-4">
-                Sign In
-            </Link>
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
+            <Image src="/logo1.png" alt="Logo" width={24} height={24} />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">Create Account</h1>
+          <p className="text-zinc-500 text-sm">Join the Neural Core workspace.</p>
         </div>
+
+        <div className="bg-[#0A0A0A] border border-[#1F1F1F] p-6 rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+          <form onSubmit={handleSubmit}>
+            <Input label="Full Name" icon={User} placeholder="John Doe" value={formData.fullName} onChange={(e) => setFormData({ ...formData, fullName: e.target.value })} required />
+            <Input label="Work Email" icon={Mail} type="email" placeholder="name@company.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} required />
+            <Input label="Password" icon={Lock} type="password" placeholder="Create a strong password" value={formData.password} onChange={(e) => setFormData({ ...formData, password: e.target.value })} required />
+
+            <div className="h-2"></div>
+
+            {error && <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-xs font-medium text-center">{error}</div>}
+
+            <Button className='cursor-pointer' loading={loading} variant="primary">Sign Up</Button>
+          </form>
+        </div>
+
+        <p className="text-center mt-8 text-xs text-zinc-600">
+          Already a member?{' '}
+          <Link href="/login" className="text-zinc-400 hover:text-orange-500 transition-colors font-medium">
+            Sign in
+          </Link>
+        </p>
       </motion.div>
     </div>
   );

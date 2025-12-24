@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock } from 'lucide-react';
 import { authService } from '@/services/auth.service';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
@@ -16,10 +16,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-        router.push('/dashboard');
-    }
+    if (localStorage.getItem('accessToken')) router.push('/dashboard');
   }, [router]);
 
   const handleSubmit = async (e) => {
@@ -30,80 +27,84 @@ export default function LoginPage() {
       await authService.login(formData);
       router.push('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid credentials');
+      if (err.response?.status === 403 && err.response?.data?.data?.needsVerification) {
+        router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+      } else {
+        setError(err.response?.data?.error || 'Invalid credentials');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen pt-20 w-full flex items-center justify-center bg-[#020202] relative overflow-hidden p-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-[#050505] p-6 font-sans">
       
-      {/* Orange/Amber Atmospheric Background */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/10 blur-[150px] rounded-full pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
+      <div className="absolute top-0 w-full h-[500px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/20 via-[#050505] to-[#050505] pointer-events-none" />
 
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-[#0a0a0a]/90 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl relative z-10"
+        initial={{ opacity: 0, scale: 0.98 }} 
+        animate={{ opacity: 1, scale: 1 }} 
+        className="w-full max-w-[400px] relative z-10"
       >
-        <div className="mb-10 text-center">
-            <div className="w-16 h-16 flex items-center justify-center mx-auto mb-6 relative">
-                {/* Glow behind logo */}
-                <div className="absolute inset-0 bg-orange-500/20 blur-xl rounded-full" />
-                <Image src="/logo1.png" alt="Gaprio Logo" width={50} height={40} className="object-contain relative z-10" priority />
-            </div>
-            <h1 className="text-3xl font-bold text-white mb-2 tracking-tight">Welcome Back</h1>
-            <p className="text-zinc-400 text-sm">Enter your credentials to access the Neural Core.</p>
+        <div className="text-center mb-8">
+          <div className="w-12 h-12 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
+            <Image src="/logo1.png" alt="Logo" width={24} height={24} />
+          </div>
+          <h1 className="text-2xl font-bold text-white mb-2">Welcome back</h1>
+          <p className="text-zinc-500 text-sm">Enter your details to access the workspace.</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="bg-[#0A0A0A] border border-[#1F1F1F] p-6 rounded-2xl shadow-[0_0_0_1px_rgba(255,255,255,0.02)]">
+          <form onSubmit={handleSubmit}>
             <Input 
-                icon={Mail} 
-                type="email" 
-                placeholder="name@company.com" 
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                required
+              label="Email Address"
+              icon={Mail} 
+              type="email" 
+              placeholder="name@work-email.com" 
+              value={formData.email} 
+              onChange={(e) => setFormData({...formData, email: e.target.value})} 
+              required
             />
+            
             <Input 
-                icon={Lock} 
-                type="password" 
-                placeholder="Password" 
-                value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
-                required
+              label="Password"
+              icon={Lock} 
+              type="password" 
+              placeholder="••••••••••••" 
+              value={formData.password} 
+              onChange={(e) => setFormData({...formData, password: e.target.value})} 
+              required
             />
 
-            <div className="flex justify-end">
-                <Link href="/forgot-password" className="text-xs text-orange-400 hover:text-orange-300 transition-colors font-medium">
-                    Forgot password?
-                </Link>
+            <div className="flex justify-between items-center mb-6 mt-2">
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" className="w-3.5 h-3.5 rounded border-[#333] bg-[#111] text-orange-500 focus:ring-orange-500/20" />
+                <span className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">Remember me</span>
+              </label>
+              <Link href="/forgot-password" className="text-xs text-zinc-500 hover:text-orange-500 transition-colors font-medium">
+                Forgot password?
+              </Link>
             </div>
 
             {error && (
-                <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center font-medium">
-                    {error}
-                </div>
+              <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-xs font-medium text-center">
+                {error}
+              </div>
             )}
 
-            <Button className="w-full h-12 group !rounded-xl" variant="primary">
-                {loading ? 'Signing in...' : (
-                    <span className="flex items-center justify-center gap-2">
-                        Sign In <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                    </span>
-                )}
+            <Button loading={loading} variant="primary">
+              Sign In
             </Button>
-        </form>
-
-        <div className="mt-8 text-center text-sm text-zinc-500">
-            Don't have an account?{' '}
-            <Link href="/register" className="text-white hover:text-orange-400 transition-colors font-medium hover:underline decoration-orange-500/50 underline-offset-4">
-                Start a free trial
-            </Link>
+          </form>
         </div>
+
+        <p className="text-center mt-8 text-xs text-zinc-600">
+          Don't have an account?{' '}
+          <Link href="/register" className="text-zinc-400 hover:text-orange-500 transition-colors font-medium">
+            Start a free trial
+          </Link>
+        </p>
       </motion.div>
     </div>
   );

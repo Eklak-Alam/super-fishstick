@@ -2,6 +2,7 @@
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/user.model');
 const TokenService = require('./token.service');
+const EmailService = require('./email.service');
 
 class AuthService {
 
@@ -19,10 +20,15 @@ class AuthService {
         const salt = await bcrypt.genSalt(12);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Creation
+        // Creation (Default is_verified = false)
         const userId = await UserModel.create({ fullName, email, passwordHash: hashedPassword });
         
-        return { id: userId, fullName, email };
+        // Generate & Send OTP
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await UserModel.saveOTP(userId, otp);
+        await EmailService.sendOTP(email, otp);
+
+        return { id: userId, email, isVerified: false };
     }
 
     // 2. Login 
@@ -35,6 +41,19 @@ class AuthService {
             throw error;
         }
 
+        // --- NEW: Check Verification ---
+        if (!user.is_verified) {
+            // Resend OTP if needed
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+            await UserModel.saveOTP(user.id, otp);
+            await EmailService.sendOTP(email, otp);
+
+            const error = new Error('Email not verified');
+            error.statusCode = 403; // Forbidden until verified
+            error.data = { email: user.email, needsVerification: true }; 
+            throw error;
+        }
+
         // Generate Tokens
         const accessToken = TokenService.generateAccessToken(user);
         const refreshToken = await TokenService.generateRefreshToken(user.id);
@@ -44,6 +63,34 @@ class AuthService {
             accessToken,
             refreshToken
         };
+    }
+
+    // 3. Verify OTP (New Method)
+    static async verifyEmail(email, code) {
+        const user = await UserModel.findByEmail(email);
+        if (!user) throw new Error('User not found');
+
+        if (user.otp_code !== code || new Date() > new Date(user.otp_expires_at)) {
+            throw new Error('Invalid or expired code');
+        }
+
+        await UserModel.verifyUser(user.id);
+        
+        // Auto-login after verification
+        const accessToken = TokenService.generateAccessToken(user);
+        const refreshToken = await TokenService.generateRefreshToken(user.id);
+        return { accessToken, refreshToken, user };
+    }
+    
+    // 4. Resend OTP (New Method)
+    static async resendOTP(email) {
+        const user = await UserModel.findByEmail(email);
+        if (!user) throw new Error('User not found');
+        
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        await UserModel.saveOTP(user.id, otp);
+        await EmailService.sendOTP(email, otp);
+        return { message: 'OTP sent' };
     }
 
     // 3. Refresh token

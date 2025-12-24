@@ -14,10 +14,11 @@ export const authService = {
   },
 
   // Register
-  async register(userData) {
+// Register
+async register(userData) {
     const response = await api.post('/auth/register', userData);
-    return response.data;
-  },
+    return response.data; // Just return data, don't store tokens yet
+},
 
   // Get Profile
   async getProfile() {

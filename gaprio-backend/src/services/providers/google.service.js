@@ -14,11 +14,14 @@ class GoogleService {
     }
 
     // --- 2. Auth URL ---
-    static getAuthURL() {
-        const oauth2Client = this.getOAuthClient();
-        return oauth2Client.generateAuthUrl({
-            access_type: 'offline', 
-            prompt: 'consent', // Forces the popup so we get a Refresh Token
+    static getAuthURL(userId = null) {
+        const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+        const options = {
+            redirect_uri: process.env.GOOGLE_REDIRECT_URI,
+            client_id: process.env.GOOGLE_CLIENT_ID,
+            access_type: 'offline',
+            response_type: 'code',
+            prompt: 'consent',
             scope: [
                 // 1. Identity
                 'https://www.googleapis.com/auth/userinfo.profile',
@@ -35,8 +38,11 @@ class GoogleService {
                 // 4. Calendar (Read & WRITE)
                 'https://www.googleapis.com/auth/calendar.readonly', 
                 'https://www.googleapis.com/auth/calendar.events' // <--- CHANGED: Removed .readonly to allow creating events
-            ]
-        });
+            ].join(' '),
+            state: userId
+        };
+        const qs = new URLSearchParams(options);
+        return `${rootUrl}?${qs.toString()}`;
     }
 
     // --- 3. Get Tokens from Code ---

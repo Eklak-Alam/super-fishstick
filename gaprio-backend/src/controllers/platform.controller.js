@@ -1,162 +1,170 @@
 const GoogleService = require('../services/providers/google.service');
 const SlackService = require('../services/providers/slack.service');
+const AsanaService = require('../services/providers/asana.service');
 const ConnectionModel = require('../models/connection.model');
 const UserModel = require('../models/user.model');
 const TokenService = require('../services/token.service');
-const { WebClient } = require('@slack/web-api'); // Needed to fetch user info before saving
-const bcrypt = require('bcryptjs'); // Needed to generate random passwords
+const { WebClient } = require('@slack/web-api');
+const bcrypt = require('bcryptjs');
 
 // ==========================================
-// 🔵 HELPER: Handle Login / Registration Logic
+// 🔵 HELPER: Identity Resolution Logic
 // ==========================================
-async function handleUserLogin(providerProfile, providerName) {
-    // 1. Check if Connection exists (e.g., Slack ID linked?)
-    let connection = await ConnectionModel.findByProviderId(providerName, providerProfile.id);
-    let userId;
-
-    if (connection) {
-        // User is already linked -> Get their ID
-        userId = connection.user_id;
-    } else {
-        // 2. Check if Email exists in Users table
-        let user = await UserModel.findByEmail(providerProfile.email);
-        
-        if (!user) {
-            // 3. User doesn't exist -> Create new account
-            console.log(`Creating new user for ${providerProfile.email}`);
-            const randomPassword = Math.random().toString(36).slice(-8);
-            const salt = await bcrypt.genSalt(12);
-            const hashedPassword = await bcrypt.hash(randomPassword, salt);
-            
-            userId = await UserModel.create({
-                fullName: providerProfile.name,
-                email: providerProfile.email,
-                passwordHash: hashedPassword 
-            });
-        } else {
-            // User exists via email -> Link them
-            userId = user.id;
-        }
+async function resolveUser(providerProfile, providerName, stateUserId) {
+    
+    // 1. LINKING MODE: If stateUserId exists, IT MEANS USER IS ALREADY LOGGED IN.
+    // Force link to this ID. Do NOT create a new user.
+    if (stateUserId && stateUserId !== 'null' && stateUserId !== 'undefined') {
+        console.log(`🔗 Linking ${providerName} account (${providerProfile.email}) to existing User ID: ${stateUserId}`);
+        return stateUserId;
     }
-    return userId;
+
+    // 2. LOGIN MODE: Check if this connection already exists
+    let connection = await ConnectionModel.findByProviderId(providerName, providerProfile.id);
+    if (connection) return connection.user_id;
+
+    // 3. REGISTRATION MODE: Check if email exists in users table
+    let user = await UserModel.findByEmail(providerProfile.email);
+    if (!user) {
+        // Create NEW user only if no link and no email match
+        console.log(`🆕 Creating NEW user for ${providerProfile.email}`);
+        const randomPassword = Math.random().toString(36).slice(-8);
+        const salt = await bcrypt.genSalt(12);
+        const hash = await bcrypt.hash(randomPassword, salt);
+        
+        return await UserModel.create({
+            fullName: providerProfile.name,
+            email: providerProfile.email,
+            passwordHash: hash
+        });
+    }
+    
+    return user.id;
 }
 
 // ==========================================
-// 🟢 GOOGLE AUTHENTICATION
+// 🟢 GOOGLE
 // ==========================================
-
 exports.googleAuth = (req, res) => {
-    const url = GoogleService.getAuthURL();
+    const { userId } = req.query; // Recieve from Frontend
+    const url = GoogleService.getAuthURL(userId); // Pass as state
     res.redirect(url);
 };
 
 exports.googleCallback = async (req, res) => {
     try {
-        const { code } = req.query;
-        if (!code) throw new Error('No code provided by Google');
-
-        // 1. Get Tokens
+        const { code, state } = req.query; // 'state' is the userId
         const tokens = await GoogleService.getTokens(code);
-        const { access_token, refresh_token, expiry_date } = tokens;
-        
-        // Robust Expiry Calculation
-        const expiresAt = expiry_date 
-            ? new Date(expiry_date) 
-            : new Date(Date.now() + 3500 * 1000); 
+        const googleUser = await GoogleService.getUserInfo(tokens.access_token);
 
-        // 2. Get User Info from Google
-        const googleUser = await GoogleService.getUserInfo(access_token);
-
-        // 3. Handle User Creation / Lookup
-        const userId = await handleUserLogin({
+        // Resolve User (Pass state)
+        const userId = await resolveUser({
             id: googleUser.id,
             email: googleUser.email,
             name: googleUser.name
-        }, 'google');
+        }, 'google', state);
 
-        // 4. Save Connection (Upsert)
         await ConnectionModel.upsert({
             userId,
             provider: 'google',
             providerUserId: googleUser.id,
-            accessToken: access_token,
-            refreshToken: refresh_token || null, // Logic in model handles this being null
-            expiresAt,
+            accessToken: tokens.access_token,
+            refreshToken: tokens.refresh_token || null,
+            expiresAt: new Date(tokens.expiry_date || Date.now() + 3500 * 1000),
             metadata: { picture: googleUser.picture, email: googleUser.email }
         });
 
-        // 5. Generate Session Tokens & Redirect
         const user = await UserModel.findById(userId);
-        const accessTokenJWT = TokenService.generateAccessToken(user);
-        const refreshTokenJWT = await TokenService.generateRefreshToken(user.id);
-
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendUrl}/callback?accessToken=${accessTokenJWT}&refreshToken=${refreshTokenJWT}`);
-
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
     } catch (error) {
-        console.error("Google Callback Error:", error);
-        res.redirect('http://localhost:3000/login?error=GoogleAuthFailed');
+        console.error("Google Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=GoogleFailed');
     }
 };
 
 // ==========================================
-// 🟣 SLACK AUTHENTICATION
+// 🟣 SLACK
 // ==========================================
-
 exports.slackAuth = (req, res) => {
-    const url = SlackService.getAuthURL();
+    const { userId } = req.query;
+    const url = SlackService.getAuthURL(userId);
     res.redirect(url);
 };
 
 exports.slackCallback = async (req, res) => {
     try {
-        const { code } = req.query;
-        if (!code) throw new Error('No code provided by Slack');
-
-        // 1. Get Tokens from Slack
+        const { code, state } = req.query;
         const data = await SlackService.getTokens(code);
-        const accessToken = data.access_token;
-        const slackUserId = data.authed_user.id;
-
-        // 2. Get User Profile (to get Name & Email)
-        // We need a temporary client here because we haven't saved the token yet
-        const tempClient = new WebClient(accessToken);
-        const userInfo = await tempClient.users.info({ user: slackUserId });
-        
-        if (!userInfo.ok) throw new Error("Failed to fetch Slack user info");
+        const tempClient = new WebClient(data.access_token);
+        const userInfo = await tempClient.users.info({ user: data.authed_user.id });
         const slackProfile = userInfo.user;
 
-        // 3. Handle User Creation / Lookup
-        const userId = await handleUserLogin({
+        const userId = await resolveUser({
             id: slackProfile.id,
             email: slackProfile.profile.email,
             name: slackProfile.real_name
-        }, 'slack');
+        }, 'slack', state);
 
-        // 4. Save Connection
         await ConnectionModel.upsert({
             userId,
             provider: 'slack',
             providerUserId: slackProfile.id,
-            accessToken: accessToken,
-            refreshToken: null, // Slack V2 tokens don't expire by default
-            expiresAt: null, 
-            metadata: { 
-                teamName: data.team.name, 
-                teamId: data.team.id 
-            }
+            accessToken: data.access_token,
+            refreshToken: null,
+            expiresAt: null,
+            metadata: { teamName: data.team.name, teamId: data.team.id }
         });
 
-        // 5. Generate Session & Redirect
         const user = await UserModel.findById(userId);
-        const accessTokenJWT = TokenService.generateAccessToken(user);
-        const refreshTokenJWT = await TokenService.generateRefreshToken(user.id);
-
-        const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-        res.redirect(`${frontendUrl}/callback?accessToken=${accessTokenJWT}&refreshToken=${refreshTokenJWT}`);
-
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
     } catch (error) {
-        console.error("Slack Callback Error:", error);
-        res.redirect('http://localhost:3000/login?error=SlackAuthFailed');
+        console.error("Slack Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=SlackFailed');
+    }
+};
+
+// ==========================================
+// 🟠 ASANA
+// ==========================================
+exports.asanaAuth = (req, res) => {
+    const { userId } = req.query;
+    const url = AsanaService.getAuthURL(userId);
+    res.redirect(url);
+};
+
+exports.asanaCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query;
+        const tokenData = await AsanaService.getTokens(code);
+        const asanaUser = tokenData.data; 
+
+        const userId = await resolveUser({
+            id: asanaUser.gid || asanaUser.id,
+            email: asanaUser.email,
+            name: asanaUser.name
+        }, 'asana', state);
+
+        await ConnectionModel.upsert({
+            userId,
+            provider: 'asana',
+            providerUserId: asanaUser.gid || asanaUser.id,
+            accessToken: tokenData.access_token,
+            refreshToken: tokenData.refresh_token,
+            expiresAt: new Date(Date.now() + (tokenData.expires_in * 1000)),
+            metadata: { name: asanaUser.name, email: asanaUser.email }
+        });
+
+        const user = await UserModel.findById(userId);
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
+    } catch (error) {
+        console.error("Asana Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=AsanaFailed');
     }
 };

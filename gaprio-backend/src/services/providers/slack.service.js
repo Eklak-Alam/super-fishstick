@@ -5,27 +5,20 @@ const ConnectionModel = require('../../models/connection.model');
 
 class SlackService {
 
-    static getAuthURL() {
-        // "bot" scopes allow the app to act on its own
-        const scopes = [
-            'channels:read',
-            'groups:read',
-            'chat:write',
-            'users:read'
-        ];
-        
-        // "user" scopes allow us to identify who installed it
-        const userScopes = [
-            'openid',
-            'email', 
-            'profile'
-        ];
+    // 👇 UPDATE THIS METHOD
+    static getAuthURL(userId = null) {
+        const scopes = ['channels:read', 'groups:read', 'chat:write', 'users:read'];
+        const userScopes = ['openid', 'email', 'profile'];
 
         const url = new URL('https://slack.com/oauth/v2/authorize');
         url.searchParams.append('client_id', process.env.SLACK_CLIENT_ID);
         url.searchParams.append('scope', scopes.join(','));
         url.searchParams.append('user_scope', userScopes.join(','));
         url.searchParams.append('redirect_uri', process.env.SLACK_REDIRECT_URI);
+        
+        if (userId) {
+            url.searchParams.append('state', userId); // 👈 PASS USER ID HERE
+        }
         
         return url.toString();
     }

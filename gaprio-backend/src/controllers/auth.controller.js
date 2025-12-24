@@ -107,3 +107,23 @@ exports.updatePassword = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.verifyEmail = async (req, res, next) => {
+    try {
+        const { email, code } = req.body;
+        const data = await AuthService.verifyEmail(email, code);
+        res.status(200).json({ success: true, data });
+    } catch (error) {
+        next(error);
+    }
+};
+
+exports.resendCode = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        await AuthService.resendOTP(email);
+        res.status(200).json({ success: true, message: 'Code resent' });
+    } catch (error) {
+        next(error);
+    }
+};

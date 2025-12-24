@@ -118,7 +118,7 @@ export default function DraggableCanvas() {
            
            <div className="relative w-10 h-10 md:w-12 md:h-12 mb-1">
              <Image
-               src="/logo.png"
+               src="/logo1.png"
                alt="Gaprio Logo"
                fill
                className="object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.4)]"

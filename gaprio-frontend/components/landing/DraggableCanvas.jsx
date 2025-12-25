@@ -13,7 +13,7 @@ const tools = [
   { 
     id: 'asana', label: 'Asana', 
     image: '/companylogo/asana.png', 
-    x: 1, y: -260, 
+    x: 5, y: -260, 
     mobileX: 0, mobileY: -160,
     color: '#ea580c', bg: 'bg-[#151515]' 
   },
@@ -45,7 +45,7 @@ const tools = [
   { 
     id: 'zoho', label: 'Zoho', 
     image: '/companylogo/zoho.png', 
-    x: -1, y: 260, 
+    x: -5, y: 260, 
     mobileX: 0, mobileY: 160,
     color: '#ef4444', bg: 'bg-[#151515]' 
   },

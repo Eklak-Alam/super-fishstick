@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Canvas, useFrame, extend } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
+import { useRouter } from 'next/navigation'; // <--- ADD THIS LINE
 
 // --- MAIN COMPONENT ---
 export default function BentoGrid() {
@@ -14,7 +15,7 @@ export default function BentoGrid() {
       {/* Header */}
       <div className="mb-10 md:mb-20">
         <h2 className="text-4xl md:text-7xl font-bold tracking-tight mb-6 leading-[1.1]">
-          Gaprio <span className="text-zinc-600">Infrastructure</span>
+          Everything you need. <br /><span className="text-zinc-600">Nothing you don’t.</span>
         </h2>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl leading-relaxed">
            The foundation for your next generation software. Performant, secure, and globally distributed.
@@ -359,6 +360,7 @@ function StasisFieldVisual() {
 // ------------------------------------------------------------------
 
 function CommandTerminal() {
+    const router = useRouter(); 
     const [lines, setLines] = useState([
         { type: 'log', text: 'Gaprio Core v2.4...' },
         { type: 'success', text: '✓ Connected' },
@@ -374,10 +376,23 @@ function CommandTerminal() {
 
     const handleEnter = (e) => {
         if (e.key === 'Enter' && input.trim()) {
+            // 1. Show User Command
             setLines(prev => [...prev, { type: 'cmd', text: input }]);
             setInput('');
+
+            // 2. Show "Processing..."
             setTimeout(() => {
-                 setLines(prev => [...prev, { type: 'ai', text: 'Processing...' }]);
+                setLines(prev => [...prev, { type: 'ai', text: 'Processing request...' }]);
+
+                // 3. Show CLICKABLE Link (No auto redirect)
+                setTimeout(() => {
+                    setLines(prev => [...prev, { 
+                        type: 'link', 
+                        text: 'Click here to get started ->', 
+                        url: '/register' 
+                    }]);
+                }, 1000);
+
             }, 600);
         }
     }
@@ -396,12 +411,24 @@ function CommandTerminal() {
                     <div key={i} className={`flex gap-3 ${
                         l.type === 'cmd' ? 'text-white font-bold' : 
                         l.type === 'success' ? 'text-emerald-400' : 
-                        l.type === 'ai' ? 'text-orange-400' : 'text-zinc-500'
+                        l.type === 'ai' ? 'text-orange-400' : 
+                        l.type === 'link' ? 'text-blue-400' : 'text-zinc-500'
                     }`}>
                         <span className="shrink-0 opacity-50">
-                            {l.type === 'cmd' ? '>' : l.type === 'ai' ? '*' : '#'}
+                            {l.type === 'cmd' ? '>' : l.type === 'ai' ? '*' : l.type === 'link' ? '?' : '#'}
                         </span>
-                        <span>{l.text}</span>
+                        
+                        {/* CHECK: If type is 'link', render a button */}
+                        {l.type === 'link' ? (
+                            <button 
+                                onClick={() => router.push(l.url)} 
+                                className="text-orange-500 hover:text-orange-400 hover:underline text-left transition-colors cursor-pointer"
+                            >
+                                {l.text}
+                            </button>
+                        ) : (
+                            <span>{l.text}</span>
+                        )}
                     </div>
                 ))}
             </div>
@@ -411,7 +438,6 @@ function CommandTerminal() {
                     <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                         <Command size={12} className="text-zinc-500 group-focus-within:text-orange-500 transition-colors" />
                     </div>
-                    {/* ADDED suppressHydrationWarning to Input */}
                     <input 
                         suppressHydrationWarning={true}
                         type="text" 
@@ -419,9 +445,8 @@ function CommandTerminal() {
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleEnter}
                         className="w-full bg-[#050505] border border-zinc-700 text-white rounded-lg py-2 pl-9 pr-9 focus:outline-none focus:border-orange-500/50 focus:ring-1 focus:ring-orange-500/50 transition-all placeholder-zinc-600 text-xs md:text-sm"
-                        placeholder="Command..."
+                        placeholder="Type to start..."
                     />
-                    {/* ADDED suppressHydrationWarning to Button */}
                     <button 
                         suppressHydrationWarning={true}
                         className="absolute inset-y-0 right-3 flex items-center text-zinc-500 hover:text-white transition-colors"

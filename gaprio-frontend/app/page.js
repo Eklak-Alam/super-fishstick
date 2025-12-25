@@ -16,7 +16,6 @@ export default function Home() {
       <BentoGrid />
       <NeuralFeatures />
       <DraggableCanvas />
-      {/* <Footer /> */}
     </main>
   );
 }

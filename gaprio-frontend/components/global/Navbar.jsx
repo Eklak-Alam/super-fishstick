@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, ChevronRight } from 'lucide-react';
 
 export default function Navbar() {
   const { scrollY } = useScroll();
@@ -34,118 +34,126 @@ export default function Navbar() {
           transition={{ type: "spring", stiffness: 120, damping: 20 }}
           className={`pointer-events-auto relative flex items-center justify-between transition-all duration-500 ease-out
             ${scrolled 
-              ? "w-full md:w-[850px] bg-[#050505]/80 border border-white/10 hover:border-orange-500/20 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl rounded-2xl md:rounded-full py-3 px-5 md:px-8" 
+              ? "w-full md:w-[850px] bg-[#050505]/80 border border-white/10 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.8)] backdrop-blur-xl rounded-2xl md:rounded-full py-3 px-5 md:px-6" 
               : "w-full max-w-7xl bg-transparent border-transparent py-4 px-6"
             }`}
         >
           {/* --- 1. Brand (Left) --- */}
-          <Link href="/" className="flex items-center gap-3 z-50 group min-w-[120px]">
-            <div className="relative w-8 h-8 flex-shrink-0">
+          {/* We use flex-1 to ensure spacing balance with the right side */}
+          <div className="flex-1 flex items-center justify-start">
+            <Link href="/" className="flex items-center gap-3 group">
+              <div className="relative w-8 h-8 flex-shrink-0">
                 <Image
-                    src="/logo1.png"
-                    alt="Gaprio Logo"
-                    fill
-                    className="object-contain drop-shadow-[0_0_15px_rgba(249,115,22,0.4)]"
-                    priority
+                  src="/logo1.png"
+                  alt="Gaprio Logo"
+                  fill
+                  className="object-contain"
+                  priority
                 />
-            </div>
-            {/* Smoothly hide text on scroll for cleaner look */}
-            <span className={`font-bold text-white tracking-tight text-lg transition-all duration-300 ${scrolled ? 'opacity-0 -translate-x-4 hidden md:block' : 'opacity-100 translate-x-0'}`}>
+              </div>
+              {/* Text fades out on scroll */}
+              <span className={`font-bold text-white tracking-tight text-lg transition-all duration-300 
+                ${scrolled ? 'opacity-0 -translate-x-4 hidden md:block' : 'opacity-100 translate-x-0'}`}>
                 Gaprio
-            </span>
-          </Link>
+              </span>
+            </Link>
+          </div>
 
           {/* --- 2. Links (Absolute Center) --- */}
-          {/* Using absolute positioning ensures they stay dead center regardless of logo/button width */}
-          <div className="hidden md:flex items-center justify-center gap-1 absolute left-1/2 -translate-x-1/2">
-            {navLinks.map((item) => (
-              <Link key={item.name} href={item.href} className="relative group px-4 py-2">
-                <span className="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors relative z-10">
+          {/* Absolute positioning guarantees true center relative to the container */}
+          <div className="hidden md:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="flex items-center gap-1">
+              {navLinks.map((item) => (
+                <Link key={item.name} href={item.href} className="relative group px-4 py-2">
+                  <span className="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors relative z-10">
                     {item.name}
-                </span>
-                {/* Minimal Orange Glow Dot on Hover */}
-                <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-orange-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300" />
-              </Link>
-            ))}
+                  </span>
+                  {/* Subtle hover background pill */}
+                  <span className="absolute inset-0 bg-white/5 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out -z-0" />
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* --- 3. Actions (Right) --- */}
-          <div className="hidden md:flex items-center gap-4 min-w-[120px] justify-end">
+          <div className="flex-1 flex items-center justify-end gap-4">
             
-            {/* Clean Login Link */}
-            <Link href="/login" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
-                Log in
+            {/* The "White Button" */}
+            <Link 
+              href="/register"
+              className="hidden md:flex relative group overflow-hidden rounded-full py-2.5 px-5 bg-white text-black shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)] active:scale-95"
+            >
+              <span className="relative z-10 flex items-center gap-2 text-sm font-bold tracking-tight">
+                Get Started 
+                <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform duration-300" />
+              </span>
+              {/* Button Shine Effect */}
+              <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1.5s_ease-in-out] bg-gradient-to-r from-transparent via-black/5 to-transparent z-0" />
             </Link>
-            
-            {/* The "Molten Amber" Button (Distinct from Hero) */}
-            <Link href="/register">
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="relative group overflow-hidden rounded-full py-2.5 px-6 bg-gradient-to-r from-orange-600 to-amber-700 shadow-[0_0_20px_-5px_rgba(249,115,22,0.4)] hover:shadow-[0_0_30px_-5px_rgba(249,115,22,0.6)] transition-all duration-300"
-                >
-                    {/* Shine Effect Overlay */}
-                    <div className="absolute inset-0 -translate-x-full group-hover:animate-[shine_1s_ease-in-out] bg-gradient-to-r from-transparent via-white/25 to-transparent z-10" />
-                    
-                    <span className="relative z-20 flex items-center gap-2 text-xs font-bold text-white tracking-wide">
-                        Get Started <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
-                    </span>
-                </motion.button>
-            </Link>
+
+            {/* Mobile Toggle */}
+            <button 
+              className="md:hidden text-white p-2 hover:bg-white/10 rounded-full transition-colors"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle Menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
-
-          {/* --- Mobile Toggle --- */}
-          <button 
-            className="md:hidden text-white p-2 z-50 hover:bg-white/10 rounded-full transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-
         </motion.nav>
       </motion.header>
 
-      {/* --- Mobile Menu Overlay --- */}
+      {/* --- Mobile Menu Overlay (Standardized & Professional) --- */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-[90] bg-[#020202]/95 backdrop-blur-3xl pt-32 px-6 md:hidden flex flex-col gap-8 h-screen"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[90] bg-black/60 md:hidden"
+            onClick={() => setMobileMenuOpen(false)} // Close on click outside
           >
-            {/* Mobile Links */}
-            <div className="flex flex-col gap-6">
-              {navLinks.map((item, i) => (
-                <motion.div
-                    key={item.name}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + (i * 0.05), duration: 0.5, ease: "easeOut" }}
+            <motion.div
+               initial={{ x: "100%" }}
+               animate={{ x: 0 }}
+               exit={{ x: "100%" }}
+               transition={{ type: "spring", damping: 30, stiffness: 300 }}
+               className="absolute right-0 top-0 bottom-0 w-full sm:w-[350px] bg-[#09090b] border-l border-white/10 shadow-2xl p-6 pt-24 flex flex-col h-full"
+               onClick={(e) => e.stopPropagation()} // Prevent close when clicking content
+            >
+              {/* Mobile Links List */}
+              <div className="flex flex-col gap-2">
+                {navLinks.map((item, i) => (
+                  <Link 
+                    key={item.name} 
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="group flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/5"
+                  >
+                    <span className="text-lg font-medium text-zinc-300 group-hover:text-white transition-colors">
+                      {item.name}
+                    </span>
+                    <ChevronRight size={16} className="text-zinc-600 group-hover:text-white opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
+                  </Link>
+                ))}
+              </div>
+
+              {/* Mobile Footer Action */}
+              <div className="mt-auto pt-6 border-t border-white/10">
+                <Link 
+                  href="/register" 
+                  onClick={() => setMobileMenuOpen(false)} 
+                  className="flex items-center justify-center w-full py-4 bg-white text-black font-bold rounded-xl active:scale-95 transition-all text-base gap-2"
                 >
-                    <Link 
-                        href={item.href} 
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-700 hover:from-orange-400 hover:to-amber-200 transition-all duration-500"
-                    >
-                    {item.name}
-                    </Link>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="h-px w-full bg-white/10" />
-
-            {/* Mobile Actions */}
-            <div className="flex flex-col gap-4 mt-auto mb-10">
-              <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="text-center w-full py-4 text-zinc-300 border border-white/10 rounded-2xl hover:bg-white/5 transition-colors font-medium text-lg">
-                Log in
-              </Link>
-              <Link href="/register" onClick={() => setMobileMenuOpen(false)} className="text-center w-full py-4 bg-gradient-to-r from-orange-600 to-amber-500 text-white font-bold rounded-2xl shadow-[0_0_30px_-5px_rgba(249,115,22,0.4)] transition-all text-lg flex items-center justify-center gap-2">
-                Get Started <ArrowRight size={20} />
-              </Link>
-            </div>
+                  Get Started Now <ArrowRight size={18} />
+                </Link>
+                
+                <p className="text-center text-zinc-600 text-xs mt-6">
+                  &copy; 2024 Gaprio Inc.
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

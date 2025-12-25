@@ -158,7 +158,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
             
-            {/* <Footer /> */}
+            <Footer />
             
             {/* Accessibility improvements */}
             <div 

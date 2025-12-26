@@ -81,7 +81,7 @@ export default function Navbar() {
             {/* The "White Button" */}
             <Link 
               href="/register"
-              className="hidden md:flex relative group overflow-hidden rounded-full py-2.5 px-5 bg-white text-black shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] transition-all duration-300 hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)] active:scale-95"
+              className="hidden md:flex relative group overflow-hidden rounded-full py-2.5 px-5 bg-white text-black transition-all duration-300 active:scale-95"
             >
               <span className="relative z-10 flex items-center gap-2 text-sm font-bold tracking-tight">
                 Get Started 

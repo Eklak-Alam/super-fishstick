@@ -4,6 +4,7 @@ import SmoothScroll from '@/components/global/SmoothScroll';
 import QueryProvider from '@/providers/QueryProvider';
 import Footer from '@/components/global/Footer';
 import { Inter, Space_Grotesk } from 'next/font/google';
+import AwardWinningFooter from '@/components/global/Footer';
 
 // Optimized fonts with performance settings
 const inter = Inter({
@@ -118,47 +119,16 @@ export default function RootLayout({ children }) {
     <html 
       lang="en" 
       className={`${inter.variable} ${spaceGrotesk.variable}`}
-      suppressHydrationWarning
     >
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preload" as="image" href="/logo.png" />
-        
-        {/* Structured Data */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-      </head>
-      <body className={`${inter.className} antialiased bg-white dark:bg-[#020202] text-gray-900 dark:text-white transition-colors`}>
-        <noscript>
-          <div className="fixed inset-0 bg-black text-white z-50 flex items-center justify-center p-4">
-            <div className="max-w-2xl text-center">
-              <h1 className="text-2xl font-bold mb-4">JavaScript Required</h1>
-              <p className="mb-4">This website requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-            </div>
-          </div>
-        </noscript>
-        
+      <body className={`${inter.className} bg-white dark:bg-[#020202] text-gray-900 dark:text-white transition-colors`}>
         <QueryProvider>
           <SmoothScroll>
-            <a 
-              href="#main-content" 
-              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-purple-600 text-white px-4 py-2 rounded-lg z-50"
-            >
-              Skip to main content
-            </a>
-            
             {/* <Navbar /> */}
-            
-            <main id="main-content" className="min-h-screen">
+            <main>
               {children}
             </main>
             
-            <Footer />
+            <AwardWinningFooter />
             
             {/* Accessibility improvements */}
             <div 

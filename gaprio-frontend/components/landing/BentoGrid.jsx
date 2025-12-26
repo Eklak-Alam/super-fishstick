@@ -18,7 +18,7 @@ export default function BentoGrid() {
           Everything you need. <br /><span className="text-zinc-600">Nothing you don’t.</span>
         </h2>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl leading-relaxed">
-           The foundation for your next generation software. Performant, secure, and globally distributed.
+           Designed to facilitate complex workflows across large enterprises with clarity and scale.
         </p>
       </div>
 

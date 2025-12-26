@@ -34,7 +34,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/slack.png"
             title="Slack"
-            sub="Team Messaging"
+            sub="Team messaging"
             color="shadow-red-500/20" // 🔴 Red
             align="right"
             delay={0}
@@ -43,7 +43,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/miro.png"
             title="Miro"
-            sub="Visual Collaboration"
+            sub="Visual collaboration"
             color="shadow-yellow-400/30" // 🟡 Yellow
             align="right"
             delay={0.1}
@@ -90,7 +90,7 @@ export default function EcosystemIntegration() {
                 src="/logo1.png"
                 alt="Gaprio Core"
                 fill
-                className="object-contain drop-shadow-[0_0_20px_rgba(56,189,248,0.5)]"
+                className="object-contain"
                 priority
               />
             </div>
@@ -145,7 +145,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/microsoft.webp"
             title="Microsoft 365"
-            sub="Office Tools"
+            sub=" Office productivity"
             color="shadow-purple-500/30 shadow-blue-500/20" // 🟣🔵 Purple + Blue
             align="left"
             delay={0.5}
@@ -154,7 +154,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/zoho.png"
             title="Zoho"
-            sub="Business Suite"
+            sub="Business operations"
             color="shadow-red-600/30" // 🔴 Heavy Red
             align="left"
             delay={0.6}
@@ -163,7 +163,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/clickup.png"
             title="ClickUp"
-            sub="Productivity Hub"
+            sub="Productivity hub"
             color="shadow-blue-600/30" // 🔵 Blue
             align="left"
             delay={0.7}

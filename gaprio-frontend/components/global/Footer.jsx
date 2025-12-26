@@ -1,16 +1,24 @@
 "use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
   Twitter,
-  Linkedin,
-  Github,
   Instagram,
   ArrowUpRight,
+  ArrowUp, // Added ArrowUp for the scroll button
 } from "lucide-react";
 
 export default function StandardFooter() {
   const currentYear = new Date().getFullYear();
+
+  // Function to handle smooth scrolling to top
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
   return (
     <footer className="relative bg-[#020202] overflow-hidden border-t border-white/10 pt-20 pb-10">
@@ -41,7 +49,7 @@ export default function StandardFooter() {
                 width={600}
                 height={180}
                 priority
-                className=" object-contain h-10 sm:h-8 md:h-8 lg:h-10 xl:h-12 w-auto"
+                className="object-contain h-10 sm:h-8 md:h-8 lg:h-10 xl:h-12 w-auto"
               />
             </div>
 
@@ -53,7 +61,10 @@ export default function StandardFooter() {
             {/* Social Icons */}
             <div className="flex gap-4">
               <SocialLink Icon={Twitter} href="https://x.com/Gaprio_Labs" />
-              <SocialLink Icon={Instagram} href="https://www.instagram.com/gaprio_labs?igsh=eDdmMGMzYzZoamtj" />
+              <SocialLink
+                Icon={Instagram}
+                href="https://www.instagram.com/gaprio_labs?igsh=eDdmMGMzYzZoamtj"
+              />
             </div>
           </div>
 
@@ -72,16 +83,8 @@ export default function StandardFooter() {
               </ul>
             </div>
 
-            {/* Column 2 */}
-            {/* <div className="flex flex-col gap-4">
-                <h4 className="text-white font-bold tracking-wide text-sm uppercase opacity-80">Company</h4>
-                <ul className="space-y-3">
-                    <FooterLink>About</FooterLink>
-                    <FooterLink>Blog</FooterLink>
-                    <FooterLink>Careers <span className="text-[10px] text-orange-400 bg-orange-500/10 border border-orange-500/20 px-1.5 py-0.5 rounded ml-1 font-medium">Hiring</span></FooterLink>
-                    <FooterLink>Contact</FooterLink>
-                </ul>
-            </div> */}
+            {/* Column 2 - Placeholder / Hidden if empty */}
+            {/* <div className="flex flex-col gap-4"> ... </div> */}
 
             {/* Column 3 */}
             <div className="flex flex-col gap-4">
@@ -98,11 +101,22 @@ export default function StandardFooter() {
           </div>
         </div>
 
-        {/* --- BOTTOM BAR (Simplified) --- */}
-        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-zinc-600 text-xs uppercase tracking-widest font-medium">
+        {/* --- BOTTOM BAR (With Scroll To Top) --- */}
+        <div className="border-t border-white/5 pt-8 flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+          <p className="text-zinc-600 text-xs uppercase tracking-widest font-medium text-center md:text-left">
             © {currentYear} Gaprio Inc. All rights reserved.
           </p>
+
+          {/* SCROLL TO TOP BUTTON */}
+          <button 
+            onClick={scrollToTop}
+            className="group flex items-center gap-2 text-zinc-400 hover:text-orange-500 transition-colors duration-300 cursor-pointer"
+          >
+            <span className="text-xs font-bold uppercase tracking-wider">Back to Top</span>
+            <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10 group-hover:border-orange-500 group-hover:bg-orange-500/10 transition-all">
+                <ArrowUp size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+            </div>
+          </button>
         </div>
       </div>
     </footer>
@@ -132,7 +146,11 @@ function SocialLink({ Icon, href }) {
   return (
     <a
       href={href}
-      className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-gradient-to-br hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 hover:shadow-[0_0_15px_rgba(249,115,22,0.4)] transition-all duration-300"
+      target="_blank" // Open in new tab
+      rel="noopener noreferrer" // Security best practice
+      className="w-10 h-10 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-zinc-400 
+      hover:text-white hover:bg-gradient-to-br hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 
+      hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:scale-110 active:scale-95 transition-all duration-300"
     >
       <Icon size={18} />
     </a>

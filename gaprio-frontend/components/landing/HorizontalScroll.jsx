@@ -92,7 +92,7 @@ export default function HorizontalScroll() {
             <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-orange-500/20" />
             
             <div className="flex items-center gap-2 mb-8">
-                <span className="p-1.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-400"><Zap size={14} /></span>
+                <span className="p-1.5 rounded-md bg-orange-500/10 border border-orange-300/20 text-orange-600"><Zap size={14} /></span>
                 <span className="text-orange-400/80 font-mono tracking-widest text-[10px] md:text-xs uppercase">Workflow Engine</span>
             </div>
 

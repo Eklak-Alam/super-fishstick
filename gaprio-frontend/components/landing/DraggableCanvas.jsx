@@ -214,7 +214,7 @@ function DraggableNode({ tool, containerRef, isMobile }) {
                         alt={tool.label} 
                         fill 
                         draggable={false}
-                        className="object-contain drop-shadow-md"
+                        className="object-contain"
                     />
                 </div>
                 

@@ -2,7 +2,6 @@ import Navbar from '@/components/global/Navbar';
 import './globals.css';
 import SmoothScroll from '@/components/global/SmoothScroll';
 import QueryProvider from '@/providers/QueryProvider';
-import Footer from '@/components/global/Footer';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import AwardWinningFooter from '@/components/global/Footer';
 
@@ -119,25 +118,33 @@ export default function RootLayout({ children }) {
     <html 
       lang="en" 
       className={`${inter.variable} ${spaceGrotesk.variable}`}
+      suppressHydrationWarning
     >
-      <body className={`${inter.className} bg-white dark:bg-[#020202] text-gray-900 dark:text-white transition-colors`}>
+      <body className={`${inter.className} antialiased bg-[#020202] text-white overflow-x-hidden`}>
+        
         <QueryProvider>
           <SmoothScroll>
-            {/* <Navbar /> */}
-            <main>
+            {/* 1. NAVBAR (Optional placement)
+            */}
+             <Navbar /> 
+
+            {/* 2. MAIN PAGE CONTENT 
+                - relative z-10: Puts this layer ON TOP of the footer.
+                - bg-[#020202]: Ensures the background is solid so footer doesn't show behind it.
+                - w-full: Ensures it fits width.
+            */}
+            <main className="relative z-10 bg-[#020202] w-full min-h-screen">
               {children}
             </main>
             
-            <AwardWinningFooter />
-            
-            {/* Accessibility improvements */}
-            <div 
-              role="region" 
-              aria-label="Live announcements" 
-              className="sr-only"
-              aria-live="polite"
-              aria-atomic="true"
-            />
+            {/* 3. FOOTER WRAPPER
+                - relative z-0: Puts it BEHIND/BELOW the main content stack.
+                - overflow-hidden: CRITICAL. This chops off the extra width of the GSAP footer.
+            */}
+            <div className="relative z-0 w-full overflow-hidden">
+               <AwardWinningFooter />
+            </div>
+
           </SmoothScroll>
         </QueryProvider>
         

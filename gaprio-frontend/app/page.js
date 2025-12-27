@@ -10,7 +10,7 @@ import Footer from '@/components/global/Footer';
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#020202] overflow-x-hidden">
-      <Navbar />
+      {/* <Navbar /> */}
       <Hero />
       <HorizontalScroll />
       <BentoGrid />

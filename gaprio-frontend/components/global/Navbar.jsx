@@ -12,9 +12,9 @@ export default function Navbar() {
 
   const navLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Features', href: '#features' },
-    { name: 'Integration', href: '#integration' },
-    { name: 'Enterprise', href: '#enterprise' },
+    { name: 'Integration', href: '/integration' },
+    { name: 'Features', href: '/features' },
+    { name: 'Enterprise', href: '/enterprise' },
   ];
 
   useMotionValueEvent(scrollY, "change", (latest) => {

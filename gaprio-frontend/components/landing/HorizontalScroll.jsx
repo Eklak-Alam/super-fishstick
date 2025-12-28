@@ -14,8 +14,8 @@ const steps = [
     subtitle: "Signal Detected",
     desc: "A client sends a request in Slack. Gaprio understands intent, urgency, and the people who need to act.",
     icon: MessageSquare,
-    // Gradient: Deep Orange -> Bright Amber
-    color: "from-orange-600 to-amber-500"
+    color: "from-orange-600 to-amber-500",
+    nodeLabel: "Listening for signals"
   },
   { 
     id: '02', 
@@ -23,8 +23,8 @@ const steps = [
     subtitle: "Context Retrieval",
     desc: "Gaprio searches your documents, knowledge base, and past work to retrieve the exact context required for the task.",
     icon: FileText,
-    // Gradient: Amber -> Yellow/Gold
-    color: "from-amber-500 to-yellow-500"
+    color: "from-amber-500 to-yellow-500",
+    nodeLabel: "Retrieving context"
   },
   { 
     id: '03', 
@@ -32,8 +32,8 @@ const steps = [
     subtitle: "Orchestration",
     desc: "Gaprio coordinates next steps across your tools, from drafting documents to scheduling meetings and creating tickets.",
     icon: Calendar,
-    // Gradient: Red -> Orange (High urgency feel)
-    color: "from-red-600 to-orange-500"
+    color: "from-red-600 to-orange-500",
+    nodeLabel: "Orchestrating tasks"
   },
   { 
     id: '04', 
@@ -41,10 +41,11 @@ const steps = [
     subtitle: "Execution",
     desc: "You receive a single notification saying “Workflow ready for approval.” One click completes the process across every connected system.",
     icon: CheckCircle,
-    // Gradient: Green -> Emerald (Success state, kept green for semantic correctness)
-    color: "from-emerald-500 to-green-400"
+    color: "from-emerald-500 to-green-400",
+    nodeLabel: "Execution complete"
   },
 ];
+
 
 export default function HorizontalScroll() {
   const containerRef = useRef(null);
@@ -83,7 +84,7 @@ export default function HorizontalScroll() {
       {/* Background Texture */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:60px_60px] opacity-[0.04] pointer-events-none" />
 
-      <div ref={trackRef} className="lg:py-32 pt-32 pb-24 flex w-max relative z-10 items-center">
+      <div ref={trackRef} className="lg:pt-32 pt-32 pb-14 flex w-max relative z-10 items-center">
         
         {/* --- Intro Slide --- */}
         <div className="w-[100vw] md:w-[60vw] h-full flex flex-col justify-center px-6 md:px-32 border-r border-white/5 relative bg-[#020202]">
@@ -91,7 +92,8 @@ export default function HorizontalScroll() {
             {/* Horizontal Line Decoration */}
             <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-orange-500/20" />
             
-            <div className="flex items-center gap-2 mb-8">
+            <div className='pt-32'>
+              <div className="flex items-center gap-2 mb-8">
                 <span className="p-1.5 rounded-md bg-orange-500/10 border border-orange-300/20 text-orange-600"><Zap size={14} /></span>
                 <span className="text-orange-400/80 font-mono tracking-widest text-[10px] md:text-xs uppercase">Workflow Engine</span>
             </div>
@@ -103,6 +105,7 @@ export default function HorizontalScroll() {
             <p className="text-zinc-400 max-w-lg text-lg leading-relaxed font-light">
                 Gaprio works quietly between your apps, orchestrating tasks, context, and communication so your teams stay focused on real work.
             </p>
+            </div>
         </div>
 
         {/* --- The Cards --- */}
@@ -141,10 +144,21 @@ export default function HorizontalScroll() {
                     </div>
 
                     {/* Footer Status */}
-                    <div className="flex items-center gap-2 text-zinc-600 text-xs font-mono uppercase tracking-widest group-hover:text-orange-400/80 transition-colors">
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${step.color} animate-pulse`} />
-                        <span>Processing Node</span>
-                    </div>
+                    <div className="
+  flex items-center gap-2
+  text-zinc-600 text-xs font-mono uppercase tracking-widest
+  group-hover:text-orange-400/80 transition-colors
+">
+  <div
+    className={`
+      w-1.5 h-1.5 rounded-full
+      bg-gradient-to-r ${step.color}
+      animate-pulse
+    `}
+  />
+  <span>{step.nodeLabel}</span>
+</div>
+
                 </div>
             </div>
         ))}

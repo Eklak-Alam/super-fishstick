@@ -55,11 +55,14 @@ class ConnectionModel {
     // Update Tokens (Used during refresh)
     static async updateTokens(userId, provider, accessToken, refreshToken, expiresAt) {
         let sql, params;
+        
+        // Some providers (like Google) might not return a new refresh token every time.
+        // If refreshToken is provided, update it. Otherwise, keep the old one.
         if (refreshToken) {
-            sql = `UPDATE user_connections SET access_token = ?, refresh_token = ?, expires_at = ? WHERE user_id = ? AND provider = ?`;
+            sql = `UPDATE user_connections SET access_token = ?, refresh_token = ?, expires_at = ?, updated_at = NOW() WHERE user_id = ? AND provider = ?`;
             params = [accessToken, refreshToken, expiresAt, userId, provider];
         } else {
-            sql = `UPDATE user_connections SET access_token = ?, expires_at = ? WHERE user_id = ? AND provider = ?`;
+            sql = `UPDATE user_connections SET access_token = ?, expires_at = ?, updated_at = NOW() WHERE user_id = ? AND provider = ?`;
             params = [accessToken, expiresAt, userId, provider];
         }
         await db.execute(sql, params);

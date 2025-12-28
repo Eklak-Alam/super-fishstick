@@ -3,9 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-// You can keep Lucide for the center console or generic UI, but cards use Images now.
-import { Activity } from "lucide-react";
-
 export default function EcosystemIntegration() {
   return (
     <section className="relative min-h-screen bg-[#020202] py-24 md:py-32 flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
@@ -28,63 +25,62 @@ export default function EcosystemIntegration() {
       </div>
 
       {/* --- The Circuit Board --- */}
-      <div className="relative w-full max-w-[1100px] px-4 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-center">
-        {/* Left Column: INPUTS (Sources) */}
-        <div className="flex flex-col gap-4 relative z-10 order-2 lg:order-1">
+      {/* Order: Left (Inputs) -> Center (Core) -> Right (Outputs) */}
+      <div className="relative w-full max-w-[1100px] px-4 grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-center">
+        
+        {/* 1. Left Column: INPUTS (First on Mobile) */}
+        <div className="flex flex-col gap-4 relative z-10">
           <LogoNodeCard
             imageSrc="/companylogo/slack.png"
             title="Slack"
             sub="Team messaging"
-            color="shadow-red-500/20" // 🔴 Red
-            align="right"
+            color="shadow-red-500/20"
+            align="right" // Points right towards center on Desktop
             delay={0}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/miro.png"
             title="Miro"
             sub="Visual collaboration"
-            color="shadow-yellow-400/30" // 🟡 Yellow
+            color="shadow-yellow-400/30"
             align="right"
             delay={0.1}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/asana.png"
             title="Asana"
             sub="Task Management"
-            color="shadow-orange-500/30" // 🟠 Orange
+            color="shadow-orange-500/30"
             align="right"
             delay={0.2}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/jira.png"
             title="Jira"
             sub="Issue Tracking"
-            color="shadow-blue-500/30" // 🔵 Blue
+            color="shadow-blue-500/30"
             align="right"
             delay={0.3}
           />
         </div>
 
-        {/* Center Column: THE CORE */}
-        <div className="relative h-[300px] lg:h-[450px] bg-[#050505] border border-white/10 rounded-[2rem] flex flex-col items-center justify-center z-20 overflow-hidden order-1 lg:order-2 mb-10 lg:mb-0 group ring-1 ring-white/5">
+        {/* 2. Center Column: THE CORE (Second on Mobile) */}
+        <div className="relative h-[300px] lg:h-[450px] bg-[#050505] border border-white/10 rounded-[2rem] flex flex-col items-center justify-center z-20 overflow-hidden group ring-1 ring-white/5">
           {/* Core Background Animation */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.02),transparent_60%)]" />
           <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:20px_20px] opacity-[0.03]" />
 
-          {/* THE REACTOR CORE (orange/Blue Theme for this section) */}
+          {/* THE REACTOR CORE */}
           <div className="relative z-10 w-28 h-28 lg:w-40 lg:h-40 bg-[#0a0a0a]/80 backdrop-blur-xl border border-white/10 rounded-full flex flex-col items-center justify-center ring-1 ring-white/10">
-            {/* 1. Outer Glow Ring */}
+            {/* Glow Ring */}
             <div className="absolute -inset-4 rounded-full border border-orange-500/10 blur-sm animate-pulse" />
 
-            {/* 2. Main Spinning Rings */}
+            {/* Spinning Rings */}
             <div className="absolute inset-0 rounded-full border-[1px] border-orange-500/30 border-t-orange-500/90 animate-[spin_8s_linear_infinite]" />
             <div className="absolute inset-3 rounded-full border-[1px] border-white/5 border-b-orange-400 animate-[spin_12s_linear_infinite_reverse]" />
             <div className="absolute inset-6 rounded-full border-[1px] border-orange-500/20 border-l-orange-500/70 animate-[spin_5s_linear_infinite]" />
 
-            {/* 3. Center LOGO */}
+            {/* Center LOGO */}
             <div className="relative z-10 w-14 h-14 lg:w-20 lg:h-20">
               <Image
                 src="/logo1.png"
@@ -106,7 +102,7 @@ export default function EcosystemIntegration() {
                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
                   </div>
                   <span className="text-[9px] font-mono text-zinc-400 tracking-wider font-medium">
-                    INTEGRATIONS ACTIVE
+                    ACTIVE
                   </span>
                 </div>
                 <span className="text-[9px] font-mono text-orange-400/80">
@@ -117,7 +113,7 @@ export default function EcosystemIntegration() {
             </div>
           </div>
 
-          {/* Data Beams (orange) */}
+          {/* Data Beams (Hidden on mobile to reduce clutter) */}
           <div className="hidden lg:block absolute inset-0 pointer-events-none">
             <Beam x="left-0" y="top-[18%]" delay={0} />
             <Beam x="left-0" y="top-[38%]" delay={2} />
@@ -131,40 +127,37 @@ export default function EcosystemIntegration() {
           </div>
         </div>
 
-        {/* Right Column: OUTPUTS (Destinations) */}
-        <div className="flex flex-col gap-4 relative z-10 order-3">
+        {/* 3. Right Column: OUTPUTS (Last on Mobile) */}
+        <div className="flex flex-col gap-4 relative z-10">
           <LogoNodeCard
             imageSrc="/companylogo/google.webp"
             title="Google Workspace"
             sub="Docs & Email"
-            color="shadow-orange-400/30" // 🟠 Orange
+            color="shadow-orange-400/30"
             align="left"
             delay={0.4}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/microsoft.webp"
             title="Microsoft 365"
-            sub=" Office productivity"
-            color="shadow-purple-500/30 shadow-blue-500/20" // 🟣🔵 Purple + Blue
+            sub="Office productivity"
+            color="shadow-purple-500/30 shadow-blue-500/20"
             align="left"
             delay={0.5}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/zoho.png"
             title="Zoho"
             sub="Business operations"
-            color="shadow-red-600/30" // 🔴 Heavy Red
+            color="shadow-red-600/30"
             align="left"
             delay={0.6}
           />
-
           <LogoNodeCard
             imageSrc="/companylogo/clickup.png"
             title="ClickUp"
             sub="Productivity hub"
-            color="shadow-blue-600/30" // 🔵 Blue
+            color="shadow-blue-600/30"
             align="left"
             delay={0.7}
           />
@@ -176,7 +169,6 @@ export default function EcosystemIntegration() {
 
 // --- SUB COMPONENTS ---
 
-// 1. Live Text Animation
 function LiveProcessingText() {
   const actions = [
     "Connecting API...",
@@ -214,7 +206,7 @@ function LiveProcessingText() {
   );
 }
 
-// 2. The NEW Logo Node Card (Uses Image instead of Icon)
+// Optimized Card: Standard Left align on Mobile, Contextual align on Desktop
 function LogoNodeCard({ imageSrc, title, sub, color, align, delay }) {
   return (
     <motion.div
@@ -223,28 +215,27 @@ function LogoNodeCard({ imageSrc, title, sub, color, align, delay }) {
       transition={{ duration: 0.5, delay }}
       viewport={{ once: true, margin: "-50px" }}
       className={`
-                relative p-3.5 md:p-4 rounded-xl bg-[#0a0a0a] border border-white/10 
-                hover:border-orange-500/30 transition-all duration-300 
-                flex items-center gap-3 md:gap-4 group w-full overflow-hidden
-                ${
-                  align === "right"
-                    ? "lg:ml-auto lg:text-right flex-row-reverse"
-                    : "lg:mr-auto"
-                }
-            `}
+        relative p-3.5 md:p-4 rounded-xl bg-[#0a0a0a] border border-white/10 
+        hover:border-orange-500/30 transition-all duration-300 
+        flex items-center gap-3 md:gap-4 group w-full overflow-hidden
+        ${
+          align === "right"
+            ? "lg:ml-auto lg:text-right flex-row lg:flex-row-reverse" // Mobile: Left, Desktop: Right
+            : "lg:mr-auto flex-row" // Always Left aligned
+        }
+      `}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700 ease-in-out pointer-events-none" />
 
       {/* Logo Container */}
       <div
         className={`
-                relative z-10 shrink-0 w-10 h-10 rounded-lg bg-white/5 p-2 
-                group-hover:scale-110 transition-transform duration-300 
-                ring-1 ring-white/5 shadow-inner ${color}
-            `}
+          relative z-10 shrink-0 w-10 h-10 rounded-lg bg-white/5 p-2 
+          group-hover:scale-110 transition-transform duration-300 
+          ring-1 ring-white/5 shadow-inner ${color}
+        `}
       >
         <div className="relative w-full h-full">
-          {/* Using Next.js Image Component */}
           <Image src={imageSrc} alt={title} fill className="object-contain" />
         </div>
       </div>
@@ -256,7 +247,7 @@ function LogoNodeCard({ imageSrc, title, sub, color, align, delay }) {
         </p>
       </div>
 
-      {/* Connector Lines */}
+      {/* Connector Lines (Desktop Only) */}
       <div
         className={`hidden lg:block w-8 xl:w-10 h-[1px] bg-white/10 absolute top-1/2 ${
           align === "right"
@@ -273,7 +264,6 @@ function LogoNodeCard({ imageSrc, title, sub, color, align, delay }) {
   );
 }
 
-// 3. Beam (Updated color to orange for this section)
 function Beam({ x, y, delay, direction = "right" }) {
   return (
     <div

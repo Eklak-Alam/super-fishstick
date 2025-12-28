@@ -4,15 +4,13 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Float } from "@react-three/drei";
-import { Sparkles, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react"; // Removed unused Sparkles import
 import {
   ArrowRight,
-  PlayCircle,
   MessageSquare,
   Database,
   Mail,
   CheckSquare,
-  ChevronRight,
 } from "lucide-react";
 import * as random from "maath/random/dist/maath-random.cjs";
 
@@ -161,8 +159,9 @@ export default function Hero() {
             variants={itemAnim}
             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
           >
-            {/* 1. PRIMARY BUTTON: Pure Enterprise Standard */}
+            {/* 1. PRIMARY BUTTON: FIX APPLIED HERE */}
             <button
+              suppressHydrationWarning={true} // <--- THIS LINE FIXES THE ERROR
               className="
             group relative h-12 px-8 rounded-3xl
             bg-gradient-to-t from-orange-600 to-orange-500 
@@ -181,12 +180,12 @@ export default function Hero() {
               />
             </button>
 
-            {/* 2. SECONDARY BUTTON: The "Snake" Border (No Scale) */}
-            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group">
-              {/* The Spinning Border */}
+            {/* 2. SECONDARY BUTTON */}
+            <div 
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group"
+            >
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
 
-              {/* The Inner Button */}
               <span
                 className="
             inline-flex h-full w-full items-center justify-center rounded-full 

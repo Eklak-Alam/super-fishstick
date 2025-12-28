@@ -74,19 +74,34 @@ class GoogleService {
             expiry_date: new Date(connection.expires_at).getTime()
         });
 
-        oauth2Client.on('tokens', async (tokens) => {
-            if (tokens.access_token) {
-                console.log("🔄 Refreshing Google Access Token in DB...");
-                const expiresAt = new Date();
-                expiresAt.setSeconds(expiresAt.getSeconds() + (tokens.expiry_date ? tokens.expiry_date / 1000 : 3600));
+        // Check if token is expired or about to expire (e.g., within 5 minutes)
+        const isExpired = Date.now() >= (new Date(connection.expires_at).getTime() - 5 * 60 * 1000);
+
+        if (isExpired && connection.refresh_token) {
+            console.log("🔄 Refreshing Google Access Token...");
+            try {
+                // This method automatically uses the refresh token to get new credentials
+                const { credentials } = await oauth2Client.refreshAccessToken();
                 
-                await ConnectionModel.updateTokens(userId, 'google', tokens.access_token, tokens.refresh_token, expiresAt);
+                const newExpiresAt = new Date(credentials.expiry_date);
+                
+                await ConnectionModel.updateTokens(
+                    userId, 
+                    'google', 
+                    credentials.access_token, 
+                    credentials.refresh_token || null, // Google might return a new refresh token
+                    newExpiresAt
+                );
+
+                oauth2Client.setCredentials(credentials);
+            } catch (error) {
+                console.error("Failed to refresh Google token:", error);
+                throw new Error("Google authentication expired. Please reconnect.");
             }
-        });
+        }
 
         return oauth2Client;
     }
-
     // --- 6. Feature Methods ---
 
     static async getRecentEmails(userId) {

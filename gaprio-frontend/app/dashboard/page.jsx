@@ -11,6 +11,9 @@ import OverviewTab from '@/components/dashboard/OverviewTab';
 import GoogleWorkspace from '@/components/dashboard/GoogleWorkspace';
 import SlackWorkspace from '@/components/dashboard/SlackWorkspace';
 import AsanaWorkspace from '@/components/dashboard/AsanaWorkspace';
+import MiroWorkspace from '@/components/dashboard/MiroWorkspace';
+import JiraWorkspace from '@/components/dashboard/JiraWorkspace';
+import ZohoWorkspace from '@/components/dashboard/ZohoWorkspace'; // NEW
 import ProfileModal from '@/components/dashboard/ProfileModal';
 
 export default function Dashboard() {
@@ -23,8 +26,23 @@ export default function Dashboard() {
   const [googleData, setGoogleData] = useState({ emails: [], files: [], meetings: [] });
   const [slackData, setSlackData] = useState({ channels: [] });
   const [asanaData, setAsanaData] = useState({ projects: [], tasks: [] });
+  const [miroData, setMiroData] = useState({ boards: [] });
+  const [jiraData, setJiraData] = useState({ issues: [] });
+  const [zohoData, setZohoData] = useState({ deals: [] }); // NEW
 
   const router = useRouter();
+
+  // --- Title Mapping for Header ---
+  const tabNames = {
+    overview: 'Overview',
+    google: 'Google Workspace',
+    slack: 'Slack',
+    asana: 'Asana',
+    miro: 'Miro',
+    jira: 'Jira Software',
+    zoho: 'Zoho CRM',
+    microsoft: 'Microsoft 365'
+  };
 
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
@@ -40,14 +58,35 @@ export default function Dashboard() {
             // 2. Fetch Integrations Data (Parallel for speed)
             const promises = [];
             
+            // Google
             if (connections.some(c => c.provider === 'google')) {
-                promises.push(api.get('/integrations/google/dashboard').then(res => setGoogleData(res.data.data)).catch(console.warn));
+                promises.push(api.get('/integrations/google/dashboard')
+                    .then(res => setGoogleData(res.data.data)).catch(console.warn));
             }
+            // Slack
             if (connections.some(c => c.provider === 'slack')) {
-                promises.push(api.get('/integrations/slack/channels').then(res => setSlackData(res.data.data)).catch(console.warn));
+                promises.push(api.get('/integrations/slack/channels')
+                    .then(res => setSlackData(res.data.data)).catch(console.warn));
             }
+            // Asana
             if (connections.some(c => c.provider === 'asana')) {
-                promises.push(api.get('/integrations/asana/dashboard').then(res => setAsanaData(res.data.data)).catch(console.warn));
+                promises.push(api.get('/integrations/asana/dashboard')
+                    .then(res => setAsanaData(res.data.data)).catch(console.warn));
+            }
+            // Miro
+            if (connections.some(c => c.provider === 'miro')) {
+                promises.push(api.get('/integrations/miro/boards')
+                    .then(res => setMiroData(res.data.data)).catch(console.warn));
+            }
+            // Jira
+            if (connections.some(c => c.provider === 'jira')) {
+                promises.push(api.get('/integrations/jira/issues')
+                    .then(res => setJiraData(res.data.data)).catch(console.warn));
+            }
+            // Zoho (NEW)
+            if (connections.some(c => c.provider === 'zoho')) {
+                promises.push(api.get('/integrations/zoho/deals')
+                    .then(res => setZohoData(res.data.data)).catch(console.warn));
             }
 
             await Promise.all(promises);
@@ -76,11 +115,14 @@ export default function Dashboard() {
   const isGoogleConnected = user.connections?.some(c => c.provider === 'google');
   const isSlackConnected = user.connections?.some(c => c.provider === 'slack');
   const isAsanaConnected = user.connections?.some(c => c.provider === 'asana');
+  const isMiroConnected = user.connections?.some(c => c.provider === 'miro');
+  const isJiraConnected = user.connections?.some(c => c.provider === 'jira');
+  const isZohoConnected = user.connections?.some(c => c.provider === 'zoho'); // NEW
 
   return (
     <div className="flex h-screen bg-[#020202] text-white overflow-hidden font-sans selection:bg-orange-500/30">
       
-      {/* 🟢 FIXED: Passed props explicitly to ensure they are functions */}
+      {/* Sidebar with all navigation items */}
       <Sidebar 
         activeTab={activeTab} 
         setActiveTab={setActiveTab} 
@@ -90,7 +132,7 @@ export default function Dashboard() {
 
       <main className="flex-1 flex flex-col relative overflow-hidden bg-[#020202]">
         
-        {/* 🟢 FIXED: Replaced grid.svg with Pure CSS Pattern */}
+        {/* CSS Background Pattern */}
         <div 
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             style={{
@@ -99,9 +141,10 @@ export default function Dashboard() {
             }}
         />
         
+        {/* Header */}
         <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#020202]/80 backdrop-blur-md z-10 shrink-0">
-            <h2 className="font-semibold text-lg capitalize text-zinc-200">
-                {activeTab.replace('google', 'Google Workspace').replace('slack', 'Slack').replace('asana', 'Asana')}
+            <h2 className="font-semibold text-lg text-zinc-200">
+                {tabNames[activeTab] || 'Dashboard'}
             </h2>
             <button onClick={() => { authService.logout(); router.push('/login'); }} className="p-2 hover:bg-white/5 rounded-full text-zinc-400 hover:text-red-400 transition-colors">
                 <LogOut size={18} />
@@ -109,10 +152,41 @@ export default function Dashboard() {
         </header>
 
         <div className="flex-1 overflow-y-auto p-6 md:p-8 relative z-0 custom-scrollbar">
-            {activeTab === 'overview' && <OverviewTab user={user} googleData={googleData} slackData={slackData} />}
-            {activeTab === 'google' && <GoogleWorkspace isConnected={isGoogleConnected} data={googleData} user={user} />}
-            {activeTab === 'slack' && <SlackWorkspace isConnected={isSlackConnected} data={slackData} user={user} />}
-            {activeTab === 'asana' && <AsanaWorkspace isConnected={isAsanaConnected} data={asanaData} user={user} />}
+            
+            {/* 1. OVERVIEW */}
+            {activeTab === 'overview' && (
+                <OverviewTab user={user} googleData={googleData} slackData={slackData} />
+            )}
+            
+            {/* 2. GOOGLE */}
+            {activeTab === 'google' && (
+                <GoogleWorkspace isConnected={isGoogleConnected} data={googleData} user={user} />
+            )}
+            
+            {/* 3. SLACK */}
+            {activeTab === 'slack' && (
+                <SlackWorkspace isConnected={isSlackConnected} data={slackData} user={user} />
+            )}
+            
+            {/* 4. ASANA */}
+            {activeTab === 'asana' && (
+                <AsanaWorkspace isConnected={isAsanaConnected} data={asanaData} user={user} />
+            )}
+
+            {/* 5. MIRO */}
+            {activeTab === 'miro' && (
+                <MiroWorkspace isConnected={isMiroConnected} data={miroData} user={user} />
+            )}
+
+            {/* 6. JIRA */}
+            {activeTab === 'jira' && (
+                <JiraWorkspace isConnected={isJiraConnected} data={jiraData} user={user} />
+            )}
+
+            {/* 7. ZOHO (New) */}
+            {activeTab === 'zoho' && (
+                <ZohoWorkspace isConnected={isZohoConnected} data={zohoData} user={user} />
+            )}
             
             {/* Microsoft Placeholder */}
             {activeTab === 'microsoft' && (

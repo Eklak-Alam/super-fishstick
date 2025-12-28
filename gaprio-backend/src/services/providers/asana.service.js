@@ -54,10 +54,51 @@ class AsanaService {
         }
     }
 
-    // 4. Helper: Get Authenticated Headers
+    // New Helper: Refresh Token
+    static async refreshAccessToken(refreshToken) {
+        try {
+            const response = await axios.post('https://app.asana.com/-/oauth_token', {
+                grant_type: 'refresh_token',
+                client_id: process.env.ASANA_CLIENT_ID,
+                client_secret: process.env.ASANA_CLIENT_SECRET,
+                refresh_token: refreshToken
+            }, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Asana Refresh Error:', error.response?.data || error.message);
+            throw error;
+        }
+    }
+
+    // Updated Helper: Get Authenticated Headers with Refresh Logic
     static async getHeaders(userId) {
         const connection = await ConnectionModel.findByUserIdAndProvider(userId, 'asana');
         if (!connection) throw new Error('Asana not connected');
+
+        // Check if expired
+        const isExpired = Date.now() >= (new Date(connection.expires_at).getTime() - 5 * 60 * 1000);
+
+        if (isExpired && connection.refresh_token) {
+            console.log("🔄 Refreshing Asana Access Token...");
+            try {
+                const tokenData = await this.refreshAccessToken(connection.refresh_token);
+                const newExpiresAt = new Date(Date.now() + (tokenData.expires_in * 1000));
+
+                await ConnectionModel.updateTokens(
+                    userId,
+                    'asana',
+                    tokenData.access_token,
+                    tokenData.refresh_token || null, // Asana might rotate it
+                    newExpiresAt
+                );
+                return { Authorization: `Bearer ${tokenData.access_token}` };
+            } catch (error) {
+                throw new Error('Asana session expired. Please reconnect.');
+            }
+        }
+
         return { Authorization: `Bearer ${connection.access_token}` };
     }
 

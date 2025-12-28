@@ -419,7 +419,7 @@ export default function UnifiedPage() {
                   <div className="absolute inset-0 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite]" />
                   <div className="absolute inset-8 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite_1s]" />
                   <div className="relative w-12 h-12 md:w-16 md:h-16">
-                     <Image src="/logo1.png" alt="Gaprio" fill className="object-contain drop-shadow-[0_0_15px_rgba(255,100,0,0.5)]" />
+                     <Image src="/logo1.png" alt="Gaprio" fill className="object-contain" />
                   </div>
                </div>
             </div>

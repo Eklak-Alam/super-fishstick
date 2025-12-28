@@ -16,4 +16,18 @@ router.get('/auth/slack/callback', platformController.slackCallback);
 router.get('/auth/asana', platformController.asanaAuth);
 router.get('/auth/asana/callback', platformController.asanaCallback);
 
+//miro Auth Routes
+router.get('/auth/miro', platformController.miroAuth);
+router.get('/auth/miro/callback', platformController.miroCallback);
+
+
+//Jira Auth Routes
+router.get('/auth/jira', platformController.jiraAuth);
+router.get('/auth/jira/callback', platformController.jiraCallback);
+
+
+// Zoho Auth Routes (NEW)
+router.get('/auth/zoho', platformController.zohoAuth);
+router.get('/auth/zoho/callback', platformController.zohoCallback);
+
 module.exports = router;

@@ -1,6 +1,9 @@
 const GoogleService = require('../services/providers/google.service');
 const SlackService = require('../services/providers/slack.service');
 const AsanaService = require('../services/providers/asana.service');
+const MiroService = require('../services/providers/miro.service');
+const JiraService = require('../services/providers/jira.service');
+const ZohoService = require('../services/providers/zoho.service');
 const ConnectionModel = require('../models/connection.model');
 const UserModel = require('../models/user.model');
 const TokenService = require('../services/token.service');
@@ -166,5 +169,150 @@ exports.asanaCallback = async (req, res) => {
     } catch (error) {
         console.error("Asana Auth Error:", error);
         res.redirect('http://localhost:3000/login?error=AsanaFailed');
+    }
+};
+
+
+
+// ==========================================
+// 🎨 MIRO AUTH
+// ==========================================
+exports.miroAuth = (req, res) => {
+    const { userId } = req.query;
+    res.redirect(MiroService.getAuthURL(userId));
+};
+
+exports.miroCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query; // state = userId
+        const tokens = await MiroService.getTokens(code);
+        const miroUser = await MiroService.getUserInfo(tokens.access_token);
+
+        const userId = await resolveUser({
+            id: miroUser.id,
+            email: miroUser.email, 
+            name: miroUser.name
+        }, 'miro', state);
+
+        await ConnectionModel.upsert({
+            userId,
+            provider: 'miro',
+            providerUserId: miroUser.id,
+            accessToken: tokens.access_token,
+            refreshToken: tokens.refresh_token,
+            expiresAt: new Date(Date.now() + (tokens.expires_in * 1000)), // expires_in is seconds
+            metadata: { name: miroUser.name, email: miroUser.email }
+        });
+
+        // Redirect home
+        const user = await UserModel.findById(userId);
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
+    } catch (error) {
+        console.error("Miro Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=MiroFailed');
+    }
+};
+
+// ==========================================
+// 🐞 JIRA AUTH
+// ==========================================
+exports.jiraAuth = (req, res) => {
+    const { userId } = req.query;
+    res.redirect(JiraService.getAuthURL(userId));
+};
+
+exports.jiraCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query; // state = userId
+        const tokens = await JiraService.getTokens(code);
+        const jiraUser = await JiraService.getUserInfo(tokens.access_token);
+        
+        // CRITICAL: Fetch Cloud ID (Site ID) to make API calls later
+        const siteResource = await JiraService.getCloudId(tokens.access_token);
+
+        const userId = await resolveUser({
+            id: jiraUser.account_id,
+            email: jiraUser.email,
+            name: jiraUser.name
+        }, 'jira', state);
+
+        await ConnectionModel.upsert({
+            userId,
+            provider: 'jira',
+            providerUserId: jiraUser.account_id,
+            accessToken: tokens.access_token,
+            refreshToken: tokens.refresh_token,
+            expiresAt: new Date(Date.now() + (tokens.expires_in * 1000)),
+            // Store Cloud ID in metadata so we know which Jira site to query
+            metadata: { 
+                name: jiraUser.name, 
+                email: jiraUser.email, 
+                cloudId: siteResource.id, 
+                url: siteResource.url 
+            }
+        });
+
+        const user = await UserModel.findById(userId);
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
+    } catch (error) {
+        console.error("Jira Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=JiraFailed');
+    }
+};
+
+// ==========================================
+// 💼 ZOHO AUTH
+// ==========================================
+exports.zohoAuth = (req, res) => {
+    const { userId } = req.query;
+    res.redirect(ZohoService.getAuthURL(userId));
+};
+
+exports.zohoCallback = async (req, res) => {
+    try {
+        const { code, state } = req.query; // state = userId
+        
+        // 1. Get Tokens (includes api_domain!)
+        const tokenData = await ZohoService.getTokens(code);
+        const { access_token, refresh_token, api_domain, expires_in } = tokenData;
+
+        // 2. Get User Info using the correct domain
+        const zohoUser = await ZohoService.getUserInfo(access_token, api_domain);
+
+        // 3. Link Account
+        const userId = await resolveUser({
+            id: zohoUser.id,
+            email: zohoUser.email,
+            name: zohoUser.name
+        }, 'zoho', state);
+
+        // 4. Save to DB (Store api_domain in metadata)
+        await ConnectionModel.upsert({
+            userId,
+            provider: 'zoho',
+            providerUserId: zohoUser.id,
+            accessToken: access_token,
+            refreshToken: refresh_token, 
+            expiresAt: new Date(Date.now() + (expires_in * 1000)),
+            metadata: { 
+                name: zohoUser.name, 
+                email: zohoUser.email,
+                apiDomain: api_domain // <--- CRITICAL for Multi-DC support
+            }
+        });
+
+        // 5. Redirect
+        const user = await UserModel.findById(userId);
+        const access = TokenService.generateAccessToken(user);
+        const refresh = await TokenService.generateRefreshToken(user.id);
+        res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:3000'}/callback?accessToken=${access}&refreshToken=${refresh}`);
+        
+    } catch (error) {
+        console.error("Zoho Auth Error:", error);
+        res.redirect('http://localhost:3000/login?error=ZohoFailed');
     }
 };

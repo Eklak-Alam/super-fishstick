@@ -1,7 +1,9 @@
 const GoogleService = require('../services/providers/google.service');
 const SlackService = require('../services/providers/slack.service');
 const AsanaService = require('../services/providers/asana.service');
-
+const MiroService = require('../services/providers/miro.service');
+const JiraService = require('../services/providers/jira.service');
+const ZohoService = require('../services/providers/zoho.service');
 // ==========================================
 // 🟢 GOOGLE INTEGRATIONS
 // ==========================================
@@ -89,5 +91,45 @@ exports.getAsanaData = async (req, res) => {
     } catch (error) {
         console.error("Asana Data Error:", error.message);
         res.status(200).json({ success: true, data: { projects: [], tasks: [] } });
+    }
+};
+
+// ==========================================
+// 🎨 MIRO INTEGRATIONS
+// ==========================================
+exports.getMiroData = async (req, res) => {
+    try {
+        const boards = await MiroService.getBoards(req.user.id);
+        res.status(200).json({ success: true, data: { boards } });
+    } catch (error) {
+        console.error("Miro Data Error:", error.message);
+        res.status(200).json({ success: true, data: { boards: [] } });
+    }
+};
+
+// ==========================================
+// 🐞 JIRA INTEGRATIONS
+// ==========================================
+exports.getJiraData = async (req, res) => {
+    try {
+        const issues = await JiraService.getIssues(req.user.id);
+        res.status(200).json({ success: true, data: { issues } });
+    } catch (error) {
+        console.error("Jira Data Error:", error.message);
+        res.status(200).json({ success: true, data: { issues: [] } });
+    }
+};
+
+
+// ==========================================
+// 💼 ZOHO INTEGRATIONS
+// ==========================================
+exports.getZohoData = async (req, res) => {
+    try {
+        const deals = await ZohoService.getDeals(req.user.id);
+        res.status(200).json({ success: true, data: { deals } });
+    } catch (error) {
+        console.error("Zoho Data Error:", error.message);
+        res.status(200).json({ success: true, data: { deals: [] } });
     }
 };

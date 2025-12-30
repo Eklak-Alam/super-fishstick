@@ -11,6 +11,7 @@
 # 📦 NODE DEPENDENCIES (Frontend + Backend)
 # =====================================================================
 node_modules/
+gaprio-agent/
 gaprio-frontend/node_modules/
 gaprio-backend/node_modules/
 

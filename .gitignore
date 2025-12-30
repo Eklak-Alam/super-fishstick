@@ -8,10 +8,24 @@
 .env.*.local
 
 # =====================================================================
+# 🐍 GAPRIO AGENT (Python / AI)
+# =====================================================================
+# Ignore Python cache and venv ONLY inside the agent folder
+gaprio-agent/__pycache__/
+gaprio-agent/*.py[cod]
+gaprio-agent/*$py.class
+gaprio-agent/venv/
+gaprio-agent/.venv/
+gaprio-agent/env/
+
+# Ignore Python specific logs/test results
+gaprio-agent/test_response_*.json
+gaprio-agent/debug_response.json
+
+# =====================================================================
 # 📦 NODE DEPENDENCIES (Frontend + Backend)
 # =====================================================================
 node_modules/
-gaprio-agent/
 gaprio-frontend/node_modules/
 gaprio-backend/node_modules/
 
@@ -51,8 +65,6 @@ gaprio-backend/coverage/
 # =====================================================================
 .DS_Store
 Thumbs.db
-
-# IDE folders
 .idea/
 .vscode/
 *.swp
@@ -70,21 +82,4 @@ Thumbs.db
 # =====================================================================
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-pnpm-debug.log*
-debug.log
-
-# =====================================================================
-# ⚙️ DOCKER / MISC (OPTIONAL)
-# =====================================================================
 docker-data/
-*.pid
-*.seed
-
-# =====================================================================
-# 🧹 CACHE FILES (safe to ignore)
-# =====================================================================
-.cache/
-tmp/
-temp/

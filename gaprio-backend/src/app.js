@@ -1,11 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 
-// --- FIXED IMPORTS (Removed 'src/' prefix) ---
+// --- FIXED IMPORTS (Removed 'src/' prefix because we are already IN src) ---
 const authRoutes = require('./routes/auth.routes');
 const platformRoutes = require('./routes/platform.routes');
 const integrationRoutes = require('./routes/integration.routes');
 const errorHandler = require('./middlewares/error.middleware');
+
+// 👇 FIX: Changed from './src/routes/ai.routes' to './routes/ai.routes'
+const aiRoutes = require('./routes/ai.routes'); 
 
 const app = express();
 
@@ -17,15 +20,16 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
 
-// 2. EXPRESS 5 FIX: PRE-FLIGHT CHECK
+// 2. PRE-FLIGHT CHECK
 app.options(/.*/, cors()); 
 
 app.use(express.json());
 
 // 3. Routes
 app.use('/api/auth', authRoutes);
-app.use('/api', platformRoutes); // Handles /api/auth/google
+app.use('/api', platformRoutes); 
 app.use('/api/integrations', integrationRoutes); 
+app.use('/api/ai', aiRoutes); // ✅ Uses the correctly imported variable
 
 // 4. Health Check
 app.get('/', (req, res) => {

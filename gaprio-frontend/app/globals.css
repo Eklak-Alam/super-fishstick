@@ -88,3 +88,19 @@ html, body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+
+.btn-primary-orange {
+  @apply bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold hover:brightness-110 active:scale-95 transition-all;
+}
+
+.btn-primary-yellow {
+  @apply bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-xl transition-all shadow-[0_0_15px_-3px_rgba(234,179,8,0.3)] hover:shadow-[0_0_20px_-3px_rgba(234,179,8,0.5)];
+}
+
+.btn-secondary {
+  @apply bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-xl font-bold hover:bg-zinc-700 hover:text-white transition-all px-4 py-2 text-sm;
+}
+
+.input-field {
+  @apply w-full bg-[#050505] border border-white/10 rounded-xl py-3 px-4 text-white placeholder:text-zinc-600 focus:border-yellow-500/50 outline-none transition-all text-sm focus:bg-[#080808];
+}

@@ -90,7 +90,7 @@ export default function HorizontalScroll() {
         <div className="w-[100vw] md:w-[60vw] h-full flex flex-col justify-center px-6 md:px-32 border-r border-white/5 relative bg-[#020202]">
             
             {/* Horizontal Line Decoration */}
-            <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-orange-500/20" />
+            <div className="absolute top-1/2 mt-10 left-0 w-full h-[1px] bg-gradient-to-r from-transparent to-orange-500/20" />
             
             <div className='pt-32'>
               <div className="flex items-center gap-2 mb-8">
@@ -110,15 +110,15 @@ export default function HorizontalScroll() {
 
         {/* --- The Cards --- */}
         {steps.map((step, i) => (
-            <div key={i} className="w-[100vw] md:w-[45vw] h-full flex items-center justify-center border-r border-white/5 bg-[#020202] px-6 md:px-12 relative group">
+            <div key={i} className="w-[100vw] md:w-[45vw]  h-full flex items-center justify-center border-r border-white/5 bg-[#020202] px-6 md:px-12 relative group">
                 
                 {/* Connecting Line (Only visible on desktop) */}
-                <div className="hidden md:block absolute top-1/2 left-0 w-full h-[2px] bg-white/5 z-0">
+                <div className="hidden md:block absolute mt-10 top-1/2 left-0 w-full h-[2px] bg-white/5 z-0">
                     <div className={`h-full w-0 group-hover:w-full bg-gradient-to-r ${step.color} transition-all duration-1000 ease-out`} />
                 </div>
 
                 {/* Card Container */}
-                <div className="w-full max-w-lg aspect-[4/5] md:aspect-auto md:h-[500px] bg-[#080808] border border-white/10 rounded-[2rem] p-8 md:p-12 flex flex-col justify-between relative overflow-hidden hover:border-orange-500/30 hover:shadow-[0_0_50px_-20px_rgba(234,88,12,0.3)] z-10 transition-all duration-500 group-hover:-translate-y-2">
+                <div className="w-full mt-10 max-w-lg aspect-[4/5] md:aspect-auto md:h-[500px] bg-[#080808] border border-white/10 rounded-[2rem] p-8 md:p-12 flex flex-col justify-between relative overflow-hidden hover:border-orange-500/30 hover:shadow-[0_0_50px_-20px_rgba(234,88,12,0.3)] z-10 transition-all duration-500 group-hover:-translate-y-2">
                     
                     {/* Inner Glow */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none`} />

@@ -1,7 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, Menu } from 'lucide-react'; 
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '@/lib/axios';
 import { authService } from '@/services/auth.service';
 
@@ -13,26 +14,30 @@ import SlackWorkspace from '@/components/dashboard/SlackWorkspace';
 import AsanaWorkspace from '@/components/dashboard/AsanaWorkspace';
 import MiroWorkspace from '@/components/dashboard/MiroWorkspace';
 import JiraWorkspace from '@/components/dashboard/JiraWorkspace';
-import ZohoWorkspace from '@/components/dashboard/ZohoWorkspace'; // NEW
+import ZohoWorkspace from '@/components/dashboard/ZohoWorkspace';
 import ProfileModal from '@/components/dashboard/ProfileModal';
+import AiAssistant from '@/components/dashboard/AiAssistant';
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   
+  // UI State
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAiOpen, setIsAiOpen] = useState(false); // <--- AI Chat State
+
   // Data Storage
   const [googleData, setGoogleData] = useState({ emails: [], files: [], meetings: [] });
   const [slackData, setSlackData] = useState({ channels: [] });
   const [asanaData, setAsanaData] = useState({ projects: [], tasks: [] });
   const [miroData, setMiroData] = useState({ boards: [] });
   const [jiraData, setJiraData] = useState({ issues: [] });
-  const [zohoData, setZohoData] = useState({ deals: [] }); // NEW
+  const [zohoData, setZohoData] = useState({ deals: [] });
 
   const router = useRouter();
 
-  // --- Title Mapping for Header ---
   const tabNames = {
     overview: 'Overview',
     google: 'Google Workspace',
@@ -55,42 +60,16 @@ export default function Dashboard() {
             setUser(userRes.data.data);
             const connections = userRes.data.data.connections || [];
 
-            // 2. Fetch Integrations Data (Parallel for speed)
+            // 2. Fetch Integrations (Parallel)
             const promises = [];
-            
-            // Google
-            if (connections.some(c => c.provider === 'google')) {
-                promises.push(api.get('/integrations/google/dashboard')
-                    .then(res => setGoogleData(res.data.data)).catch(console.warn));
-            }
-            // Slack
-            if (connections.some(c => c.provider === 'slack')) {
-                promises.push(api.get('/integrations/slack/channels')
-                    .then(res => setSlackData(res.data.data)).catch(console.warn));
-            }
-            // Asana
-            if (connections.some(c => c.provider === 'asana')) {
-                promises.push(api.get('/integrations/asana/dashboard')
-                    .then(res => setAsanaData(res.data.data)).catch(console.warn));
-            }
-            // Miro
-            if (connections.some(c => c.provider === 'miro')) {
-                promises.push(api.get('/integrations/miro/boards')
-                    .then(res => setMiroData(res.data.data)).catch(console.warn));
-            }
-            // Jira
-            if (connections.some(c => c.provider === 'jira')) {
-                promises.push(api.get('/integrations/jira/issues')
-                    .then(res => setJiraData(res.data.data)).catch(console.warn));
-            }
-            // Zoho (NEW)
-            if (connections.some(c => c.provider === 'zoho')) {
-                promises.push(api.get('/integrations/zoho/deals')
-                    .then(res => setZohoData(res.data.data)).catch(console.warn));
-            }
+            if (connections.some(c => c.provider === 'google')) promises.push(api.get('/integrations/google/dashboard').then(res => setGoogleData(res.data.data)).catch(console.warn));
+            if (connections.some(c => c.provider === 'slack')) promises.push(api.get('/integrations/slack/channels').then(res => setSlackData(res.data.data)).catch(console.warn));
+            if (connections.some(c => c.provider === 'asana')) promises.push(api.get('/integrations/asana/dashboard').then(res => setAsanaData(res.data.data)).catch(console.warn));
+            if (connections.some(c => c.provider === 'miro')) promises.push(api.get('/integrations/miro/boards').then(res => setMiroData(res.data.data)).catch(console.warn));
+            if (connections.some(c => c.provider === 'jira')) promises.push(api.get('/integrations/jira/issues').then(res => setJiraData(res.data.data)).catch(console.warn));
+            if (connections.some(c => c.provider === 'zoho')) promises.push(api.get('/integrations/zoho/deals').then(res => setZohoData(res.data.data)).catch(console.warn));
 
             await Promise.all(promises);
-
         } catch (error) {
             console.error("Dashboard Init Error:", error);
             authService.logout();
@@ -111,84 +90,111 @@ export default function Dashboard() {
 
   if (!user) return null;
 
-  // Determine Connection Status
-  const isGoogleConnected = user.connections?.some(c => c.provider === 'google');
-  const isSlackConnected = user.connections?.some(c => c.provider === 'slack');
-  const isAsanaConnected = user.connections?.some(c => c.provider === 'asana');
-  const isMiroConnected = user.connections?.some(c => c.provider === 'miro');
-  const isJiraConnected = user.connections?.some(c => c.provider === 'jira');
-  const isZohoConnected = user.connections?.some(c => c.provider === 'zoho'); // NEW
+  const checkConn = (provider) => user.connections?.some(c => c.provider === provider);
 
   return (
     <div className="flex h-screen bg-[#020202] text-white overflow-hidden font-sans selection:bg-orange-500/30">
       
-      {/* Sidebar with all navigation items */}
-      <Sidebar 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        user={user} 
-        onOpenProfile={() => setIsProfileOpen(true)} 
-      />
+      {/* --- DESKTOP SIDEBAR --- */}
+      <div className="hidden md:flex h-full shrink-0">
+        <Sidebar 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            user={user} 
+            onOpenProfile={() => setIsProfileOpen(true)} 
+            onOpenAI={() => setIsAiOpen(true)} // <--- Open AI from Sidebar
+        />
+      </div>
 
+      {/* --- MOBILE SIDEBAR (DRAWER) --- */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+            <div className="fixed inset-0 z-50 flex md:hidden">
+                <motion.div 
+                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+                />
+                <motion.div 
+                    initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: "spring", damping: 25, stiffness: 200 }}
+                    className="relative w-72 h-full bg-[#020202] shadow-2xl border-r border-white/10"
+                >
+                    <Sidebar 
+                        activeTab={activeTab} 
+                        setActiveTab={setActiveTab} 
+                        user={user} 
+                        onOpenProfile={() => { setIsProfileOpen(true); setIsMobileMenuOpen(false); }}
+                        onClose={() => setIsMobileMenuOpen(false)}
+                        onOpenAI={() => { setIsAiOpen(true); setIsMobileMenuOpen(false); }} // <--- Open AI from Mobile
+                    />
+                </motion.div>
+            </div>
+        )}
+      </AnimatePresence>
+
+      {/* --- MAIN CONTENT --- */}
       <main className="flex-1 flex flex-col relative overflow-hidden bg-[#020202]">
         
-        {/* CSS Background Pattern */}
+        {/* Background Pattern */}
         <div 
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
-            style={{
-                backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)',
-                backgroundSize: '40px 40px'
-            }}
+            style={{ backgroundImage: 'radial-gradient(#ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}
         />
         
-        {/* Header */}
-        <header className="h-16 border-b border-white/5 flex items-center justify-between px-8 bg-[#020202]/80 backdrop-blur-md z-10 shrink-0">
-            <h2 className="font-semibold text-lg text-zinc-200">
-                {tabNames[activeTab] || 'Dashboard'}
-            </h2>
-            <button onClick={() => { authService.logout(); router.push('/login'); }} className="p-2 hover:bg-white/5 rounded-full text-zinc-400 hover:text-red-400 transition-colors">
-                <LogOut size={18} />
+        {/* Top Header */}
+        <header className="h-16 border-b border-white/5 flex items-center justify-between px-4 md:px-8 bg-[#020202]/80 backdrop-blur-md z-10 shrink-0 sticky top-0">
+            <div className="flex items-center gap-4">
+                <button 
+                    onClick={() => setIsMobileMenuOpen(true)} 
+                    className="md:hidden p-2 -ml-2 text-zinc-400 hover:text-white rounded-lg active:bg-white/10 transition-colors"
+                >
+                    <Menu size={24} />
+                </button>
+                <h2 className="font-semibold text-lg text-zinc-200 truncate">
+                    {tabNames[activeTab] || 'Dashboard'}
+                </h2>
+            </div>
+
+            <button 
+                onClick={() => { authService.logout(); router.push('/login'); }} 
+                className="p-2 hover:bg-white/5 rounded-full text-zinc-400 hover:text-red-400 transition-colors"
+                title="Logout"
+            >
+                <LogOut size={20} />
             </button>
         </header>
 
-        <div className="flex-1 overflow-y-auto p-6 md:p-8 relative z-0 custom-scrollbar">
+        {/* Scrollable Area */}
+        <div className="flex-1 overflow-y-auto p-4 md:p-8 relative z-0 custom-scrollbar">
             
-            {/* 1. OVERVIEW */}
             {activeTab === 'overview' && (
                 <OverviewTab user={user} googleData={googleData} slackData={slackData} />
             )}
             
-            {/* 2. GOOGLE */}
             {activeTab === 'google' && (
-                <GoogleWorkspace isConnected={isGoogleConnected} data={googleData} user={user} />
+                <GoogleWorkspace isConnected={checkConn('google')} data={googleData} user={user} />
             )}
             
-            {/* 3. SLACK */}
             {activeTab === 'slack' && (
-                <SlackWorkspace isConnected={isSlackConnected} data={slackData} user={user} />
+                <SlackWorkspace isConnected={checkConn('slack')} data={slackData} user={user} />
             )}
             
-            {/* 4. ASANA */}
             {activeTab === 'asana' && (
-                <AsanaWorkspace isConnected={isAsanaConnected} data={asanaData} user={user} />
+                <AsanaWorkspace isConnected={checkConn('asana')} data={asanaData} user={user} />
             )}
 
-            {/* 5. MIRO */}
             {activeTab === 'miro' && (
-                <MiroWorkspace isConnected={isMiroConnected} data={miroData} user={user} />
+                <MiroWorkspace isConnected={checkConn('miro')} data={miroData} user={user} />
             )}
 
-            {/* 6. JIRA */}
             {activeTab === 'jira' && (
-                <JiraWorkspace isConnected={isJiraConnected} data={jiraData} user={user} />
+                <JiraWorkspace isConnected={checkConn('jira')} data={jiraData} user={user} />
             )}
 
-            {/* 7. ZOHO (New) */}
             {activeTab === 'zoho' && (
-                <ZohoWorkspace isConnected={isZohoConnected} data={zohoData} user={user} />
+                <ZohoWorkspace isConnected={checkConn('zoho')} data={zohoData} user={user} />
             )}
             
-            {/* Microsoft Placeholder */}
             {activeTab === 'microsoft' && (
                 <div className="h-[60vh] flex flex-col items-center justify-center text-center opacity-50">
                     <Settings size={48} className="text-zinc-700 mb-4" />
@@ -200,6 +206,11 @@ export default function Dashboard() {
       </main>
 
       <ProfileModal user={user} isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onUpdate={setUser} />
+      
+      {/* --- AI ASSISTANT OVERLAY --- */}
+      {/* isOpen and onClose are controlled by Dashboard state */}
+      <AiAssistant isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
+
     </div>
   );
 }

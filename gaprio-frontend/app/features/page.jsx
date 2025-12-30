@@ -564,61 +564,6 @@ const EnterpriseSpecs = () => {
   );
 };
 
-// --- 6. FOOTER ---
-const Footer = () => (
-    <footer className="border-t border-white/10 pt-20 pb-10 bg-[#020202] relative z-20">
-        <div className="container mx-auto px-4 max-w-7xl">
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-10 mb-16">
-                <div className="col-span-2">
-                    <div className="flex items-center gap-2 mb-4">
-                        <div className="w-5 h-5 bg-orange-600 rounded-md flex items-center justify-center">
-                            <Zap size={12} className="text-white fill-white" />
-                        </div>
-                        <span className="font-bold text-white tracking-tight">Gaprio</span>
-                    </div>
-                    <p className="text-zinc-500 text-sm max-w-xs leading-relaxed">
-                        The operating system for modern enterprise work. Automate, orchestrate, and secure your stack.
-                    </p>
-                </div>
-                <div>
-                    <h4 className="text-white font-bold mb-4">Product</h4>
-                    <ul className="space-y-2 text-sm text-zinc-500">
-                        <li className="hover:text-orange-500 cursor-pointer">Integrations</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Workflows</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Security</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Pricing</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="text-white font-bold mb-4">Company</h4>
-                    <ul className="space-y-2 text-sm text-zinc-500">
-                        <li className="hover:text-orange-500 cursor-pointer">About</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Careers</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Blog</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Contact</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 className="text-white font-bold mb-4">Legal</h4>
-                    <ul className="space-y-2 text-sm text-zinc-500">
-                        <li className="hover:text-orange-500 cursor-pointer">Privacy</li>
-                        <li className="hover:text-orange-500 cursor-pointer">Terms</li>
-                        <li className="hover:text-orange-500 cursor-pointer">DPA</li>
-                    </ul>
-                </div>
-            </div>
-            <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-xs text-zinc-600">
-                <p>&copy; 2025 Gaprio Inc. All rights reserved.</p>
-                <div className="flex gap-4 mt-4 md:mt-0">
-                    <span>Twitter</span>
-                    <span>GitHub</span>
-                    <span>LinkedIn</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-);
-
 // --- 7. CTA SECTION ---
 const CTASection = () => {
   return (
@@ -659,7 +604,6 @@ const FeaturesPage = () => {
       <NeuralArchitecture />
       <EnterpriseSpecs />
       <CTASection />
-      <Footer />
     </main>
   );
 };

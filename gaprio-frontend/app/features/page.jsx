@@ -274,6 +274,8 @@ const HeroSection = () => {
         </motion.div>
 
       </div>
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
+
     </section>
   );
 };

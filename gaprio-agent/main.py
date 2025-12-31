@@ -1,16 +1,17 @@
 """
-main.py - FastAPI application
+main.py - FastAPI application (Updated for Hybrid Chat)
 """
 
 import os
-from typing import List, Dict
+from typing import List, Dict, Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
-from agent_brain import agent_brain, get_agent_plan
-from database import db_manager  # Add this import
+# Import the UPDATED class instance
+from agent_brain import agent_brain 
+from database import db_manager
 from tools.asana_tool import execute_asana_task
 from tools.google_tool import send_gmail
 
@@ -46,40 +47,41 @@ class ActionData(BaseModel):
 async def root():
     return {"message": "Gaprio Agent API", "status": "running"}
 
-@app.post("/ask-agent", response_model=Dict)
+@app.post("/ask-agent")
 async def ask_agent(user_msg: UserMessage):
     """
-    Process user message and generate action plan
+    Process user message, returns { message: "...", plan: [...] }
     """
     try:
-        plan = get_agent_plan(user_msg.user_id, user_msg.message)
+        # Call the NEW method in agent_brain that returns both text and actions
+        response = agent_brain.get_agent_response(user_msg.user_id, user_msg.message)
         
         return {
             "status": "success",
-            "plan": plan,
-            "requires_approval": len(plan) > 0,
-            "message": f"Generated {len(plan)} action(s) pending approval"
+            "message": response["message"], # The chat reply (e.g. "I have drafted the email")
+            "plan": response["plan"],       # The actions list (if any)
+            "requires_approval": len(response["plan"]) > 0
         }
     except Exception as e:
+        print(f"API Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/pending-actions/{user_id}", response_model=Dict)
+@app.get("/pending-actions/{user_id}")
 async def get_pending_actions(user_id: int):
     """
     Get all pending actions for a user
     """
     try:
         actions = agent_brain.get_pending_actions(user_id)
-        
         return {
-            "status": "success",
-            "count": len(actions),
+            "status": "success", 
+            "count": len(actions), 
             "actions": actions
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/approve-action", response_model=Dict)
+@app.post("/approve-action")
 async def approve_action(approval: ActionApproval):
     """
     Approve and execute a pending action
@@ -89,19 +91,19 @@ async def approve_action(approval: ActionApproval):
         
         if result["success"]:
             return {
-                "status": "success",
-                "message": "Action executed successfully",
+                "status": "success", 
+                "message": "Action executed successfully", 
                 "data": result.get("result")
             }
         else:
             return {
-                "status": "error",
+                "status": "error", 
                 "message": result.get("error", "Execution failed")
             }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/execute-action", response_model=Dict)
+@app.post("/execute-action")
 async def execute_action(action: ActionData):
     """
     Direct action execution (without approval flow)
@@ -113,15 +115,19 @@ async def execute_action(action: ActionData):
             raise HTTPException(status_code=400, detail=f"No {action.provider} token found")
         
         result = None
+        # Handle Asana
         if action.provider == 'asana' and action.tool == 'create_asana_task':
-            result = execute_asana_task(token, action.parameters)
+            result = execute_asana_task(token['access_token'], action.parameters)
+        
+        # Handle Gmail
         elif action.provider == 'google' and action.tool == 'send_gmail':
-            result = send_gmail(token, action.parameters)
+            result = send_gmail(token['access_token'], action.parameters)
+            
         else:
-            raise HTTPException(status_code=400, detail="Unsupported action")
+            raise HTTPException(status_code=400, detail="Unsupported action or provider")
         
         return {
-            "status": "success",
+            "status": "success", 
             "data": result
         }
         
@@ -132,32 +138,26 @@ async def execute_action(action: ActionData):
 async def health_check():
     """Health check endpoint with proper database connection test"""
     try:
-        # Test database connection
         db_status = "disconnected"
         try:
-            # Use db_manager instance
+            # Check DB connection
             if db_manager.connection and db_manager.connection.is_connected():
-                # Test with a simple query
-                cursor = db_manager.connection.cursor(buffered=True)
+                cursor = db_manager.connection.cursor()
                 cursor.execute("SELECT 1")
                 cursor.fetchall()
-                cursor.close()
                 db_status = "connected"
         except Exception as e:
-            print(f"Database health check error: {e}")
-            db_status = "disconnected"
+            print(f"DB Health Check Failed: {e}")
+            pass
         
         return {
-            "status": "healthy",
-            "database": db_status,
+            "status": "healthy", 
+            "database": db_status, 
             "ollama": "configured",
             "version": "1.0.0"
         }
     except Exception as e:
-        return {
-            "status": "unhealthy",
-            "error": str(e)
-        }
+        return {"status": "unhealthy", "error": str(e)}
 
 if __name__ == "__main__":
     import uvicorn

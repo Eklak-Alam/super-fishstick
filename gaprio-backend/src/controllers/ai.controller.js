@@ -1,60 +1,63 @@
 const axios = require('axios');
 
-// Python Agent URL (Running on port 8000)
-const AGENT_URL = 'http://localhost:8000';
+// Use env var or default to localhost
+const AGENT_URL = process.env.AI_AGENT_URL || 'http://localhost:8000';
 
-exports.chatWithAgent = async (req, res) => {
+exports.chatWithAgent = async (req, res, next) => {
     try {
         const { message } = req.body;
-        const userId = req.user.id; // Got from auth middleware
+        const userId = req.user.id;
 
-        // 1. Send user message to Python AI
+        // 1. Send to Python Agent
         const response = await axios.post(`${AGENT_URL}/ask-agent`, {
             user_id: userId,
             message: message
         });
 
-        // 2. Return AI's plan/response to Frontend
-        res.json(response.data);
+        // 2. Return response to Frontend
+        res.status(200).json(response.data);
 
     } catch (error) {
-        console.error("AI Service Error:", error.message);
-        // If Python is offline, give a friendly error
+        // Handle specific connection error (Python server down)
         if (error.code === 'ECONNREFUSED') {
+            console.error("❌ AI Agent Offline");
             return res.status(503).json({ 
-                message: "The AI Brain is currently sleeping (Service Offline).", 
+                message: "The AI Brain is currently sleeping. Please start the Python agent.", 
                 plan: [] 
             });
         }
-        res.status(500).json({ error: "Failed to communicate with AI Agent" });
+        
+        // Pass other errors to global error handler
+        next(error);
     }
 };
 
-exports.getPendingActions = async (req, res) => {
+exports.getPendingActions = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const response = await axios.get(`${AGENT_URL}/pending-actions/${userId}`);
-        res.json(response.data);
+        res.status(200).json(response.data);
     } catch (error) {
-        console.error("AI Actions Error:", error.message);
-        res.status(500).json({ error: "Could not fetch pending actions" });
+        if (error.code === 'ECONNREFUSED') {
+            // Return empty list if AI is down so dashboard doesn't crash
+            return res.json({ actions: [] }); 
+        }
+        next(error);
     }
 };
 
-exports.approveAction = async (req, res) => {
+exports.approveAction = async (req, res, next) => {
     try {
         const { actionId } = req.body;
         const userId = req.user.id;
 
-        // 1. Tell Python to execute the approved action
         const response = await axios.post(`${AGENT_URL}/approve-action`, {
             user_id: userId,
             action_id: actionId
         });
 
-        res.json(response.data);
+        res.status(200).json(response.data);
     } catch (error) {
-        console.error("AI Execute Error:", error.message);
-        res.status(500).json({ error: "Action execution failed" });
+        next(error);
     }
 };

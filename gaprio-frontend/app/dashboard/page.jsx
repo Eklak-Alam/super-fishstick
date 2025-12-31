@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LogOut, Settings, Menu } from 'lucide-react'; 
+import { LogOut, Menu } from 'lucide-react'; 
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '@/lib/axios';
 import { authService } from '@/services/auth.service';
@@ -17,6 +17,7 @@ import JiraWorkspace from '@/components/dashboard/JiraWorkspace';
 import ZohoWorkspace from '@/components/dashboard/ZohoWorkspace';
 import ProfileModal from '@/components/dashboard/ProfileModal';
 import AiAssistant from '@/components/dashboard/AiAssistant';
+
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
@@ -60,7 +61,7 @@ export default function Dashboard() {
             setUser(userRes.data.data);
             const connections = userRes.data.data.connections || [];
 
-            // 2. Fetch Integrations (Parallel)
+            // 2. Fetch Integrations (Parallel for speed)
             const promises = [];
             if (connections.some(c => c.provider === 'google')) promises.push(api.get('/integrations/google/dashboard').then(res => setGoogleData(res.data.data)).catch(console.warn));
             if (connections.some(c => c.provider === 'slack')) promises.push(api.get('/integrations/slack/channels').then(res => setSlackData(res.data.data)).catch(console.warn));
@@ -102,7 +103,7 @@ export default function Dashboard() {
             setActiveTab={setActiveTab} 
             user={user} 
             onOpenProfile={() => setIsProfileOpen(true)} 
-            onOpenAI={() => setIsAiOpen(true)} // <--- Open AI from Sidebar
+            onOpenAI={() => setIsAiOpen(true)} // <--- Passes open handler
         />
       </div>
 
@@ -125,7 +126,7 @@ export default function Dashboard() {
                         user={user} 
                         onOpenProfile={() => { setIsProfileOpen(true); setIsMobileMenuOpen(false); }}
                         onClose={() => setIsMobileMenuOpen(false)}
-                        onOpenAI={() => { setIsAiOpen(true); setIsMobileMenuOpen(false); }} // <--- Open AI from Mobile
+                        onOpenAI={() => { setIsAiOpen(true); setIsMobileMenuOpen(false); }} // <--- Closes menu, Opens AI
                     />
                 </motion.div>
             </div>
@@ -208,7 +209,7 @@ export default function Dashboard() {
       <ProfileModal user={user} isOpen={isProfileOpen} onClose={() => setIsProfileOpen(false)} onUpdate={setUser} />
       
       {/* --- AI ASSISTANT OVERLAY --- */}
-      {/* isOpen and onClose are controlled by Dashboard state */}
+      {/* isOpen and onClose are controlled here */}
       <AiAssistant isOpen={isAiOpen} onClose={() => setIsAiOpen(false)} />
 
     </div>

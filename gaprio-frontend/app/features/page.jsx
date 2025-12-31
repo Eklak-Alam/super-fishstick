@@ -71,7 +71,7 @@ const integrations = [
     latency: '110ms',
     status: 'Indexing',
     endpoints: ['drive.list', 'gmail.get', 'sheets.read'],
-    color: 'from-green-500/20 to-green-900/5'
+    color: 'from-blue-500/20 to-red-900/5'
   },
   {
     id: 'microsoft',
@@ -95,7 +95,7 @@ const integrations = [
     latency: '150ms',
     status: 'Listening',
     endpoints: ['crm.modules', 'desk.tickets', 'flow'],
-    color: 'from-yellow-600/20 to-yellow-900/5'
+    color: 'from-red-600/20 to-yellow-900/5'
   },
   {
     id: 'clickup',
@@ -257,7 +257,7 @@ const HeroSection = () => {
 // --- 3. UNIFIED GRID ---
 const UnifiedGrid = () => {
     return (
-        <section className="pt-32 relative">
+        <section className="pt-32 pb-10 relative">
             
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-32 bg-gradient-to-b from-transparent to-orange-500/50" />
             <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-5 pointer-events-none" />
@@ -387,7 +387,7 @@ const NeuralArchitecture = () => {
   ];
 
   return (
-    <section className="pt-24 border-y border-white/5 relative">
+    <section className="pt-24 pb-10 border-y border-white/5 relative">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div className="mb-16">
           <h2 className="text-orange-500 font-mono text-sm tracking-widest uppercase mb-3">Under the Hood</h2>
@@ -494,7 +494,7 @@ const NeuralArchitecture = () => {
 // --- 5. SPECS & TRUST ---
 const EnterpriseSpecs = () => {
   return (
-    <section className="pt-24 relative">
+    <section className="pt-24 pb-10 relative">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Enterprise Grade Security</h2>

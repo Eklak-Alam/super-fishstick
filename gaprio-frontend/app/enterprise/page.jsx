@@ -20,6 +20,9 @@ const EnterpriseHero = () => {
       {/* Dynamic Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
       <div className="absolute top-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/20 via-[#020202] to-[#020202]" />
+        <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
 
       <div className="container mx-auto px-4 z-10 relative">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
@@ -31,7 +34,9 @@ const EnterpriseHero = () => {
             className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]"
           >
             The Cognitive Layer for <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500">Global Enterprises.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-200 to-amber-500">
+              Global Enterprises.
+            </span>
           </motion.h1>
 
           <motion.p 

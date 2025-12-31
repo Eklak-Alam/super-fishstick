@@ -199,7 +199,10 @@ const SmartTerminal = () => {
 const HeroSection = () => {
   return (
     <section className="relative min-h-[90vh] lg:pt-44 pt-32 flex flex-col items-center justify-start pb-32 overflow-hidden">
-      
+              <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
+
       {/* --- Dynamic Backgrounds --- */}
       {/* 1. Base Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#ffffff03_1px,transparent_1px),linear-gradient(to_right,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0" />
@@ -218,8 +221,10 @@ const HeroSection = () => {
         >
           
           <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[1.05] max-w-5xl mx-auto drop-shadow-2xl">
-            The <span className="text-transparent bg-clip-text bg-gradient-to-br from-orange-400 via-orange-500 to-red-600">Operating System</span> <br />
-            for Enterprise Work.
+            The Operating System <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-300 to-amber-500">
+              for Enterprise Work.
+            </span>
           </h1>
 
           <p className="text-md md:text-lg text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
@@ -589,6 +594,9 @@ const CTASection = () => {
     <section className="relative py-32 overflow-hidden flex flex-col items-center justify-center border-t border-white/10 bg-[#020202]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-900/20 via-black to-black" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50" />
+              <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
 
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
@@ -605,7 +613,7 @@ const CTASection = () => {
             Get Started <ArrowRight size={20} />
           </button>
           <button className="h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
-             <Globe size={20} className="text-zinc-500" /> Explore Integrations
+             <Globe size={20} className="text-zinc-500" />Explore Integrations
           </button>
         </div>
       </div>

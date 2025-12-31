@@ -79,7 +79,7 @@ export default function HorizontalScroll() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative bg-[#020202] overflow-hidden border-t border-white/5">
+    <section ref={containerRef} className="relative bg-[#020202] overflow-hidden">
       
       {/* Background Texture */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:60px_60px] opacity-[0.04] pointer-events-none" />

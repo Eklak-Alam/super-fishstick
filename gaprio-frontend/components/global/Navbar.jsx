@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation'; // 1. Added this import
 import { ArrowRight, ChevronRight } from 'lucide-react';
 import { Saira } from 'next/font/google';
 
@@ -46,6 +47,9 @@ export default function Navbar() {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // 2. Get current path
+  const pathname = usePathname();
 
   const navLinks = [
     { name: 'Home', href: '/' },
@@ -95,24 +99,31 @@ export default function Navbar() {
           </div>
 
           {/* --- 2. Links (Absolute Center) --- */}
-          {/* Absolute centering ensures it stays in the middle regardless of side content widths */}
           <div className="hidden md:flex items-center justify-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
             <div className="flex items-center gap-1">
-              {navLinks.map((item) => (
-                <Link key={item.name} href={item.href} className="relative group px-4 py-2">
-                  <span className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors relative z-10">
-                    {item.name}
-                  </span>
-                  {/* "Before Wala" Hover Effect (Clean Pill) */}
-                  <span className="absolute inset-0 bg-white/10 rounded-full scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-300 ease-out -z-0" />
-                </Link>
-              ))}
+              {navLinks.map((item) => {
+                // 3. Check if active
+                const isActive = pathname === item.href;
+
+                return (
+                  <Link key={item.name} href={item.href} className="relative group px-4 py-2">
+                    <span className={`text-sm font-medium transition-colors relative z-10 
+                      ${isActive ? "text-white" : "text-zinc-300 group-hover:text-white"}`}>
+                      {item.name}
+                    </span>
+                    
+                    {/* "Selected" OR "Hover" Effect (Merged logic) */}
+                    <span className={`absolute inset-0 bg-white/10 rounded-full transition-all duration-300 ease-out -z-0
+                      ${isActive ? "scale-100 opacity-100" : "scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100"}`} 
+                    />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
           {/* --- 3. Actions (Right) --- */}
           <div className="flex-1 flex items-center justify-end gap-4">
-            {/* Clean White Button (No Hover Animation) */}
             <Link 
               href="/register"
               className="hidden md:flex items-center gap-2 rounded-full py-2.5 px-6 bg-white text-black text-sm font-bold tracking-tight active:scale-95 transition-transform"
@@ -120,7 +131,7 @@ export default function Navbar() {
               Get Started 
             </Link>
 
-            {/* --- Super Smooth Animated Hamburger Icon --- */}
+            {/* --- Hamburger Icon --- */}
             <button 
               className="md:hidden relative z-[100] w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -136,19 +147,16 @@ export default function Navbar() {
                 strokeLinecap="round" 
                 strokeLinejoin="round"
               >
-                {/* Top Line */}
                 <motion.path 
                   d="M4 6h16" 
                   animate={mobileMenuOpen ? { d: "M6 18L18 6" } : { d: "M4 6h16" }}
                   transition={{ duration: 0.3 }} 
                 />
-                {/* Middle Line (Fades out) */}
                 <motion.path 
                   d="M4 12h16" 
                   animate={mobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
                   transition={{ duration: 0.2 }} 
                 />
-                {/* Bottom Line */}
                 <motion.path 
                   d="M4 18h16" 
                   animate={mobileMenuOpen ? { d: "M6 6l12 12" } : { d: "M4 18h16" }}
@@ -176,29 +184,37 @@ export default function Navbar() {
                initial="hidden"
                animate="show"
                exit="exit"
-               // Dark Theme + Orange Gradient Background
                className="absolute right-0 top-0 bottom-0 w-full sm:w-[350px] bg-[#050505] border-l border-white/10 shadow-2xl p-6 pt-24 flex flex-col h-full overflow-hidden"
                onClick={(e) => e.stopPropagation()} 
             >
-              {/* --- ORANGE GRADIENT GLOW --- */}
               <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-orange-500/20 rounded-full blur-[80px] pointer-events-none" />
               <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-amber-600/10 rounded-full blur-[60px] pointer-events-none" />
 
               <div className="flex flex-col gap-4 relative z-10">
-                {navLinks.map((item) => (
-                  <motion.div key={item.name} variants={linkItemVars}>
-                    <Link 
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="group flex items-center justify-between p-4 rounded-xl hover:bg-white/5 transition-all border border-transparent hover:border-white/5 active:scale-[0.98]"
-                    >
-                      <span className={`text-xl font-medium text-zinc-300 group-hover:text-white transition-colors ${saira.className}`}>
-                        {item.name}
-                      </span>
-                      <ChevronRight size={20} className="text-orange-500/80 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all" />
-                    </Link>
-                  </motion.div>
-                ))}
+                {navLinks.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <motion.div key={item.name} variants={linkItemVars}>
+                      <Link 
+                        href={item.href}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={`group flex items-center justify-between p-4 rounded-xl transition-all border active:scale-[0.98]
+                          ${isActive 
+                             ? "bg-white/10 border-white/10" 
+                             : "hover:bg-white/5 border-transparent hover:border-white/5"
+                          }`}
+                      >
+                        <span className={`text-xl font-medium transition-colors ${saira.className} 
+                          ${isActive ? "text-white" : "text-zinc-300 group-hover:text-white"}`}>
+                          {item.name}
+                        </span>
+                        <ChevronRight size={20} className={`transition-all 
+                          ${isActive ? "text-orange-500 opacity-100" : "text-orange-500/80 opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0"}`} 
+                        />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
               </div>
 
               <motion.div variants={linkItemVars} className="mt-auto pt-8 border-t border-white/10 relative z-10">

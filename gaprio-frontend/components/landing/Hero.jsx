@@ -101,11 +101,11 @@ export default function Hero() {
         <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
         <PulseGrid />
-        <div className="absolute inset-0">
+        {/* <div className="absolute inset-0">
           <DataDrop x="20%" delay={0} duration={8} />
           <DataDrop x="50%" delay={4} duration={10} />
           <DataDrop x="80%" delay={2} duration={9} />
-        </div>
+        </div> */}
         <div className="hidden md:block">
           <FloatingIcon Icon={MessageSquare} x="10%" y="25%" delay={0} />
           <FloatingIcon Icon={Database} x="85%" y="30%" delay={2} />
@@ -188,12 +188,12 @@ export default function Hero() {
 
               <span
                 className="
-            inline-flex h-full w-full items-center justify-center rounded-full 
-            bg-[#050201] px-8 text-sm font-medium text-zinc-400 
-            backdrop-blur-3xl 
-            group-hover:text-white group-hover:bg-[#0f0a05] 
-            transition-all duration-300 gap-2
-        "
+                              inline-flex h-full w-full items-center justify-center rounded-full 
+                              bg-[#050201] px-8 text-sm font-medium text-zinc-400 
+                              backdrop-blur-3xl 
+                              group-hover:text-white group-hover:bg-[#0f0a05] 
+                              transition-all duration-300 gap-2
+                          "
               >
                 View Documentation
                 <BookOpen

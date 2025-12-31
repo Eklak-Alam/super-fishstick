@@ -155,45 +155,50 @@ const TimelineCard = ({ step, index, isLeft }) => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className={cn(
                 "relative md:w-[45%] mb-24 md:mb-0",
-                isLeft ? "md:mr-auto md:pr-12 md:text-right" : "md:ml-auto md:pl-12 md:text-left"
+                // Helper to align the card itself to left or right half of screen
+                isLeft ? "md:mr-auto md:pr-12" : "md:ml-auto md:pl-12"
             )}
         >
+            {/* Connector Line to Center Spine */}
             <div className={cn(
                 "hidden md:block absolute top-10 h-[2px] bg-gradient-to-r from-orange-500/50 to-transparent w-16",
                 isLeft ? "right-0 rotate-180 origin-left" : "left-0"
             )} />
 
-            <div className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-[#0a0a0a] p-8 hover:border-orange-500/30 transition-colors duration-500 backdrop-blur-sm">
+            <div className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-[#0a0a0a] p-8 hover:border-orange-500/30 transition-colors duration-500 backdrop-blur-sm min-h-[220px] flex flex-col justify-center">
                 
-                {/* 1. NUMBER: Kept on the "Inner" side (same side as text/timeline) */}
+                {/* 1. BIG NUMBER: Positioned on the "Outer" edge (Away from text) */}
                 <span className={cn(
-                    "absolute -top-4 text-[80px] font-bold text-zinc-900/50 font-mono transition-colors group-hover:text-orange-900/20",
-                    isLeft ? "right-4" : "left-4" 
+                    "absolute top-0 text-[100px] font-bold text-zinc-900/40 font-mono transition-colors group-hover:text-orange-900/10 pointer-events-none select-none leading-none",
+                    isLeft ? "left-1" : "right-2" 
                 )}>
                     0{step.id}
                 </span>
 
-                {/* Container for Content */}
-                {/* We use w-full to ensure the flex container spans the full card width, allowing 'self-start' to work */}
+                {/* 2. CONTENT GROUP: Icon + Text together */}
                 <div className={cn(
-                    "relative z-10 flex flex-col gap-4 w-full", 
-                    isLeft ? "md:items-end" : "md:items-start"
+                    "relative z-10 flex flex-col gap-5",
+                    // Align content towards the spine (Right for Left card, Left for Right card)
+                    isLeft ? "md:items-end md:text-right" : "md:items-start md:text-left"
                 )}>
                     
-                    {/* 2. ICON: Moved to the "Outer" side (Opposite to text/timeline) */}
-                    <div className={cn(
-                        "w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_4px_20px_-10px_rgba(255,255,255,0.1)]",
-                        // Logic: If Left Card -> Icon goes to Start (Left). If Right Card -> Icon goes to End (Right).
-                        isLeft ? "md:self-start" : "md:self-end"
-                    )}>
+                    {/* Icon Box */}
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_4px_20px_-10px_rgba(255,255,255,0.1)]">
                         <step.icon className="w-6 h-6 text-orange-500" />
                     </div>
 
+                    {/* Text Content */}
                     <div>
-                        <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-50 transition-colors">{step.title}</h3>
-                        <p className="text-zinc-400 leading-relaxed text-sm md:text-base">{step.description}</p>
+                        <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-50 transition-colors">
+                            {step.title}
+                        </h3>
+                        <p className="text-zinc-400 leading-relaxed text-sm md:text-base max-w-md">
+                            {step.description}
+                        </p>
                     </div>
                 </div>
+
+                {/* Hover Glow Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </div>
         </motion.div>

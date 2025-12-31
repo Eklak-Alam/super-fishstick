@@ -87,7 +87,7 @@ export default function Navbar() {
                   priority
                 />
               </div>
-              <span className={`font-bold text-white tracking-tight text-lg transition-all duration-300 ${saira.className}
+              <span className={` text-white tracking-tight text-lg transition-all duration-300 ${saira.className}
                 ${scrolled ? 'opacity-0 -translate-x-4 hidden md:block' : 'opacity-100 translate-x-0'}`}>
                 Gaprio
               </span>

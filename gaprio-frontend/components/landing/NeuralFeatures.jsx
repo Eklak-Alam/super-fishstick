@@ -148,7 +148,7 @@ export default function EcosystemIntegration() {
           <LogoNodeCard
             imageSrc="/companylogo/zoho.png"
             title="Zoho"
-            sub="Business operations"
+            sub="Zoho workspace"
             color="shadow-red-600/30"
             align="left"
             delay={0.6}

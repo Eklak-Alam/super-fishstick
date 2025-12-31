@@ -25,21 +25,21 @@ const heroTools = [
 ];
 
 const integrationDetails = [
-  { id: 'google', name: 'Google Workspace', icon: '/companylogo/google.webp', tagline: 'The Collaboration Backbone', problem: "Files and calendars are scattered across personal drives.", solution: "Gaprio unifies Drive permissions and syncs every calendar instantly.", features: ['Calendar Sync', 'Drive Access', 'SSO Login'] },
-  { id: 'slack', name: 'Slack', icon: '/companylogo/slack.png', tagline: 'Centralized Nerve Center', problem: "Critical updates get lost in noise. Context switching kills focus.", solution: "Turn Slack into your command center with filtered, actionable alerts.", features: ['Smart Notifications', 'Slash Commands', 'Thread Sync'] },
-  { id: 'jira', name: 'Jira Software', icon: '/companylogo/jira.png', tagline: 'Engineering Velocity', problem: "Status updates are manual and outdated.", solution: "Two-way sync ensures updates in roadmap automatically.", features: ['Issue Tracking', 'Sprint Planning', 'DevOps View'] },
-  { id: 'asana', name: 'Asana', icon: '/companylogo/asana.png', tagline: 'Project Orchestration', problem: "Tasks slip through the cracks across departments.", solution: "Visualize cross-functional timelines and dependencies.", features: ['Portfolio View', 'Task Dependencies', 'Auto-Assign'] },
-  { id: 'ms365', name: 'Microsoft 365', icon: '/companylogo/microsoft.webp', tagline: 'Enterprise Scale', problem: "Legacy enterprise data is often siloed in Excel.", solution: "Bring the power of Excel/Outlook into the modern stack.", features: ['Excel Live Sync', 'Outlook Integ', 'Teams Connect'] },
-  { id: 'clickup', name: 'ClickUp', icon: '/companylogo/clickup.png', tagline: 'The Everything App', problem: "Disconnected from specialized vertical tools.", solution: "Bridge ClickUp with GitHub/Salesforce for a true 'one app' feel.", features: ['Doc Sync', 'Goal Tracking', 'Whiteboards'] },
-  { id: 'miro', name: 'Miro', icon: '/companylogo/miro.png', tagline: 'Visual Intelligence', problem: "Ideas on whiteboards aren't actionable.", solution: "Convert sticky notes into Jira tickets with a single click.", features: ['Board Embedding', 'Note-to-Task', 'Live Canvas'] },
-  { id: 'zoho', name: 'Zoho One', icon: '/companylogo/zoho.png', tagline: 'Business OS', problem: "CRM data is invisible to product teams.", solution: "Close the feedback loop by connecting tickets to backlogs.", features: ['CRM Sync', 'Desk Tickets', 'Finance Data'] },
+  { id: 'google', name: 'Google Workspace', icon: '/companylogo/google.webp', tagline: 'Everyday collaboration', problem: "Documents, files, and calendars are spread across teams with limited visibility.", solution: "Gaprio understands documents, meetings, and inbox activity together to support faster decisions and follow-ups.", features: ['Calendar Sync', 'Drive Access', 'SSO Login'] },
+  { id: 'slack', name: 'Slack', icon: '/companylogo/slack.png', tagline: 'Team communication', problem: "Important decisions get buried in channels. Context switching breaks focus.", solution: "Gaprio understands conversations and highlights decisions, summaries, and next steps directly from chats.", features: ['Smart Notifications', 'Slash Commands', 'Thread Sync'] },
+  { id: 'jira', name: 'Jira Software', icon: '/companylogo/jira.png', tagline: 'Engineering execution', problem: "Updates and dependencies require constant manual coordination.", solution: "Gaprio keeps Jira aligned with real discussions, improving visibility for both technical and non-technical teams.", features: ['Issue Tracking', 'Sprint Planning', 'DevOps View'] },
+  { id: 'asana', name: 'Asana', icon: '/companylogo/asana.png', tagline: 'Project Coordination', problem: "Tasks move between teams without shared background or clarity.", solution: "Gaprio connects tasks with conversations and documents so teams understand priorities and intent.", features: ['Portfolio View', 'Task Dependencies', 'Auto-Assign'] },
+  { id: 'ms365', name: 'Microsoft 365', icon: '/companylogo/microsoft.webp', tagline: 'Enterprise productivity', problem: "Critical data lives in spreadsheets and inboxes with little connection to execution tools.", solution: "Gaprio brings context to Outlook, Excel, and Teams, enabling faster drafting, reporting, and coordination.", features: ['Excel Live Sync', 'Outlook Integ', 'Teams Connect'] },
+  { id: 'clickup', name: 'ClickUp', icon: '/companylogo/clickup.png', tagline: 'Structured workflows', problem: "ClickUp often operates in isolation from engineering, sales, and external systems.", solution: "Gaprio bridges ClickUp with specialized tools to maintain continuity across workflows.", features: ['Doc Sync', 'Goal Tracking', 'Whiteboards'] },
+  { id: 'miro', name: 'Miro', icon: '/companylogo/miro.png', tagline: 'Visual collaboration', problem: "Ideas stay on whiteboards and rarely turn into action.", solution: "Gaprio converts visual inputs into structured tasks, notes, follow-ups, and tickets automatically.", features: ['Board Embedding', 'Note-to-Task', 'Live Canvas'] },
+  { id: 'zoho', name: 'Zoho WorkPlace', icon: '/companylogo/zoho.png', tagline: 'operations suite', problem: "Customer, finance, and product data remain disconnected across teams.", solution: "Gaprio connects operational data with execution workflows for better organizational alignment.", features: ['CRM Sync', 'Desk Tickets', 'Finance Data'] },
 ];
 
 const steps = [
-    { id: 1, title: "Identity & Registration", description: "Create your secure Gaprio ID. We verify your workspace eligibility instantly.", icon: ShieldCheck, tags: ["SSO Supported", "2FA"] },
-    { id: 2, title: "Ecosystem Handshake", description: "Link your primary workspace. Seamlessly integrate Google Workspace or Microsoft 365.", icon: Globe, tags: ["OAuth 2.0", "Read-Only"] },
-    { id: 3, title: "Channel Synchronization", description: "Plug in your communication layers. Connect Slack, Jira, and Asana.", icon: Cpu, tags: ["Webhooks", "Filtering"] },
-    { id: 4, title: "Dashboard Activation", description: "Your nervous system is ready. The dashboard lights up with unified data.", icon: LayoutGrid, tags: ["Analytics", "Zero Latency"] }
+    { id: 1, title: "Registration & SetUp", description: "Create your Gaprio workspace securely. Your organization and users are verified while respecting existing roles and access permissions.", icon: ShieldCheck, tags: ["SSO Supported", "2FA"] },
+    { id: 2, title: "Ecosystem Handshake", description: "Connect your primary workspace such as Google Workspace or Microsoft 365. Core identity, files, and calendars sync automatically.", icon: Globe, tags: ["OAuth 2.0", "Read-Only"] },
+    { id: 3, title: "Tool Synchronization", description: "Integrate communication and project tools like Slack, Jira, or Asana. Gaprio listens to activity and keeps information aligned across systems.", icon: Cpu, tags: ["Webhooks", "Filtering"] },
+    { id: 4, title: "Unified Dashboard", description: "Your connected stack comes together in one dashboard. Tasks, conversations, and documents appear with AI-driven insights and suggested actions.", icon: LayoutGrid, tags: ["Analytics", "Zero Latency"] }
 ];
 
 // --- COMPONENTS ---
@@ -164,17 +164,31 @@ const TimelineCard = ({ step, index, isLeft }) => {
             )} />
 
             <div className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-[#0a0a0a] p-8 hover:border-orange-500/30 transition-colors duration-500 backdrop-blur-sm">
+                
+                {/* 1. NUMBER: Kept on the "Inner" side (same side as text/timeline) */}
                 <span className={cn(
                     "absolute -top-4 text-[80px] font-bold text-zinc-900/50 font-mono transition-colors group-hover:text-orange-900/20",
-                    isLeft ? "right-4" : "left-4"
+                    isLeft ? "right-4" : "left-4" 
                 )}>
                     0{step.id}
                 </span>
 
-                <div className={cn("relative z-10 flex flex-col gap-4", isLeft ? "md:items-end" : "md:items-start")}>
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_4px_20px_-10px_rgba(255,255,255,0.1)]">
+                {/* Container for Content */}
+                {/* We use w-full to ensure the flex container spans the full card width, allowing 'self-start' to work */}
+                <div className={cn(
+                    "relative z-10 flex flex-col gap-4 w-full", 
+                    isLeft ? "md:items-end" : "md:items-start"
+                )}>
+                    
+                    {/* 2. ICON: Moved to the "Outer" side (Opposite to text/timeline) */}
+                    <div className={cn(
+                        "w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_4px_20px_-10px_rgba(255,255,255,0.1)]",
+                        // Logic: If Left Card -> Icon goes to Start (Left). If Right Card -> Icon goes to End (Right).
+                        isLeft ? "md:self-start" : "md:self-end"
+                    )}>
                         <step.icon className="w-6 h-6 text-orange-500" />
                     </div>
+
                     <div>
                         <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-50 transition-colors">{step.title}</h3>
                         <p className="text-zinc-400 leading-relaxed text-sm md:text-base">{step.description}</p>
@@ -185,7 +199,6 @@ const TimelineCard = ({ step, index, isLeft }) => {
         </motion.div>
     );
 };
-
 // --- TIMELINE SECTION ---
 const TimelineSection = () => {
     const containerRef = useRef(null);
@@ -214,7 +227,7 @@ const TimelineSection = () => {
                          viewport={{ once: true }}
                     >
                          <h2 className="text-sm font-bold text-orange-500 tracking-[0.3em] uppercase mb-3">How It Works</h2>
-                         <h3 className="text-4xl md:text-5xl font-bold text-white tracking-tight">The <span className="text-zinc-600">Nervous System</span></h3>
+                         <h3 className="text-4xl md:text-5xl font-bold text-zinc-600 tracking-tight">The Intelligence <span className="text-white"> System</span></h3>
                     </motion.div>
                 </div>
 
@@ -284,7 +297,7 @@ const IntegrationStack = () => {
                      </h3>
                      <div className="h-1 w-32 bg-gradient-to-r from-orange-500 to-transparent mb-10 md:mx-0 mx-auto" />
                      <p className="text-zinc-400 max-w-2xl text-xl md:text-2xl leading-relaxed md:mx-0 mx-auto font-light">
-                        Detailed breakdown of how Gaprio unlocks the hidden potential of your existing stack.
+                        A closer look at how Gaprio enhances the tools your teams already rely on.
                      </p>
                 </div>
 
@@ -405,7 +418,7 @@ export default function UnifiedPage() {
               transition={{ delay: 0.2, duration: 0.8 }}
               className="text-zinc-400 text-md md:text-lg max-w-2xl mx-auto leading-relaxed font-light"
             >
-              Gaprio turns your fragmented tools into a single, intelligent <span className="text-orange-500 font-medium">nervous system</span>.
+              Gaprio connects your existing tools into a single  <span className="text-orange-500 font-medium">Intelligent Layer</span> and turns them into a unified, coordinated system of work.
             </motion.p>
           </div>
 

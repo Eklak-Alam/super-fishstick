@@ -121,7 +121,7 @@ export default function CinematicFooter() {
                         </div>
 
                         <p className="text-zinc-400 text-lg leading-relaxed max-w-md mb-8 font-light">
-                            The central nervous system for your enterprise. We connect your fragmented tools into one intelligent workflow.
+                            The AI Operating System for Modern Enterprises. We unify tools, teams, and workflows into one intelligent workspace.
                         </p>
 
                         <div className="flex gap-4">

@@ -8,7 +8,9 @@ import {
   Code2, Activity, Lock, Database, 
   GitBranch, CheckCircle2, Globe, 
   ChevronRight, Server, Command, 
-  Layout, Search, Terminal
+  Layout, Search, Terminal,
+  ArrowRightCircle,
+  Code2Icon
 } from 'lucide-react';
 
 // --- DATA: 8 CORE INTEGRATIONS ---
@@ -17,8 +19,8 @@ const integrations = [
     id: 'slack',
     name: 'Slack',
     logo: '/companylogo/slack.png',
-    title: 'The Nerve Center',
-    desc: 'Turn Slack into a CLI. Gaprio listens for intent (e.g., "Schedule demo") and triggers workflows without leaving the chat.',
+    title: 'Team communication',
+    desc: 'Gaprio listens to conversations in Slack, detects intent, and triggers workflows directly from chat, helping teams take action without leaving the chat.',
     tech: 'Socket Mode',
     latency: '12ms',
     status: 'Operational',
@@ -29,8 +31,8 @@ const integrations = [
     id: 'miro',
     name: 'Miro',
     logo: '/companylogo/miro.png',
-    title: 'Visual Intelligence',
-    desc: 'Parses whiteboards for actionable items. Reads sticky notes from retrospectives and converts them into Jira tickets.',
+    title: 'Visual collaboration',
+    desc: 'Ideas should not stay on whiteboards. Gaprio understands Miro boards and helps turn discussions into tasks, notes, and follow-ups.',
     tech: 'REST API v2',
     latency: '85ms',
     status: 'Syncing',
@@ -41,8 +43,8 @@ const integrations = [
     id: 'asana',
     name: 'Asana',
     logo: '/companylogo/asana.png',
-    title: 'Dependency Graph',
-    desc: 'Visualizes blockers. If Design is delayed, Gaprio shifts the Engineering timeline and alerts the PM automatically.',
+    title: 'Project Coordination',
+    desc: 'Gaprio understands how work connects across teams. When priorities shift, timelines and dependencies update automatically.',
     tech: 'Graph API',
     latency: '24ms',
     status: 'Operational',
@@ -53,8 +55,8 @@ const integrations = [
     id: 'jira',
     name: 'Jira',
     logo: '/companylogo/jira.png',
-    title: 'Velocity Automator',
-    desc: 'Links Git commits to tickets. Predicts sprint velocity based on historical code churn and team capacity.',
+    title: 'Engineering execution',
+    desc: 'Engineering progress stays visible across the organization through real-time synchronization between planning and execution.',
     tech: 'Webhook',
     latency: '45ms',
     status: 'Operational',
@@ -65,8 +67,8 @@ const integrations = [
     id: 'google',
     name: 'Google Workspace',
     logo: '/companylogo/google.webp',
-    title: 'Semantic Context',
-    desc: 'Indexes Drive and Email into a private vector DB. Ask "What was the Q3 budget?" and get the exact cell reference.',
+    title: 'Everyday collaboration',
+    desc: 'Gaprio connects documents, emails, and spreadsheets into a unified knowledge layer that teams can query naturally.',
     tech: 'Vector Search',
     latency: '110ms',
     status: 'Indexing',
@@ -77,8 +79,8 @@ const integrations = [
     id: 'microsoft',
     name: 'Microsoft 365',
     logo: '/companylogo/microsoft.webp',
-    title: 'Legacy Bridge',
-    desc: 'Unlocks data in Excel/SharePoint. Acts as a translation layer, making legacy data accessible to modern AI agents.',
+    title: 'Enterprise productivity',
+    desc: 'Gaprio connects Outlook, Excel, and SharePoint into modern workflows, allowing legacy data to remain useful and actionable.',
     tech: 'Graph API',
     latency: '92ms',
     status: 'Operational',
@@ -89,8 +91,8 @@ const integrations = [
     id: 'zoho',
     name: 'Zoho One',
     logo: '/companylogo/zoho.png',
-    title: 'Revenue Operations',
-    desc: 'Closes the loop between Sales and Product. Won deals trigger automated onboarding sequences.',
+    title: 'operations suite',
+    desc: 'Customer activity connects directly to internal workflows, helping teams move from sales signals to delivery without manual handoffs.',
     tech: 'Deluge',
     latency: '150ms',
     status: 'Listening',
@@ -101,8 +103,8 @@ const integrations = [
     id: 'clickup',
     name: 'ClickUp',
     logo: '/companylogo/clickup.png',
-    title: 'Unified Task Layer',
-    desc: 'Consolidates tasks from 5+ platforms into one personalized ClickUp view. The single source of truth.',
+    title: 'Structured workflows',
+    desc: 'Work is scattered across platforms. Gaprio brings tasks together so teams see priorities clearly in one place.',
     tech: 'REST API',
     latency: '30ms',
     status: 'Operational',
@@ -194,12 +196,11 @@ const SmartTerminal = () => {
   );
 };
 
-// --- 2. HERO SECTION ---
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] lg:pt-44 pt-32 flex flex-col items-center justify-center pt-20 pb-32 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:pt-44 pt-32 flex flex-col items-center justify-start pb-32 overflow-hidden">
       
-      {/* Dynamic Backgrounds */}
+      {/* --- Dynamic Backgrounds --- */}
       {/* 1. Base Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#ffffff03_1px,transparent_1px),linear-gradient(to_right,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0" />
       
@@ -208,11 +209,12 @@ const HeroSection = () => {
 
       <div className="container mx-auto px-4 z-10 flex flex-col items-center text-center relative">
         
+        {/* --- Text Content --- */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center w-full"
         >
           
           <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[1.05] max-w-5xl mx-auto drop-shadow-2xl">
@@ -221,32 +223,49 @@ const HeroSection = () => {
           </h1>
 
           <p className="text-md md:text-lg text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Stop stitching tools together with brittle scripts. Gaprio provides a single, 
-            intelligent layer that understands context, executes code, and orchestrates 
-            your entire stack.
+            Stop stitching tools together with fragile workflows. Gaprio adds a single intelligent layer that understands context, coordinates actions, and orchestrates work across your entire stack.
           </p>
 
-          <div className="flex flex-row items-center justify-center gap-3 sm:gap-5 mb-24 w-full px-2">
-  <button className="flex-1 sm:flex-none h-12 sm:h-14 px-3 sm:px-8 rounded-full bg-gradient-to-b from-orange-500 to-orange-700 text-white font-bold text-xs sm:text-base hover:shadow-[0_0_40px_-5px_rgba(234,88,12,0.6)] transition-all flex items-center justify-center gap-2 group border border-orange-400/20 whitespace-nowrap">
-    Initialize System
-    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-  </button>
-  <button className="flex-1 sm:flex-none h-12 sm:h-14 px-3 sm:px-8 rounded-full bg-[#0a0a0a] text-white border border-white/10 font-bold text-xs sm:text-base hover:bg-white/5 transition-all flex items-center justify-center gap-2 backdrop-blur-sm whitespace-nowrap">
-    <Code2 size={16} className="text-zinc-500" /> View Documentation
-  </button>
-</div>
+          <div className="flex flex-row items-center justify-center gap-3 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
+            <button className="flex-1 sm:flex-none h-12 sm:h-14 px-4 sm:px-8 rounded-full bg-gradient-to-b from-orange-500 to-orange-700 text-white font-bold text-sm sm:text-base hover:shadow-[0_0_40px_-5px_rgba(234,88,12,0.6)] transition-all flex items-center justify-center gap-2 group border border-orange-400/20 whitespace-nowrap">
+              Initialize System
+              <ArrowRightCircle size={16} className="group-hover:translate-x-1 transition-transform" />
+            </button>
+            <button className="flex-1 sm:flex-none h-12 sm:h-14 px-4 sm:px-8 rounded-full bg-[#0a0a0a] text-white border border-white/10 font-bold text-sm sm:text-base hover:bg-white/5 transition-all flex items-center justify-center gap-2 backdrop-blur-sm whitespace-nowrap">
+              <Code2Icon size={16} className="text-zinc-500" /> View Docs
+            </button>
+          </div>
         </motion.div>
 
-        {/* FLOATING TERMINAL */}
+        {/* --- FLOATING DASHBOARD IMAGE --- */}
         <motion.div 
           initial={{ opacity: 0, y: 60, rotateX: 20 }}
           animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 1, delay: 0.3, type: "spring", stiffness: 100 }}
-          className="w-full max-w-4xl relative perspective-1000 group z-20"
+          transition={{ duration: 1, delay: 0.3, type: "spring", stiffness: 80, damping: 20 }}
+          className="w-full max-w-6xl relative perspective-1000 group z-20"
         >
-          {/* Backlight for Terminal */}
-          <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 via-purple-500/20 to-blue-500/20 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity duration-700" />
-          <SmartTerminal />
+          {/* Backlight Glow for Image */}
+          <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
+          
+          {/* Image Container (Browser Window Look) */}
+          <div className="relative rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-sm transition-transform duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-1">
+             
+             {/* The Image */}
+             <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-zinc-950 aspect-[16/9] sm:aspect-[16/10]">
+               <img 
+                 src="/dashboard.jpeg" 
+                 alt="Gaprio Dashboard Interface" 
+                 className="w-full h-full object-cover"
+               />
+               
+               {/* Optional: Glossy Sheen Overlay */}
+               <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none mix-blend-overlay" />
+             </div>
+
+             {/* Inner Border Ring for definition */}
+             <div className="absolute inset-0 rounded-xl sm:rounded-2xl ring-1 ring-inset ring-white/5 pointer-events-none" />
+          </div>
+
         </motion.div>
 
       </div>
@@ -281,10 +300,10 @@ const UnifiedGrid = () => {
                         transition={{ delay: 0.1 }}
                         className="text-4xl md:text-5xl font-bold mb-6 text-white"
                     >
-                        Integrations that actually work.
+                        Integrations That Actually Work.
                     </motion.h3>
                     <p className="text-zinc-400 text-lg">
-                        Gaprio doesn't just display data; it acts on it using deep, bi-directional API connections across your entire stack.
+                        Gaprio does more than surface information. It understands intent and takes action through deep, two-way integrations across your tools.
                     </p>
                 </div>
 
@@ -358,29 +377,29 @@ const NeuralArchitecture = () => {
   const steps = [
     {
       id: 0,
-      title: "Ingest & Normalize",
-      desc: "Sanitizes data streams from connected APIs into a standard JSON schema.",
+      title: "Ingest and Organize",
+      desc: "Collects activity from connected tools and structures it into a consistent internal format.",
       icon: Database,
       code: `// 1. Data Ingestion\nconst rawData = await slack.history.get({\n  channel: "C012345",\n  limit: 100\n});\n// Normalize to internal schema\nconst cleanEvents = rawData.map(normalize);\nreturn cleanEvents;`
     },
     {
       id: 1,
-      title: "Vector Embedding",
-      desc: "Passes textual data through embedding models to create a semantic map.",
+      title: "Semantic Understanding",
+      desc: "Builds a shared understanding of conversations, documents, and decisions across your workspace.",
       icon: Brain,
       code: `// 2. Semantic Embedding\nconst vector = await openai.embed({\n  model: "text-embedding-3-large",\n  input: userQuery\n});\n// Upsert to Pinecone/Weaviate\nawait db.vectors.upsert({\n  id: "evt_992",\n  values: vector\n});`
     },
     {
       id: 2,
-      title: "Recursive Planning",
-      desc: "The Agent breaks requests down into atomic, executable steps.",
+      title: "Action Planning",
+      desc: "Breaks requests into clear, reviewable, and executable steps before taking action.",
       icon: GitBranch,
       code: `// 3. Chain of Thought\nconst plan = [\n  { step: "search_users", query: "marketing" },\n  { step: "filter_active", status: "true" },\n  { step: "compose_msg", template: "invite" }\n];\nawait executor.run(plan);`
     },
     {
       id: 3,
-      title: "Deterministic Action",
-      desc: "Executes plans via sandboxed API calls with rollback capabilities.",
+      title: "Controlled Execution",
+      desc: "Executes tasks safely with full traceability and human oversight.",
       icon: ShieldCheck,
       code: `// 4. Safe Execution\ntry {\n  const result = await api.call(endpoint, payload);\n  await auditLog.write({\n    action: "create_invite",\n    status: "success" \n  });\n} catch (err) {\n  await rollback.trigger(transactionId);\n}`
     }
@@ -391,7 +410,7 @@ const NeuralArchitecture = () => {
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div className="mb-16">
           <h2 className="text-orange-500 font-mono text-sm tracking-widest uppercase mb-3">Under the Hood</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white">Neural Architecture</h3>
+          <h3 className="text-4xl md:text-5xl font-bold text-white">Intelligence, Explained</h3>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -497,7 +516,7 @@ const EnterpriseSpecs = () => {
     <section className="pt-24 pb-10 relative">
       <div className="container mx-auto px-4 max-w-6xl relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Enterprise Grade Security</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Security Built Into Every Layer</h2>
           <p className="text-zinc-400 max-w-2xl mx-auto">
             Built for organizations where data privacy is non-negotiable.
           </p>
@@ -508,9 +527,9 @@ const EnterpriseSpecs = () => {
                <ShieldCheck className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
              </div>
              <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">SOC2 Type II</h3>
+               <h3 className="text-xl font-bold text-white mb-2">Permission Aware</h3>
                <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 Strict data isolation. Your proprietary data never leaves your VPC. We adhere to the strictest compliance standards.
+                 Gaprio respects existing roles and access rules. It never sees or acts on data users are not allowed to access.
                </p>
                <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
                  <div className="h-full bg-green-500 w-full" />
@@ -526,9 +545,9 @@ const EnterpriseSpecs = () => {
                <Activity className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
              </div>
              <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">99.99% Uptime</h3>
+               <h3 className="text-xl font-bold text-white mb-2">Human-in-the-Loop Control</h3>
                <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 Redundant edge nodes ensure Gaprio is always listening. Failover systems activate in under 50ms.
+                 No critical action is taken without review. Teams stay in control of approvals, execution, and outcomes.
                </p>
                <div className="flex gap-1 mt-auto">
                   {[...Array(20)].map((_,i) => (
@@ -548,9 +567,9 @@ const EnterpriseSpecs = () => {
                <Lock className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
              </div>
              <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">AES-256 Encryption</h3>
+               <h3 className="text-xl font-bold text-white mb-2">Workspace Isolation</h3>
                <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 All data is encrypted at rest and in transit. Keys are managed via AWS KMS with automatic rotation policies.
+                 Every action is logged and traceable. Workflows run in isolated environments to prevent unintended impact.
                </p>
                <div className="flex items-center gap-3 p-3 rounded bg-zinc-900/50 border border-white/5">
                   <div className="w-2 h-2 rounded-full bg-green-500" />
@@ -574,11 +593,11 @@ const CTASection = () => {
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">
           Ready to deploy the <br /> 
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Neural Layer?</span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Intelligence Layer?</span>
         </h2>
         
         <p className="text-xl text-zinc-400 mb-10">
-          Join 500+ engineering teams automating their workflows today.
+          Start with the tools you already use and let Gaprio coordinate the rest.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
@@ -586,7 +605,7 @@ const CTASection = () => {
             Get Started <ArrowRight size={20} />
           </button>
           <button className="h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
-            Explore Integrations <Globe size={20} className="text-zinc-500" />
+             <Globe size={20} className="text-zinc-500" /> Explore Integrations
           </button>
         </div>
       </div>

@@ -227,7 +227,7 @@ const HeroSection = () => {
             </span>
           </h1>
 
-          <p className="text-md md:text-lg text-zinc-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-md md:text-lg text-zinc-400 mb-10 max-w-3xl mx-auto leading-relaxed">
             Stop stitching tools together with fragile workflows. Gaprio adds a single intelligent layer that understands context, coordinates actions, and orchestrates work across your entire stack.
           </p>
 
@@ -515,78 +515,157 @@ const NeuralArchitecture = () => {
   );
 };
 
-// --- 5. SPECS & TRUST ---
 const EnterpriseSpecs = () => {
   return (
-    <section className="pt-24 pb-10 relative">
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Security Built Into Every Layer</h2>
-          <p className="text-zinc-400 max-w-2xl mx-auto">
-            Built for organizations where data privacy is non-negotiable.
-          </p>
+    <section className="py-32 relative bg-[#050201] overflow-hidden">
+      
+      {/* Background Ambience */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-800/20 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        
+        {/* Section Header */}
+        <div className="text-center mb-20">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight"
+          >
+            Security Built Into <span className="text-zinc-500">Every Layer</span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed"
+          >
+            Built for organizations where data privacy is non-negotiable. 
+            SOC2 Type II compliant architecture by default.
+          </motion.p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="group relative p-8 bg-[#0a0a0a] rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all duration-300 overflow-hidden">
-             <div className="absolute top-0 right-0 p-2 opacity-50">
-               <ShieldCheck className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
-             </div>
-             <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">Permission Aware</h3>
-               <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 Gaprio respects existing roles and access rules. It never sees or acts on data users are not allowed to access.
-               </p>
-               <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden">
-                 <div className="h-full bg-green-500 w-full" />
-               </div>
-               <div className="flex justify-between mt-2 text-[10px] text-zinc-500 font-mono uppercase">
-                  <span>Compliance</span>
-                  <span>Verified</span>
-               </div>
-             </div>
-          </div>
-          <div className="group relative p-8 bg-[#0a0a0a] rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all duration-300 overflow-hidden">
-             <div className="absolute top-0 right-0 p-2 opacity-50">
-               <Activity className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
-             </div>
-             <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">Human-in-the-Loop Control</h3>
-               <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 No critical action is taken without review. Teams stay in control of approvals, execution, and outcomes.
-               </p>
-               <div className="flex gap-1 mt-auto">
-                  {[...Array(20)].map((_,i) => (
-                    <div key={i} className="h-6 flex-1 bg-green-900/40 rounded-sm overflow-hidden">
-                       <div className="h-full bg-green-500 animate-pulse opacity-80" style={{ animationDelay: `${i * 0.1}s` }} />
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          
+          {/* --- CARD 1: Permission Aware --- */}
+          <SpecCard delay={0.1}>
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-800 to-black border border-white/10 flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                  <ShieldCheck className="text-orange-500" size={28} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Permission Aware</h3>
+                <p className="text-zinc-400 leading-relaxed mb-8">
+                  Gaprio respects existing roles and rules. It acts strictly within the user's authorized scope, ensuring zero privilege escalation.
+                </p>
+              </div>
+
+              {/* Visual Element */}
+              <div className="bg-black/40 rounded-xl p-4 border border-white/5 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-mono text-zinc-500 uppercase">Access Control</span>
+                  <CheckCircle2 size={14} className="text-green-500" />
+                </div>
+                <div className="flex gap-2">
+                   <span className="px-2 py-1 rounded bg-green-500/10 text-green-400 text-[10px] font-mono border border-green-500/20">Read: Granted</span>
+                   <span className="px-2 py-1 rounded bg-green-500/10 text-green-400 text-[10px] font-mono border border-green-500/20">Write: Granted</span>
+                </div>
+              </div>
+            </div>
+          </SpecCard>
+
+          {/* --- CARD 2: Human-in-the-Loop --- */}
+          <SpecCard delay={0.2}>
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-800 to-black border border-white/10 flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                  <Activity className="text-orange-500" size={28} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Human-in-the-Loop</h3>
+                <p className="text-zinc-400 leading-relaxed mb-8">
+                  Critical actions require approval. Teams retain full control over execution, with the ability to rollback at any stage.
+                </p>
+              </div>
+
+              {/* Visual Element: Pulse Graph */}
+              <div className="bg-black/40 rounded-xl p-4 border border-white/5 backdrop-blur-sm relative overflow-hidden">
+                 <div className="absolute top-0 right-0 p-3">
+                    <div className="flex items-center gap-2">
+                        <span className="relative flex h-2 w-2">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                        </span>
+                        <span className="text-[10px] font-mono text-orange-400 uppercase tracking-wider">Awaiting Input</span>
                     </div>
-                  ))}
-               </div>
-               <div className="flex justify-between mt-2 text-[10px] text-zinc-500 font-mono uppercase">
-                  <span>Status</span>
-                  <span className="text-green-500">Operational</span>
-               </div>
-             </div>
-          </div>
-          <div className="group relative p-8 bg-[#0a0a0a] rounded-2xl border border-white/5 hover:border-orange-500/30 transition-all duration-300 overflow-hidden">
-             <div className="absolute top-0 right-0 p-2 opacity-50">
-               <Lock className="text-zinc-700 group-hover:text-orange-500 transition-colors" size={80} strokeWidth={1} />
-             </div>
-             <div className="relative z-10">
-               <h3 className="text-xl font-bold text-white mb-2">Workspace Isolation</h3>
-               <p className="text-sm text-zinc-400 leading-relaxed mb-6">
-                 Every action is logged and traceable. Workflows run in isolated environments to prevent unintended impact.
-               </p>
-               <div className="flex items-center gap-3 p-3 rounded bg-zinc-900/50 border border-white/5">
-                  <div className="w-2 h-2 rounded-full bg-green-500" />
-                  <span className="text-xs font-mono text-zinc-300">TLS 1.3 / SHA-256</span>
-               </div>
-             </div>
-          </div>
+                 </div>
+                 
+                 <div className="flex items-end gap-[2px] h-8 mt-4 opacity-50">
+                    {[40, 60, 30, 80, 50, 90, 20, 40, 70, 45, 60, 30, 80].map((h, i) => (
+                        <div key={i} style={{ height: `${h}%` }} className="flex-1 bg-zinc-600 rounded-sm" />
+                    ))}
+                 </div>
+              </div>
+            </div>
+          </SpecCard>
+
+          {/* --- CARD 3: Workspace Isolation --- */}
+          <SpecCard delay={0.3}>
+            <div className="flex flex-col h-full justify-between">
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-zinc-800 to-black border border-white/10 flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform duration-500">
+                  <Lock className="text-orange-500" size={28} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Workspace Isolation</h3>
+                <p className="text-zinc-400 leading-relaxed mb-8">
+                  Workflows run in sandboxed environments. Data is encrypted at rest (AES-256) and in transit (TLS 1.3).
+                </p>
+              </div>
+
+              {/* Visual Element: Code/Encryption */}
+              <div className="bg-black/40 rounded-xl p-4 border border-white/5 backdrop-blur-sm font-mono text-[10px] text-zinc-500">
+                 <div className="flex items-center gap-2 mb-2 text-zinc-400">
+                    <Terminal size={12} />
+                    <span>encrypt_stream.sh</span>
+                 </div>
+                 <div className="space-y-1">
+                    <p><span className="text-purple-400">const</span> cipher = <span className="text-blue-400">"AES-256-GCM"</span>;</p>
+                    <p><span className="text-purple-400">const</span> hash = <span className="text-yellow-600">"SHA-256"</span>;</p>
+                    <p className="text-green-500/80 mt-2"> Secure Connection Established</p>
+                 </div>
+              </div>
+            </div>
+          </SpecCard>
+
         </div>
       </div>
     </section>
   );
 };
+
+// Reusable Card Wrapper with Hover Effects
+const SpecCard = ({ children, delay }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-10%" }}
+      transition={{ duration: 0.5, delay }}
+      className="group relative p-8 md:p-10 rounded-3xl bg-zinc-900/30 border border-white/10 hover:border-orange-500/30 transition-all duration-500 backdrop-blur-sm overflow-hidden min-h-[420px] hover:-translate-y-2 hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]"
+    >
+      {/* Hover Gradient Effect */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      <div className="absolute -right-10 -top-10 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none group-hover:translate-x-0" />
+      
+      <div className="relative z-10 h-full">
+        {children}
+      </div>
+    </motion.div>
+  );
+};
+
 
 // --- 7. CTA SECTION ---
 const CTASection = () => {
@@ -594,9 +673,6 @@ const CTASection = () => {
     <section className="relative py-32 overflow-hidden flex flex-col items-center justify-center border-t border-white/10 bg-[#020202]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-900/20 via-black to-black" />
       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50" />
-              <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
 
       <div className="relative z-10 text-center px-4 max-w-3xl">
         <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">

@@ -10,7 +10,8 @@ import {
   ChevronRight, Server, Command, 
   Layout, Search, Terminal,
   ArrowRightCircle,
-  Code2Icon
+  Code2Icon,
+  BookOpen
 } from 'lucide-react';
 
 // --- DATA: 8 CORE INTEGRATIONS ---
@@ -232,46 +233,77 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-row items-center justify-center gap-3 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
-            <button className="flex-1 sm:flex-none h-12 sm:h-14 px-4 sm:px-8 rounded-full bg-gradient-to-b from-orange-500 to-orange-700 text-white font-bold text-sm sm:text-base hover:shadow-[0_0_40px_-5px_rgba(234,88,12,0.6)] transition-all flex items-center justify-center gap-2 group border border-orange-400/20 whitespace-nowrap">
-              Initialize System
-              <ArrowRightCircle size={16} className="group-hover:translate-x-1 transition-transform" />
+            <button
+              suppressHydrationWarning={true} // <--- THIS LINE FIXES THE ERROR
+              className="
+            group relative h-12 px-8 rounded-3xl
+            bg-gradient-to-t from-orange-600 to-orange-500 
+            hover:from-orange-500 hover:to-orange-600 cursor-pointer
+            border border-orange-400/20
+            text-white font-medium text-sm tracking-wide
+            flex items-center justify-center gap-2
+            w-full sm:w-auto min-w-[160px]
+            transition-all duration-300 ease-out
+        "
+            >
+              <span>Initialize System</span>
+              <ArrowRight
+                size={16}
+                className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300"
+              />
             </button>
-            <button className="flex-1 sm:flex-none h-12 sm:h-14 px-4 sm:px-8 rounded-full bg-[#0a0a0a] text-white border border-white/10 font-bold text-sm sm:text-base hover:bg-white/5 transition-all flex items-center justify-center gap-2 backdrop-blur-sm whitespace-nowrap">
-              <Code2Icon size={16} className="text-zinc-500" /> View Docs
-            </button>
+            <div 
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group"
+            >
+              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
+
+              <span
+                className="
+                              inline-flex h-full w-full items-center justify-center rounded-full 
+                              bg-[#050201] px-8 text-sm font-medium text-zinc-400 
+                              backdrop-blur-3xl 
+                              group-hover:text-white group-hover:bg-[#0f0a05] 
+                              transition-all duration-300 gap-2
+                          "
+              >
+                View Documentation
+                <BookOpen
+                  size={16}
+                  className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300"
+                />
+              </span>
+            </div>
           </div>
         </motion.div>
 
         {/* --- FLOATING DASHBOARD IMAGE --- */}
-        <motion.div 
-          initial={{ opacity: 0, y: 60, rotateX: 20 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 1, delay: 0.3, type: "spring", stiffness: 80, damping: 20 }}
-          className="w-full max-w-6xl relative perspective-1000 group z-20"
-        >
-          {/* Backlight Glow for Image */}
-          <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-700" />
+        <motion.div
+      initial={{ opacity: 0, y: 80, rotateX: 25 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0 }}
+      transition={{ duration: 1.2, delay: 0.3, type: "spring", stiffness: 60, damping: 25 }}
+      className="w-full max-w-7xl relative perspective-1000 group z-20 mx-auto px-4 sm:px-6"
+    >
+      <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-700 will-change-[opacity]" />
+
+      {/* Container Height: h-[43vw] as requested.
+          Constraints: min-h and max-h to keep it sane on mobile/ultra-wide.
+      */}
+      <div className="relative w-full h-[35vw] min-h-[300px] max-h-[850px] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-all duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-2 group-hover:shadow-orange-500/10 group-hover:border-white/20">
+
+        <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-zinc-950 ring-1 ring-white/5 flex items-center justify-center">
           
-          {/* Image Container (Browser Window Look) */}
-          <div className="relative rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-sm transition-transform duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-1">
-             
-             {/* The Image */}
-             <div className="relative overflow-hidden rounded-lg sm:rounded-xl bg-zinc-950 aspect-[16/9] sm:aspect-[16/10]">
-               <img 
-                 src="/dashboard.jpeg" 
-                 alt="Gaprio Dashboard Interface" 
-                 className="w-full h-full object-cover"
-               />
-               
-               {/* Optional: Glossy Sheen Overlay */}
-               <div className="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none mix-blend-overlay" />
-             </div>
+          <img
+            src="/dashboard.png" 
+            alt="Gaprio Dashboard Interface"
+            // CHANGED HERE: object-contain ensures the FULL image is visible.
+            className="w-full h-full object-contain"
+          />
 
-             {/* Inner Border Ring for definition */}
-             <div className="absolute inset-0 rounded-xl sm:rounded-2xl ring-1 ring-inset ring-white/5 pointer-events-none" />
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none mix-blend-overlay" />
+        </div>
 
-        </motion.div>
+      </div>
+    </motion.div>
 
       </div>
             <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
@@ -522,8 +554,8 @@ const EnterpriseSpecs = () => {
     <section className="py-32 relative bg-[#050201] overflow-hidden">
       
       {/* Background Ambience */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-800/20 rounded-full blur-[100px] pointer-events-none" />
+      {/* <div className="absolute top-0 left-1/4 w-96 h-96 bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-zinc-800/20 rounded-full blur-[100px] pointer-events-none" /> */}
 
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         
@@ -533,9 +565,9 @@ const EnterpriseSpecs = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight"
+            className="text-4xl md:text-5xl font-bold text-zinc-500 mb-6 tracking-tight"
           >
-            Security Built Into <span className="text-zinc-500">Every Layer</span>
+            Security Built Into <span className="text-white">Every Layer</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -544,8 +576,7 @@ const EnterpriseSpecs = () => {
             transition={{ delay: 0.1 }}
             className="text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed"
           >
-            Built for organizations where data privacy is non-negotiable. 
-            SOC2 Type II compliant architecture by default.
+            Built for organizations where data privacy is non-negotiable.
           </motion.p>
         </div>
 

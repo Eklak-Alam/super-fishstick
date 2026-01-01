@@ -9,7 +9,8 @@ import {
   Brain, Layers, Clock, Zap, Building2,
   Globe, Fingerprint, FileKey, Activity,
   Search, GitBranch, AlertCircle,
-  AlertTriangle
+  AlertTriangle,
+  BookOpen
 } from 'lucide-react';
 
 // --- 1. HERO SECTION: THE NERVE CENTER ---
@@ -54,12 +55,46 @@ const EnterpriseHero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
           >
-            <button className="px-10 py-4 bg-orange-600 text-white rounded-xl font-bold hover:bg-orange-500 transition-all shadow-[0_0_40px_rgba(234,88,12,0.3)] flex items-center justify-center gap-2">
-              Book Architecture Review <ArrowRight size={18} />
-            </button>
-            <button className="px-10 py-4 bg-white/5 text-white border border-white/10 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2 group">
-              <FileKey size={18} className="text-zinc-400 group-hover:text-white transition-colors"/> View Security Specs
-            </button>
+            <button
+                          suppressHydrationWarning={true} // <--- THIS LINE FIXES THE ERROR
+                          className="
+                        group relative h-12 px-8 rounded-3xl
+                        bg-gradient-to-t from-orange-600 to-orange-500 
+                        hover:from-orange-500 hover:to-orange-600 cursor-pointer
+                        border border-orange-400/20
+                        text-white font-medium text-sm tracking-wide
+                        flex items-center justify-center gap-2
+                        w-full sm:w-auto min-w-[160px]
+                        transition-all duration-300 ease-out
+                    "
+                        >
+                          Book Architecture Review
+                          <ArrowRight
+                            size={16}
+                            className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300"
+                          />
+                        </button>
+            <div
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group"
+            >
+              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
+
+              <span
+                className="
+                              inline-flex h-full w-full items-center justify-center rounded-full 
+                              bg-[#050201] px-8 text-sm font-medium text-zinc-400 
+                              backdrop-blur-3xl 
+                              group-hover:text-white group-hover:bg-[#0f0a05] 
+                              transition-all duration-300 gap-2
+                          "
+              >
+                View Documentation
+                <BookOpen
+                  size={16}
+                  className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300"
+                />
+              </span>
+            </div>
           </motion.div>
         </div>
 
@@ -137,6 +172,8 @@ const EnterpriseHero = () => {
           </div>
         </motion.div> */}
       </div>
+            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
+
     </section>
   );
 };

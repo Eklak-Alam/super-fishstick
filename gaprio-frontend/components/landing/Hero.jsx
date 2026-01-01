@@ -163,15 +163,15 @@ export default function Hero() {
             <button
               suppressHydrationWarning={true} // <--- THIS LINE FIXES THE ERROR
               className="
-            group relative h-12 px-8 rounded-3xl
-            bg-gradient-to-t from-orange-600 to-orange-500 
-            hover:from-orange-500 hover:to-orange-600 cursor-pointer
-            border border-orange-400/20
-            text-white font-medium text-sm tracking-wide
-            flex items-center justify-center gap-2
-            w-full sm:w-auto min-w-[160px]
-            transition-all duration-300 ease-out
-        "
+                          group relative h-12 px-8 rounded-3xl
+                          bg-gradient-to-t from-orange-600 to-orange-500 
+                          hover:from-orange-500 hover:to-orange-600 cursor-pointer
+                          border border-orange-400/20
+                          text-white font-medium text-sm tracking-wide
+                          flex items-center justify-center gap-2
+                          w-full sm:w-auto min-w-[160px]
+                          transition-all duration-300 ease-out
+                      "
             >
               <span>Start Free Trial</span>
               <ArrowRight

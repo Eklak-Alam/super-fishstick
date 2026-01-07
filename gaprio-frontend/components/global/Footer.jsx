@@ -1,498 +1,180 @@
-
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Link from "next/link";
-import Image from "next/image"; // Added Image import
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import {
-  Twitter,
-  Instagram,
-  ArrowUpRight,
-  ArrowUp,
-  Linkedin,
-} from "lucide-react";
-
-// Register GSAP Plugin
-if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import Image from "next/image";
+import { ArrowUpRight, Instagram, Twitter, Linkedin, Facebook } from "lucide-react";
 
 export default function CinematicFooter() {
-  const containerRef = useRef(null);
-  const trackRef = useRef(null);
+  const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  const navLinks = [
+    { label: 'How It Works', href: '/integration' },
+    { label: 'Platforms', href: '/' },
+    { label: 'Features', href: '/features' },
+    { label: 'Team', href: '#team' },
+  ];
 
-  useEffect(() => {
-    // GSAP Animation only for Desktop (min-width: 1024px)
-    let mm = gsap.matchMedia();
-
-    mm.add("(min-width: 1024px)", () => {
-      const track = trackRef.current;
-      
-      // Calculate scroll amount: Total Width - One Viewport
-      const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          pin: true,           
-          scrub: 1,            
-          start: "top top",
-          end: "+=3000",       
-          invalidateOnRefresh: true, 
-        },
-      });
-
-      tl.to(track, {
-        x: getScrollAmount,
-        ease: "none", 
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
 
   return (
-    <div 
-      ref={containerRef} 
-      className="relative bg-[#020202] text-white overflow-hidden lg:h-screen z-50 flex flex-col"
-    >
+    <footer className="relative w-full bg-black text-white overflow-hidden pt-10 pb-8 px-6 md:px-12 lg:px-20 border-t border-white/5">
       
-      {/* --- BACKGROUND (Lighting from Bottom) --- */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+      {/* --- FLASHY BACKGROUND EFFECTS --- */}
+      <div className="absolute inset-0 pointer-events-none z-0">
         
-        {/* 1. The Bottom Horizon Glow (Rising from bottom) */}
-        <div className="absolute bottom-[-10%] left-[-10%] right-[-10%] h-[50vh] bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-orange-900/30 via-[#050505] to-transparent blur-[80px]" />
-        
-        {/* 2. Secondary Amber Wash (Subtle) */}
-        <div className="absolute bottom-0 left-1/4 w-1/2 h-[30vh] bg-amber-700/10 blur-[100px] rounded-full" />
+        {/* 1. Deep Background Mesh */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-900/50 via-[#000000] to-[#000000]" />
 
-        {/* 3. Texture Overlay */}
-        <div className="absolute inset-0 opacity-[0.04] bg-[url('/noise.png')] mix-blend-overlay" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:60px_60px]" />
+        {/* 2. The "Flashy" Orange Glow from Bottom */}
+        <div className="absolute bottom-[-10%] left-1/2 -translate-x-1/2 w-[80%] h-[600px] 
+                        bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] 
+                        from-orange-600/40 via-orange-900/10 to-transparent 
+                        blur-[100px] mix-blend-screen" />
+        
+        {/* 3. Intense Amber Hotspot behind the text */}
+        <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-[40%] h-[300px] 
+                        bg-orange-600/20 blur-[80px] rounded-full mix-blend-lighten" />
+
+        {/* 4. Cinematic Noise Overlay */}
+        <div className="absolute inset-0 opacity-[0.05] mix-blend-overlay" 
+             style={{ backgroundImage: 'url("https://grainy-gradients.vercel.app/noise.svg")' }} />
       </div>
 
-      {/* --- TRACK --- */}
-      <div ref={trackRef} className="flex flex-col lg:flex-row lg:h-full lg:w-max relative z-10">
+      {/* --- CONTENT CONTAINER --- */}
+      <div className="relative z-10 flex flex-col justify-between min-h-[600px]">
         
-        {/* === SECTION 1: BRAND INTRO (Desktop Only) === */}
-        <section className="hidden lg:flex w-screen h-screen flex-col justify-center items-center relative shrink-0 border-r border-white/5">
-            <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent" />
-            
-            <div className="relative z-10 flex flex-col items-center">
-                {/* THE TEXT: Standard Professional Gradient (Metallic)
-                   From White -> Zinc-300 -> Zinc-600.
-                   It looks premium without being overwhelmingly colorful.
-                */}
-                <h1 className="font-black tracking-tighter text-transparent bg-clip-text 
-                               bg-gradient-to-b from-white via-zinc-400 to-zinc-900
-                               text-[24vw] leading-[0.85] select-none text-center drop-shadow-2xl 
-                               p-12 filter contrast-125">
-                    GAPRIO
-                </h1>
+        {/* === TOP SECTION: Headlines & Nav === */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-0 w-full mb-20">
+          
+          {/* LEFT: Heading & Email */}
+          <div className="flex flex-col items-start max-w-2xl">
+            {/* Animated Pill Label */}
+            <div className="flex items-center gap-3 mb-8 group cursor-default">
+               <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-500 opacity-75 duration-1000"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </span>
+               <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-[0.3em] group-hover:text-orange-400 transition-colors duration-300">
+                 Get in touch
+               </span>
             </div>
-        </section>
+            
+            <h2 className="text-4xl md:text-6xl lg:text-7xl font-medium leading-[0.95] tracking-tight text-white mb-12">
+              <span className="block text-white transition-colors duration-700">Ready to start?</span>
+              <span className="block mt-2 bg-gradient-to-br from-white via-white to-zinc-500 bg-clip-text">
+                Let's scale together.
+              </span>
+            </h2>
 
-        {/* === SECTION 2: CONTENT === */}
-        <section className="w-full lg:w-screen lg:h-screen flex items-center shrink-0 bg-transparent border-l border-white/10 relative py-20 lg:py-0">
-            <div className="w-full max-w-7xl mx-auto px-6 md:px-10">
+            <div className="mt-auto">
+              <a 
+                href="mailto:contact@gaprio.in" 
+                className="group relative flex items-center gap-3 text-xl md:text-2xl text-zinc-300 hover:text-white transition-all duration-500"
+              >
+                {/* Text underline animation */}
+                <span className="relative z-10">
+                    contact@gaprio.in
+                    <span className="absolute left-0 bottom-0 w-0 h-[1px] bg-gradient-to-r from-orange-500 to-amber-300 transition-all duration-300 group-hover:w-full"></span>
+                </span>
                 
-                {/* MAIN GRID */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
-                    
-                    {/* 1. BRAND COLUMN (Left) */}
-                    <div className="lg:col-span-5 flex flex-col items-start justify-center">
-                         
-                         {/* LOGO REPLACEMENT */}
-                         <div className="mb-8 relative">
-                            <Image
-                                src="/logo2.png"
-                                alt="Gaprio Logo"
-                                width={600}
-                                height={180}
-                                priority
-                                className="object-contain h-10 sm:h-8 md:h-8 lg:h-10 xl:h-12 w-auto"
-                            />
-                        </div>
+                {/* Arrow Circle Animation */}
+                <div className="relative flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-white/5 overflow-hidden group-hover:border-orange-500/50 group-hover:bg-orange-500/10 transition-all duration-500">
+                    <ArrowUpRight className="w-5 h-5 text-white absolute transition-all duration-300 group-hover:translate-x-5 group-hover:-translate-y-5" />
+                    <ArrowUpRight className="w-5 h-5 text-orange-400 absolute -translate-x-5 translate-y-5 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0" />
+                </div>
+              </a>
+            </div>
+          </div>
 
-                        <p className="text-zinc-400 text-lg leading-relaxed max-w-md mb-8 font-light">
-                            The AI Operating System for Modern Enterprises. We unify tools, teams, and workflows into one intelligent workspace.
-                        </p>
+          {/* RIGHT: Navigation with "Liquid" Hover Effects */}
+          <div className="flex flex-col justify-end items-start lg:items-end">
+            <nav className="flex flex-col items-start lg:items-end gap-3">
+              {navLinks.map(({ label, href }) => (
+                <Link
+                  key={label}
+                  href={href}
+                  className="group relative text-3xl md:text-4xl font-light tracking-tight py-1"
+                >
+                  {/* Text */}
+                  <span className="
+                    relative z-10 block text-zinc-400
+                    transition-all duration-500
+                    group-hover:bg-clip-text
+                    group-hover:text-transparent
+                    group-hover:bg-gradient-to-r
+                    group-hover:from-orange-400
+                    group-hover:to-amber-300
+                  ">
+                    {label}
+                  </span>
 
-                        <div className="flex gap-4">
-                            <SocialLink Icon={Twitter} href="https://x.com/Gaprio_Labs" />
-                            <SocialLink Icon={Instagram} href="https://instagram.com/gaprio_labs" />
-                            <SocialLink Icon={Linkedin} href="#" />
-                        </div>
-                    </div>
+                  {/* Underline */}
+                  <span className="
+                    absolute left-0 bottom-0 h-[2px] w-0
+                    bg-gradient-to-r from-orange-400 to-amber-300
+                    transition-all duration-500 ease-out
+                    group-hover:w-full
+                  " />
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
 
-                    {/* 2. LINKS COLUMNS (Right) */}
-                    <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-12 mt-4 lg:mt-0 items-center">
-                        
-                        <div className="flex flex-col gap-6">
-                            <h4 className="text-orange-500 font-bold tracking-wide text-xs uppercase opacity-90">Platform</h4>
-                            <ul className="space-y-4">
-                                <FooterLink>Intelligence</FooterLink>
-                                <FooterLink>Workflows</FooterLink>
-                                <FooterLink>Integrations</FooterLink>
-                                <FooterLink>Pricing</FooterLink>
-                            </ul>
-                        </div>
-
-                        <div className="flex flex-col gap-6">
-                            <h4 className="text-orange-500 font-bold tracking-wide text-xs uppercase opacity-90">Legal</h4>
-                            <ul className="space-y-4">
-                                <FooterLink>Privacy Policy</FooterLink>
-                                <FooterLink>Terms of Service</FooterLink>
-                                <FooterLink>Security</FooterLink>
-                                <FooterLink>Cookie Settings</FooterLink>
-                            </ul>
-                        </div>
-                        
-                        <div className="hidden md:block"></div>
-                    </div>
+        {/* 2. MIDDLE SECTION: LOGO + BIG TEXT */}
+        <div className="w-full border-t border-white/10 border-b border-white/10 py-10 md:py-16 relative flex items-center justify-center overflow-hidden">
+            
+            {/* Container for Logo + Text to sit side-by-side */}
+            <div className="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 w-full max-w-[90vw]">
+                
+                {/* YOUR LOGO (Left Side, Full Opacity) */}
+                <div className="relative w-[13vw] h-[13vw] md:w-[13vw] md:h-[13vw] shrink-0">
+                    <Image 
+                        src="/logo1.png" 
+                        alt="Gaprio Logo" 
+                        fill 
+                        className="object-contain" // Orange glow behind logo
+                    />
                 </div>
 
-                {/* BOTTOM BAR */}
-                <div className="border-t border-white/10 pt-6">
-  <div className="
-    flex flex-col items-center gap-4
-    md:flex-row md:justify-between
-  ">
-    {/* Copyright */}
-    <p className="
-      text-zinc-500 text-xs
-      uppercase tracking-widest font-medium
-      text-center md:text-left
-    ">
-      © {new Date().getFullYear()} Gaprio Inc.
-    </p>
-
-    {/* Back to Top */}
-    <button
-      onClick={scrollToTop}
-      className="
-        group
-        flex items-center gap-3
-        text-zinc-400
-        hover:text-orange-400
-        transition-colors duration-300
-      "
-    >
-      <span className="text-xs font-semibold uppercase tracking-wider">
-        Back to Top
-      </span>
-
-      <div
-        className="
-          w-11 h-11
-          rounded-full
-          bg-white/5
-          border border-white/10
-          flex items-center justify-center
-          transition-all duration-300
-          group-hover:border-orange-400
-          group-hover:bg-orange-500/10
-        "
-      >
-        <ArrowUp
-          size={16}
-          className="transition-transform duration-300 group-hover:-translate-y-0.5"
-        />
-      </div>
-    </button>
-  </div>
-</div>
-
-
+                {/* BIG TEXT (Right Side) */}
+                <h1 className="text-[14vw] md:text-[15vw] leading-[0.8] font-black tracking-tighter text-white select-none drop-shadow-2xl">
+                  GAPRIO
+                </h1>
             </div>
-        </section>
+        </div>
+
+        {/* 3. BOTTOM BAR */}
+        <div className="flex flex-col-reverse md:flex-row justify-between items-center pt-8 gap-6 md:gap-0 opacity-80">
+          <p className="text-zinc-500 text-xs uppercase tracking-widest font-medium">
+            &copy; {currentYear} Gaprio Inc.
+          </p>
+
+          <div className="flex items-center gap-8">
+             <Link href="#" className="text-zinc-500 text-xs uppercase tracking-widest hover:text-orange-400 transition-colors">Privacy</Link>
+             <Link href="#" className="text-zinc-500 text-xs uppercase tracking-widest hover:text-orange-400 transition-colors">Terms</Link>
+             
+             <div className="flex items-center gap-5 pl-5 border-l border-zinc-800">
+                <SocialIcon Icon={Linkedin} />
+                <SocialIcon Icon={Twitter} />
+                <SocialIcon Icon={Instagram} />
+             </div>
+          </div>
+        </div>
 
       </div>
-    </div>
+    </footer>
   );
 }
 
-// --- SUB-COMPONENTS ---
-
-function FooterLink({ children }) {
+// Helper Component
+function SocialIcon({ Icon }) {
   return (
-    <li>
-      <Link href="#" className="group flex items-center gap-1 text-zinc-500 hover:text-white transition-colors text-base font-medium">
-        <span>{children}</span>
-        <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-orange-500" />
-      </Link>
-    </li>
-  );
-}
-
-function SocialLink({ Icon, href }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="w-12 h-12 rounded-full bg-white/5 border border-white/5 flex items-center justify-center text-zinc-400 
-      hover:text-white hover:bg-gradient-to-br hover:from-orange-500 hover:to-orange-600 hover:border-orange-500 
-      hover:shadow-[0_0_20px_rgba(249,115,22,0.4)] hover:scale-110 active:scale-95 transition-all duration-300"
+    <a 
+      href="#" 
+      className="text-zinc-400 hover:text-orange-500 transition-colors duration-300 hover:scale-110 hover:drop-shadow-[0_0_10px_rgba(249,115,22,0.8)]"
     >
-      <Icon size={20} />
+      <Icon size={18} />
     </a>
   );
 }
-
-
-
-
-// "use client";
-
-// import React, { useEffect, useRef } from "react";
-// import Link from "next/link";
-// import Image from "next/image";
-// import { gsap } from "gsap";
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import {
-//   Twitter,
-//   Instagram,
-//   ArrowUpRight,
-//   ArrowUp,
-//   Linkedin,
-//   Mail // Added Mail icon
-// } from "lucide-react";
-
-// // Register GSAP Plugin safely
-// if (typeof window !== "undefined") {
-//   gsap.registerPlugin(ScrollTrigger);
-// }
-
-// export default function CinematicFooter() {
-//   const containerRef = useRef(null);
-//   const trackRef = useRef(null);
-
-//   const scrollToTop = () => {
-//     window.scrollTo({ top: 0, behavior: "smooth" });
-//   };
-
-//   useEffect(() => {
-//     // GSAP Animation only for Desktop (min-width: 1024px)
-//     let mm = gsap.matchMedia();
-
-//     mm.add("(min-width: 1024px)", () => {
-//       const track = trackRef.current;
-      
-//       // Calculate scroll amount: Total Width - One Viewport
-//       const getScrollAmount = () => -(track.scrollWidth - window.innerWidth);
-
-//       const tl = gsap.timeline({
-//         scrollTrigger: {
-//           trigger: containerRef.current,
-//           pin: true,           
-//           scrub: 1,            
-//           start: "top top",
-//           end: "+=3000",       
-//           invalidateOnRefresh: true, 
-//         },
-//       });
-
-//       tl.to(track, {
-//         x: getScrollAmount,
-//         ease: "none", 
-//       });
-//     });
-
-//     return () => mm.revert();
-//   }, []);
-
-//   return (
-//     <div 
-//       ref={containerRef} 
-//       className="relative bg-[#020202] text-white overflow-hidden lg:h-screen z-50 flex flex-col"
-//     >
-      
-//       {/* ================= BACKGROUND LAYERS ================= */}
-//       <div className="absolute inset-0 pointer-events-none z-0">
-        
-//         {/* 1. BOTTOM HORIZON GLOW (Subtle, from bottom only) */}
-//         <div className="absolute bottom-[-20%] left-[-10%] right-[-10%] h-[50vh] bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-orange-900/20 via-[#050505] to-transparent blur-[60px]" />
-
-//         {/* 2. SCI-FI GRID (With fade-out mask) */}
-//         <div 
-//           className="absolute inset-0 bg-[size:60px_60px] opacity-[0.15] mix-blend-overlay"
-//           style={{
-//             backgroundImage: `
-//               linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-//               linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px)
-//             `,
-//             maskImage: 'radial-gradient(circle at 50% 100%, black 30%, transparent 80%)',
-//             WebkitMaskImage: 'radial-gradient(circle at 50% 100%, black 30%, transparent 80%)'
-//           }}
-//         />
-
-//         {/* 3. NOISE TEXTURE (Film grain feel) */}
-//         <div className="absolute inset-0 opacity-[0.03] bg-[url('/noise.png')] mix-blend-overlay pointer-events-none" />
-//       </div>
-
-//       {/* ================= SCROLL TRACK ================= */}
-//       <div ref={trackRef} className="flex flex-col lg:flex-row lg:h-full lg:w-max relative z-10">
-        
-//         {/* === SECTION 1: HERO BRANDING (Desktop Only) === */}
-//         <section className="hidden lg:flex w-screen h-screen flex-col justify-center items-center relative shrink-0 border-r border-white/5 backdrop-blur-[1px]">
-          
-//           {/* Vertical Line Decoration */}
-//           <div className="absolute top-0 bottom-0 left-1/2 w-[1px] bg-gradient-to-b from-transparent via-white/5 to-transparent" />
-
-//           <div className="relative z-10 flex flex-col items-center w-full px-10">
-//             {/* BIG HERO IMAGE */}
-//             <div className="relative w-full max-w-[1400px] h-[60vh] max-h-[500px] flex items-center justify-center">
-//               <Image
-//                 src="/logo2.png"
-//                 alt="Gaprio"
-//                 fill
-//                 priority
-//                 className="object-contain drop-shadow-2xl"
-//               />
-//             </div>
-//           </div>
-//         </section>
-
-
-//         {/* === SECTION 2: CONTENT & LINKS === */}
-//         <section className="w-full lg:w-screen lg:h-screen flex items-center shrink-0 bg-transparent lg:border-l border-white/5 relative py-24 lg:py-0">
-//             <div className="w-full max-w-7xl mx-auto px-6 md:px-12">
-                
-//                 {/* GRID CONTENT */}
-//                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 mb-20">
-                    
-//                     {/* LEFT COL: Small Logo & Socials */}
-//                     <div className="lg:col-span-5 flex flex-col items-start justify-center">
-//                           {/* Mobile/Tablet Logo View */}
-//                           <div className="mb-10 relative h-16 w-64 lg:h-20 lg:w-80">
-//                             <Image
-//                                 src="/logo2.png"
-//                                 alt="Gaprio Logo"
-//                                 fill
-//                                 className="object-contain object-left"
-//                             />
-//                          </div>
-
-//                         <p className="text-zinc-400 text-lg md:text-xl leading-relaxed max-w-md mb-8 font-light text-pretty">
-//                             The central nervous system for your enterprise. We connect your fragmented tools into one intelligent workflow.
-//                         </p>
-                        
-//                         {/* --- ADDED EMAIL SECTION --- */}
-//                         <div className="mb-8 flex items-center gap-3 group cursor-pointer">
-//                             <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-zinc-400 group-hover:text-orange-400 group-hover:bg-orange-500/10 transition-colors duration-300">
-//                                 <Mail size={18} />
-//                             </div>
-//                             <div className="flex flex-col">
-//                                 <span className="text-[10px] uppercase tracking-widest text-zinc-500 font-semibold">Contact Us</span>
-//                                 <a href="mailto:contact@gaprio.in" className="text-lg text-white font-medium hover:text-orange-400 transition-colors">
-//                                     contact@gaprio.in
-//                                 </a>
-//                             </div>
-//                         </div>
-
-//                         <div className="flex gap-5">
-//                             <SocialLink Icon={Twitter} href="https://x.com/Gaprio_Labs" />
-//                             <SocialLink Icon={Instagram} href="https://instagram.com/gaprio_labs" />
-//                             <SocialLink Icon={Linkedin} href="#" />
-//                         </div>
-//                     </div>
-
-//                     {/* RIGHT COL: Navigation Links */}
-//                     <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-10 lg:gap-16 items-start lg:items-center">
-                        
-//                         <div className="flex flex-col gap-8">
-//                             <h4 className="text-orange-500 font-bold tracking-[0.15em] text-xs uppercase opacity-80">Platform</h4>
-//                             <ul className="space-y-5">
-//                                 <FooterLink>Intelligence</FooterLink>
-//                                 <FooterLink>Workflows</FooterLink>
-//                                 <FooterLink>Integrations</FooterLink>
-//                                 <FooterLink>Pricing</FooterLink>
-//                             </ul>
-//                         </div>
-
-//                         <div className="flex flex-col gap-8">
-//                             <h4 className="text-orange-500 font-bold tracking-[0.15em] text-xs uppercase opacity-80">Legal</h4>
-//                             <ul className="space-y-5">
-//                                 <FooterLink>Privacy Policy</FooterLink>
-//                                 <FooterLink>Terms of Service</FooterLink>
-//                                 <FooterLink>Security</FooterLink>
-//                                 <FooterLink>Cookie Settings</FooterLink>
-//                             </ul>
-//                         </div>
-                        
-//                         {/* Empty col for spacing/future use */}
-//                         <div className="hidden sm:block"></div>
-//                     </div>
-//                 </div>
-
-//                 {/* BOTTOM BAR */}
-//                 <div className="border-t border-white/10 pt-8 mt-4">
-//                   <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6">
-//                     {/* Copyright */}
-//                     <p className="text-zinc-600 text-xs uppercase tracking-widest font-semibold">
-//                       © {new Date().getFullYear()} Gaprio Inc. All Rights Reserved.
-//                     </p>
-
-//                     {/* Back to Top */}
-//                     <button
-//                       onClick={scrollToTop}
-//                       className="group flex items-center gap-3 text-zinc-400 hover:text-orange-400 transition-colors duration-300"
-//                     >
-//                       <span className="text-xs font-bold uppercase tracking-widest">Back to Top</span>
-//                       <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:border-orange-500/50 group-hover:bg-orange-500/10 group-hover:shadow-[0_0_15px_rgba(249,115,22,0.3)]">
-//                         <ArrowUp size={16} className="transition-transform duration-300 group-hover:-translate-y-1" />
-//                       </div>
-//                     </button>
-//                   </div>
-//                 </div>
-
-//             </div>
-//         </section>
-
-//       </div>
-//     </div>
-//   );
-// }
-
-// // --- SUB-COMPONENTS ---
-
-// function FooterLink({ children }) {
-//   return (
-//     <li>
-//       <Link href="#" className="group flex items-center gap-2 text-zinc-500 hover:text-white transition-all duration-300 text-base font-medium">
-//         <span className="relative overflow-hidden">
-//             {children}
-//             <span className="absolute left-0 bottom-0 w-full h-[1px] bg-orange-500 -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
-//         </span>
-//         <ArrowUpRight size={14} className="opacity-0 -translate-y-2 translate-x-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all duration-300 text-orange-500" />
-//       </Link>
-//     </li>
-//   );
-// }
-
-// function SocialLink({ Icon, href }) {
-//   return (
-//     <a
-//       href={href}
-//       target="_blank"
-//       rel="noopener noreferrer"
-//       className="w-12 h-12 rounded-full bg-zinc-900/50 border border-white/10 flex items-center justify-center text-zinc-400 
-//       hover:text-white hover:border-orange-500 hover:bg-zinc-900
-//       hover:shadow-[0_0_20px_rgba(249,115,22,0.3)] hover:-translate-y-1 transition-all duration-300"
-//     >
-//       <Icon size={18} />
-//     </a>
-//   );
-// }
-
-
-
-
-

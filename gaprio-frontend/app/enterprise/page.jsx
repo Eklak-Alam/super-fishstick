@@ -46,7 +46,7 @@ const EnterpriseHero = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-xl text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed"
           >
-            Bridge the gap between your fragmented tools. Gaprio provides <span className="text-white font-semibold">Institutional Memory</span> and <span className="text-white font-semibold">Reasoning</span> across Outlook, Teams, Salesforce, and Jira.
+            Bridge the gap between disconnected systems. Gaprio provides <span className="text-white font-semibold">Shared Memory</span> and <span className="text-white font-semibold">Reasoning</span> across tools like Outlook, Teams, Salesforce, and Jira.
           </motion.p>
 
           <motion.div 
@@ -88,7 +88,7 @@ const EnterpriseHero = () => {
                               transition-all duration-300 gap-2
                           "
               >
-                View Documentation
+                View Security Specs
                 <BookOpen
                   size={16}
                   className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300"
@@ -172,8 +172,7 @@ const EnterpriseHero = () => {
           </div>
         </motion.div> */}
       </div>
-            <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
-
+    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
     </section>
   );
 };
@@ -183,32 +182,32 @@ const EnterpriseProblem = () => {
   const costs = [
     {
       title: "Context Loss",
-      subtitle: "Silent Killer",
-      desc: "No system knows the relationship between Outlook emails, Teams chats, and Salesforce deals. Knowledge is trapped in heads, not systems.",
+      subtitle: "SILENT KILLER",
+      desc: "Emails, chats, and CRM updates live in separate systems. No single layer understands how they relate, so critical knowledge stays in people’s heads instead of systems.",
       icon: Network,
       stat: "40%",
       statDesc: "Info lost on turnover"
     },
     {
       title: "Bandwidth Waste",
-      subtitle: "Operational Drag",
-      desc: "Highly paid executives spend hours manually summarizing threads and finding files. It is low-leverage work for high-leverage people.",
+      subtitle: "OPERATIONAL DRAG",
+      desc: "Senior leaders spend time summarizing threads, searching for files, and aligning teams. This is low leverage work done by high leverage people.",
       icon: Clock,
       stat: "12hrs",
       statDesc: "Per week/manager"
     },
     {
-      title: "Compliance Risk",
-      subtitle: "Legal Exposure",
-      desc: "When context is lost, wrong information is sent, SLAs are missed, and audit trails break. A nightmare for governance.",
+      title: "Compliance Exposure",
+      subtitle: "GOVERNANCE RISK",
+      desc: "When context is missing, incorrect information gets shared and commitments are missed. Audit trails become fragmented and difficult to trust.",
       icon: AlertTriangle,
       stat: "High",
       statDesc: "Audit failure risk"
     },
     {
-      title: "AI Fragmentation",
-      subtitle: "Siloed ROI",
-      desc: "Copilot knows code. Salesforce Einstein knows sales. Gaprio connects them all to reason globally across your stack.",
+      title: "Disconnected AI",
+      subtitle: "SILOED ROI",
+      desc: "Most AI tools work inside one product. Gaprio connects signals across systems so reasoning happens at the organization level.",
       icon: Layers,
       stat: "0%",
       statDesc: "Cross-tool awareness"
@@ -221,7 +220,7 @@ const EnterpriseProblem = () => {
         <div className="mb-20">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">The Invisible Costs <br/> of Modern Work.</h2>
           <p className="text-zinc-400 max-w-2xl text-lg">
-            Enterprises have too many tools and zero connection. This fragmentation bleeds money in four specific ways.
+            Large organizations run on many tools, but very little shared understanding. This fragmentation creates four major problems.
           </p>
         </div>
 
@@ -278,7 +277,7 @@ const EnterpriseSolution = () => {
             </div>
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-8">A Shared Brain for <br/> Your Organization.</h2>
             <p className="text-zinc-400 text-lg mb-12 leading-relaxed">
-              Gaprio sits virtually above your tool stack. It remembers every decision, reads every document, and understands the context that connects them.
+              Gaprio sits above your existing stack. It understands documents, conversations, and decisions in relation to each other.
             </p>
             
             <div className="space-y-8">
@@ -288,7 +287,7 @@ const EnterpriseSolution = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-lg mb-2">Institutional Memory</h4>
-                  <p className="text-sm text-zinc-500 leading-relaxed">Gaprio remembers context even when employees leave. New hires ramp 30% faster because the history is queryable.</p>
+                  <p className="text-sm text-zinc-500 leading-relaxed">Gaprio preserves context over time. Decisions, discussions, and rationale remain accessible even when people change roles or leave.</p>
                 </div>
               </div>
               <div className="flex gap-5">
@@ -297,7 +296,7 @@ const EnterpriseSolution = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-lg mb-2">Faster Decisions</h4>
-                  <p className="text-sm text-zinc-500 leading-relaxed">Executives get answers from Q3 Financials and Legal Docs in seconds, not days. No more "let me find that file" delays.</p>
+                  <p className="text-sm text-zinc-500 leading-relaxed">Executives get answers from documents, emails, and systems in minutes instead of days. Teams move forward without repeated clarification.</p>
                 </div>
               </div>
               <div className="flex gap-5">
@@ -306,7 +305,7 @@ const EnterpriseSolution = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-bold text-lg mb-2">Enterprise Control</h4>
-                  <p className="text-sm text-zinc-500 leading-relaxed">We respect your RBAC. Marketing can't ask questions about HR data. Every AI action produces an audit log.</p>
+                  <p className="text-sm text-zinc-500 leading-relaxed">Gaprio follows your access rules. Data visibility matches existing permissions and every AI action is logged and reviewable.</p>
                 </div>
               </div>
             </div>
@@ -375,7 +374,7 @@ const DeploymentModels = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Deployment Models</h2>
           <p className="text-zinc-400 max-w-2xl mx-auto">
-            Security is not one-size-fits-all. Choose the architecture that fits your compliance needs.
+            Security and control requirements vary by organization. Gaprio supports multiple deployment options.
           </p>
         </div>
 
@@ -389,12 +388,12 @@ const DeploymentModels = () => {
             <h3 className="text-2xl font-bold text-white mb-2">Cloud SaaS</h3>
             <p className="text-xs font-mono text-zinc-500 mb-6 uppercase tracking-wider">Fastest Adoption</p>
             <p className="text-zinc-400 text-sm mb-8 flex-1">
-              Zero infrastructure overhead. Gaprio hosts everything. Connect via OAuth. Ideal for pilots and mid-market teams.
+              Gaprio runs in a managed cloud environment. Teams connect using secure authentication with minimal setup.
             </p>
             <ul className="space-y-3 mb-8 text-sm text-zinc-300">
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Instant Setup</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> SOC2 Compliant Cloud</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Auto-Updates</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Quick onboarding</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Managed infrastructure</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Continuous updates</li>
             </ul>
             <button className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors">Start Pilot</button>
           </motion.div>
@@ -408,12 +407,12 @@ const DeploymentModels = () => {
             <h3 className="text-2xl font-bold text-white mb-2">Private VPC</h3>
             <p className="text-xs font-mono text-zinc-500 mb-6 uppercase tracking-wider">Enterprise Standard</p>
             <p className="text-zinc-400 text-sm mb-8 flex-1">
-              Gaprio runs inside *your* enterprise cloud (AWS/Azure VPC). Data never leaves your perimeter. We manage the AI Router.
+              Gaprio runs inside your cloud environment. Data stays within your network boundary while we manage the application layer.
             </p>
             <ul className="space-y-3 mb-8 text-sm text-zinc-300">
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Data Sovereignty</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Custom AI Models</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Connects to Internal DBs</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Data residency control</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Custom model configuration</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Internal system access</li>
             </ul>
             <button className="w-full py-3 bg-orange-600 rounded-lg text-white text-sm font-bold hover:bg-orange-500 transition-colors">Contact Engineering</button>
           </motion.div>
@@ -423,15 +422,15 @@ const DeploymentModels = () => {
             <div className="mb-6 bg-green-500/10 w-fit p-3 rounded-xl text-green-500">
               <Server size={28} />
             </div>
-            <h3 className="text-2xl font-bold text-white mb-2">Fully On-Prem</h3>
-            <p className="text-xs font-mono text-zinc-500 mb-6 uppercase tracking-wider">High Security</p>
+            <h3 className="text-2xl font-bold text-white mb-2">On Prem Deployment</h3>
+            <p className="text-xs font-mono text-zinc-500 mb-6 uppercase tracking-wider">High Control Environments</p>
             <p className="text-zinc-400 text-sm mb-8 flex-1">
-              For regulated industries (Finance, Gov). We provide a Docker/K8s bundle. You deploy it on bare metal. Air-gapped capable.
+              Designed for regulated industries. Gaprio is deployed on your infrastructure with full operational ownership.
             </p>
             <ul className="space-y-3 mb-8 text-sm text-zinc-300">
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> 100% Control</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Air-Gapped Ready</li>
-              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> HIPAA / GDPR Ready</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Complete data control</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Network isolated operation</li>
+              <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Compliance aligned architecture</li>
             </ul>
             <button className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors">Request Specs</button>
           </motion.div>
@@ -446,11 +445,11 @@ const DeploymentModels = () => {
 // --- 5. INTEGRATION ROADMAP (VERTICAL TIMELINE) ---
 const IntegrationRoadmap = () => {
   const steps = [
-    { title: "Identity Handshake", desc: "Connect Azure AD / Okta. We utilize your existing IAM policies. No new passwords.", icon: Fingerprint },
-    { title: "Read-Only Sync", desc: "Connect Outlook & Teams via secure Graph API. We ingest metadata to build the graph.", icon: Search },
-    { title: "Memory Initialization", desc: "Gaprio indexes the last 6 months of decisions to build institutional memory.", icon: Database },
-    { title: "Governance Mode", desc: "AI runs in 'Draft Mode'. Human approval is required for every action. Audit logs active.", icon: ShieldCheck },
-    { title: "Full Orchestration", desc: "Trusted automation enabled for specific workflows. High-velocity execution.", icon: GitBranch }
+    { title: "Identity Connection", desc: "Integrate with existing identity providers like Azure AD or Okta. Gaprio follows your authentication and access policies.", icon: Fingerprint },
+    { title: "Initial Data Sync", desc: "Connect communication and productivity tools in read only mode. Gaprio builds context without affecting live workflows.", icon: Search },
+    { title: "Memory Initialization", desc: "Historical activity is indexed to establish organizational context and decision history.", icon: Database },
+    { title: "Governance Mode", desc: "AI operates in draft mode. Human approval is required for all actions and detailed logs are enabled.", icon: ShieldCheck },
+    { title: "Orchestrated Workflows", desc: "Trusted workflows are enabled selectively. Automation scales where confidence and control are established.", icon: GitBranch }
   ];
 
   return (
@@ -502,10 +501,10 @@ const FinalCTA = () => {
           <div className="flex-1 text-center md:text-left">
             <Building2 className="w-12 h-12 text-white mb-6 opacity-50 mx-auto md:mx-0" />
             <h2 className="text-4xl font-bold text-white mb-4">
-              Modernize your <br/> workforce.
+              odernize How Your <br /> Organization Thinks.
             </h2>
             <p className="text-zinc-400 mb-6">
-              "Gaprio is the AI memory layer that enterprises plug into their existing stack to reduce cognitive load."
+              Gaprio adds a shared memory layer to your enterprise stack and reduces cognitive load across teams.
             </p>
             <div className="flex items-center gap-4 text-xs text-zinc-500 justify-center md:justify-start">
               <span className="flex items-center gap-1"><CheckCircle2 size={12} className="text-green-500"/> SOC2 Ready</span>
@@ -528,7 +527,7 @@ const FinalCTA = () => {
                 Book a Demo
               </button>
               <p className="text-[10px] text-center text-zinc-600">
-                Deployment typically takes 48 hours. No commitment required.
+                Deployment typically completes within days. No long term commitment required.
               </p>
             </form>
           </div>

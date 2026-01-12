@@ -6,9 +6,15 @@ import { useState, useEffect } from "react";
 export default function EcosystemIntegration() {
   return (
     <section className="relative min-h-screen bg-[#020202] py-24 md:py-32 flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
-      {/* --- Atmospheric Background --- */}
+      
+      {/* --- UPDATED ATMOSPHERIC BACKGROUND --- */}
+      {/* 1. Grid Pattern (Covers full section) */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.03]" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] bg-[radial-gradient(circle,rgba(249,115,22,0.06)_0%,transparent_70%)] pointer-events-none" />
+      
+      {/* 2. Orange Gradient (FIXED: Uses inset-0 to fill the entire section height, not just 100vh) */}
+      <div className="absolute inset-0 w-full h-full bg-[radial-gradient(circle_at_center,rgba(249,115,22,0.08)_0%,transparent_70%)] pointer-events-none" />
+      
+      {/* -------------------------------------- */}
 
       {/* --- Header --- */}
       <div className="relative z-10 text-center mb-16 md:mb-20 px-4 max-w-4xl mx-auto">

@@ -5,7 +5,7 @@ import QueryProvider from '@/providers/QueryProvider';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import AwardWinningFooter from '@/components/global/Footer';
 
-// Optimized fonts with performance settings
+// Optimized fonts
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
@@ -28,17 +28,7 @@ export const metadata = {
   authors: [{ name: 'Gaprio Team' }],
   creator: 'Gaprio',
   publisher: 'Gaprio',
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
+  metadataBase: new URL('https://gaprio.in'), // FIX: Added metadataBase for cleaner URL resolution
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -48,7 +38,7 @@ export const metadata = {
     siteName: 'Gaprio',
     images: [
       {
-        url: '/logo.png', // Create this in /public folder
+        url: '/logo.png',
         width: 1200,
         height: 630,
         alt: 'Gaprio - AI Workspace',
@@ -59,7 +49,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Gaprio | The AI Workspace',
     description: 'Connect everything. Automate anything. Boost productivity with AI-powered workspace.',
-    images: ['/logo.png'], // Create this in /public folder
+    images: ['/logo.png'],
     creator: '@gaprio',
   },
   viewport: {
@@ -71,7 +61,7 @@ export const metadata = {
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },
     { media: '(prefers-color-scheme: dark)', color: '#020202' },
   ],
-  manifest: '/manifest.json', // Add PWA manifest
+  manifest: '/manifest.json',
   icons: {
     icon: [
       { url: '/favicon.ico' },
@@ -82,35 +72,6 @@ export const metadata = {
       { url: '/apple-icon.png' },
     ],
   },
-  verification: {
-    google: 'your-google-verification-code', // Add when available
-  },
-};
-
-// Structured data for rich results
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'Gaprio',
-  applicationCategory: 'BusinessApplication',
-  operatingSystem: 'Web',
-  description: 'AI-powered workspace to connect everything and automate anything',
-  url: 'https://gaprio.in',
-  publisher: {
-    '@type': 'Organization',
-    name: 'Gaprio',
-    logo: '/logo.png',
-  },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.8',
-    ratingCount: '1000',
-  },
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
 };
 
 export default function RootLayout({ children }) {
@@ -120,26 +81,25 @@ export default function RootLayout({ children }) {
       className={`${inter.variable} ${spaceGrotesk.variable}`}
       suppressHydrationWarning
     >
-      <body className={`${inter.className} antialiased bg-[#020202] text-white overflow-x-hidden`}>
+      {/* FIX 1: Removed 'overflow-x-hidden' from body.
+         Why? It is now handled in globals.css. Having it here breaks Lenis scrolling.
+      */}
+      <body className={`${inter.className} antialiased bg-[#020202] text-white`}>
         
         <QueryProvider>
           <SmoothScroll>
-            {/* 1. NAVBAR (Optional placement)
-            */}
-             <Navbar /> 
+            <Navbar /> 
 
-            {/* 2. MAIN PAGE CONTENT 
-                - relative z-10: Puts this layer ON TOP of the footer.
-                - bg-[#020202]: Ensures the background is solid so footer doesn't show behind it.
-                - w-full: Ensures it fits width.
+            {/* FIX 2: Main Content Wrapper
+                - z-10: Stays above footer
+                - bg-[#020202]: Solid background
             */}
-            <main className="relative z-10 bg-[#020202] w-full min-h-screen">
+            <main className="relative z-10 bg-[#020202] w-full">
               {children}
             </main>
             
-            {/* 3. FOOTER WRAPPER
-                - relative z-0: Puts it BEHIND/BELOW the main content stack.
-                - overflow-hidden: CRITICAL. This chops off the extra width of the GSAP footer.
+            {/* FIX 3: Footer Wrapper
+                - z-0: Sits behind/below main content
             */}
             <div className="relative z-0 w-full overflow-hidden">
                <AwardWinningFooter />
@@ -148,7 +108,7 @@ export default function RootLayout({ children }) {
           </SmoothScroll>
         </QueryProvider>
         
-        {/* Performance optimizations */}
+        {/* Analytics Script */}
         <script
           dangerouslySetInnerHTML={{
             __html: `

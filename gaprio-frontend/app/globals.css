@@ -1,80 +1,64 @@
 @import "tailwindcss";
 
+/* =========================================
+   1. LENIS (SMOOTH SCROLL) REQUIRED FIXES
+   ========================================= */
+html.lenis, 
+html.lenis body {
+  height: auto; /* CRITICAL: Prevents blank page on reload */
+}
 
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* =========================================
+   2. GLOBAL RESETS & SCROLLBAR FIXES
+   ========================================= */
 html, body {
   width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden; /* This is the most important line */
-  background-color: #020202;
   margin: 0;
   padding: 0;
+  background-color: #020202;
+  /* REMOVED: max-width: 100vw (This caused the white bar/layout shift) */
+  /* REMOVED: overflow-x: hidden (Moved to body only to stop double scrollbar) */
 }
 
-
-@keyframes shine {
-  0% { left: -100%; }
-  100% { left: 100%; }
+body {
+  overflow-x: hidden; /* Only hide horizontal overflow on body */
+  position: relative;
+  color: white; /* Ensure default text is white for dark mode */
 }
 
-@keyframes shine {
-  0% { left: -100%; opacity: 0; }
-  50% { opacity: 0.5; }
-  100% { left: 200%; opacity: 0; }
-}
-
-/* 1. Custom Orange Scrollbar */
+/* Global Orange Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #050201; /* Match your bg color */
+  background: #050201; 
 }
 ::-webkit-scrollbar-thumb {
   background: #f97316; /* Orange-500 */
   border-radius: 5px;
-  border: 2px solid #050201; /* Padding effect */
+  border: 2px solid #050201; 
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ea580c; /* Darker orange on hover */
+  background: #ea580c; 
 }
 
-
-/* 3. Noise Texture Utility */
-.bg-noise {
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-}
-
-/* 4. Button Shine Animation */
-@keyframes shine-move {
-  0% { left: -100%; opacity: 0; }
-  20% { opacity: 0.5; }
-  100% { left: 100%; opacity: 0; }
-}
-.animate-shine {
-  animation: shine-move 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-
-.input-std {
-  @apply w-full bg-white/5 p-3 rounded-lg border border-white/10 text-white outline-none focus:border-orange-500/50 transition-colors;
-}
-.btn-primary {
-  @apply bg-white text-black font-bold py-3 rounded-lg hover:bg-zinc-200 transition-colors;
-}
-
-@layer components {
-  /* Premium Input Style */
-  .input-field {
-    @apply w-full bg-[#050505] p-3.5 rounded-xl border border-white/10 text-white outline-none focus:border-orange-500/50 focus:bg-white/5 transition-all text-sm placeholder:text-zinc-600 shadow-inner;
-  }
-  
-  /* Primary Button Style */
-  .btn-primary {
-    @apply bg-white text-black font-bold py-3 px-4 rounded-xl hover:bg-zinc-200 transition-colors flex items-center justify-center gap-2 shadow-lg shadow-white/5 active:scale-[0.98];
-  }
-}
-
-/* Custom Scrollbar for Dark Mode */
+/* Utility: Custom Scrollbar for specific divs (if needed) */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
@@ -89,18 +73,53 @@ html, body {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.btn-primary-orange {
-  @apply bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold hover:brightness-110 active:scale-95 transition-all;
+/* =========================================
+   3. ANIMATIONS
+   ========================================= */
+/* Noise Texture */
+.bg-noise {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
-.btn-primary-yellow {
-  @apply bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-xl transition-all shadow-[0_0_15px_-3px_rgba(234,179,8,0.3)] hover:shadow-[0_0_20px_-3px_rgba(234,179,8,0.5)];
+/* Shine Animation */
+@keyframes shine-move {
+  0% { left: -100%; opacity: 0; }
+  20% { opacity: 0.5; }
+  100% { left: 100%; opacity: 0; }
 }
 
-.btn-secondary {
-  @apply bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-xl font-bold hover:bg-zinc-700 hover:text-white transition-all px-4 py-2 text-sm;
+.animate-shine {
+  animation: shine-move 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.input-field {
-  @apply w-full bg-[#050505] border border-white/10 rounded-xl py-3 px-4 text-white placeholder:text-zinc-600 focus:border-yellow-500/50 outline-none transition-all text-sm focus:bg-[#080808];
+/* =========================================
+   4. COMPONENT LAYERS (Cleaned & Merged)
+   ========================================= */
+@layer components {
+  /* Premium Input Style */
+  .input-field {
+    @apply w-full bg-[#050505] p-3.5 rounded-xl border border-white/10 text-white outline-none transition-all text-sm placeholder:text-zinc-600 shadow-inner;
+    @apply focus:border-orange-500/50 focus:bg-white/5;
+  }
+  
+  /* Primary Button (White) */
+  .btn-primary {
+    @apply bg-white text-black font-bold py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-lg shadow-white/5 active:scale-[0.98];
+    @apply hover:bg-zinc-200;
+  }
+
+  /* Primary Button (Orange Gradient) */
+  .btn-primary-orange {
+    @apply bg-gradient-to-r from-orange-600 to-amber-600 text-white font-bold hover:brightness-110 active:scale-95 transition-all;
+  }
+
+  /* Primary Button (Yellow Glow) */
+  .btn-primary-yellow {
+    @apply bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-xl transition-all shadow-[0_0_15px_-3px_rgba(234,179,8,0.3)] hover:shadow-[0_0_20px_-3px_rgba(234,179,8,0.5)];
+  }
+
+  /* Secondary Button (Dark) */
+  .btn-secondary {
+    @apply bg-zinc-800 text-zinc-300 border border-zinc-700 rounded-xl font-bold hover:bg-zinc-700 hover:text-white transition-all px-4 py-2 text-sm;
+  }
 }

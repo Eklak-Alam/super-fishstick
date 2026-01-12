@@ -543,9 +543,9 @@ const EnterprisePage = () => {
   return (
     <main className="bg-[#020202] min-h-screen selection:bg-orange-500/30 selection:text-white font-sans">
       <EnterpriseHero />
-      <EnterpriseProblem />
       <EnterpriseSolution />
       <DeploymentModels />
+      <EnterpriseProblem />
       <IntegrationRoadmap />
       <FinalCTA />
     </main>

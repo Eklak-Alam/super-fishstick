@@ -4,6 +4,7 @@ import SmoothScroll from '@/components/global/SmoothScroll';
 import QueryProvider from '@/providers/QueryProvider';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import AwardWinningFooter from '@/components/global/Footer';
+import NextTopLoader from 'nextjs-toploader'; // <--- 1. Import this
 
 // Optimized fonts
 const inter = Inter({
@@ -28,7 +29,7 @@ export const metadata = {
   authors: [{ name: 'Gaprio Team' }],
   creator: 'Gaprio',
   publisher: 'Gaprio',
-  metadataBase: new URL('https://gaprio.in'), // FIX: Added metadataBase for cleaner URL resolution
+  metadataBase: new URL('https://gaprio.in'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -81,26 +82,33 @@ export default function RootLayout({ children }) {
       className={`${inter.variable} ${spaceGrotesk.variable}`}
       suppressHydrationWarning
     >
-      {/* FIX 1: Removed 'overflow-x-hidden' from body.
-         Why? It is now handled in globals.css. Having it here breaks Lenis scrolling.
-      */}
       <body className={`${inter.className} antialiased bg-[#020202] text-white`}>
         
+        {/* 2. Add NextTopLoader here. 
+            zIndex={99999} ensures it is ALWAYS on top of your Navbar 
+        */}
+        <NextTopLoader
+          color="#FF5722"
+          initialPosition={0.08}
+          crawlSpeed={200}
+          height={2.5}
+          crawl={true}
+          showSpinner={false}
+          easing="ease"
+          speed={200}
+          shadow={false}  // <--- Optimized: Removed shadow to make it faster & cleaner
+          zIndex={99999}
+        />
+
         <QueryProvider>
+          {/* 3. Removed ProgressBarProvider (it caused the crash) */}
           <SmoothScroll>
             <Navbar /> 
 
-            {/* FIX 2: Main Content Wrapper
-                - z-10: Stays above footer
-                - bg-[#020202]: Solid background
-            */}
             <main className="relative z-10 bg-[#020202] w-full">
               {children}
             </main>
             
-            {/* FIX 3: Footer Wrapper
-                - z-0: Sits behind/below main content
-            */}
             <div className="relative z-0 w-full overflow-hidden">
                <AwardWinningFooter />
             </div>

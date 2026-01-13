@@ -18,7 +18,7 @@ export default function BentoGrid() {
           Everything you need. <br /><span className="text-zinc-600">Nothing you don’t.</span>
         </h2>
         <p className="text-zinc-400 text-lg md:text-xl max-w-2xl leading-relaxed">
-           Designed to facilitate complex workflows across large enterprises with clarity and scale.
+           Designed to reduce coordination overhead, preserve context, and scale decision-making across teams.
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export default function BentoGrid() {
                     <h3 className="text-xl md:text-2xl font-bold text-white">Agentic AI Core</h3>
                 </div>
                 <p className="text-zinc-400 text-sm md:text-base leading-relaxed">
-                    Purpose-built AI agents that understand tasks, plan next steps, and execute multi-step workflows across your stack.
+                    Gaprio uses agentic AI to plan, coordinate, and execute multi-step work across tools, always with human approval.
                 </p>
             </div>
             
@@ -58,7 +58,7 @@ export default function BentoGrid() {
                     <h3 className="text-xl md:text-2xl font-bold drop-shadow-md text-white">Enterprise Security</h3>
                 </div>
                 <p className="text-zinc-300 text-sm leading-relaxed max-w-[95%]">
-                    Designed with strict access controls, data isolation, and encryption to meet enterprise security expectations.
+                    Gaprio respects existing access rules. It never sees or acts beyond what users are already permitted to do.
                 </p>
             </div>
             
@@ -90,7 +90,7 @@ export default function BentoGrid() {
                     <h3 className="text-xl md:text-2xl font-bold drop-shadow-lg text-white">Global Sync</h3>
                 </div>
                 <p className="text-zinc-300 text-sm drop-shadow-md max-w-[90%]">
-                    Tasks, documents, and workflows stay aligned across teams and regions without delays or inconsistencies.
+                    Work stays aligned across teams, tools, and regions without manual updates or duplicated effort.
                 </p>
             </div>
         </BentoCard>
@@ -106,7 +106,7 @@ export default function BentoGrid() {
                         <div>
                             <h3 className="text-xl md:text-2xl font-bold">Lightning Fast</h3>
                             <p className="text-zinc-500 text-sm max-w-sm mt-1">
-                                Built on Rust for millisecond latency. Live performance monitoring included.
+                                Designed for reliability and responsiveness at enterprise scale.
                             </p>
                         </div>
                     </div>

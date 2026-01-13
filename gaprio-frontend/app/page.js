@@ -3,6 +3,7 @@ import HorizontalScroll from '@/components/landing/HorizontalScroll';
 import NeuralFeatures from '@/components/landing/NeuralFeatures'; 
 import DraggableCanvas from '@/components/landing/DraggableCanvas';
 import BentoGrid from '@/components/landing/BentoGrid';
+import ProblemSection from '@/components/landing/ProblemSection';
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
           This makes it slide ON TOP of the sticky Hero.
       */}
       <div className="relative z-10 bg-[#020202]">
+        <ProblemSection />
         <HorizontalScroll />
         <BentoGrid />
         <NeuralFeatures />

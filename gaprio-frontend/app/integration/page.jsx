@@ -3,7 +3,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, useSpring, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import Image from 'next/image';
-import { ArrowUpRight, ShieldCheck, Globe, Cpu, LayoutGrid, Check, ArrowRight, Zap, MousePointer2, ChevronDown } from 'lucide-react';
+import { 
+  ArrowUpRight, ShieldCheck, Globe, Cpu, LayoutGrid, Check, 
+  ArrowRight, Zap, Network, Workflow, UserCheck, Sparkles 
+} from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -36,10 +39,31 @@ const integrationDetails = [
 ];
 
 const steps = [
-    { id: 1, title: "Registration & SetUp", description: "Create your Gaprio workspace securely. Your organization and users are verified while respecting existing roles and access permissions.", icon: ShieldCheck, tags: ["SSO Supported", "2FA"] },
-    { id: 2, title: "Ecosystem Handshake", description: "Connect your primary workspace such as Google Workspace or Microsoft 365. Core identity, files, and calendars sync automatically.", icon: Globe, tags: ["OAuth 2.0", "Read-Only"] },
-    { id: 3, title: "Tool Synchronization", description: "Integrate communication and project tools like Slack, Jira, or Asana. Gaprio listens to activity and keeps information aligned across systems.", icon: Cpu, tags: ["Webhooks", "Filtering"] },
-    { id: 4, title: "Unified Dashboard", description: "Your connected stack comes together in one dashboard. Tasks, conversations, and documents appear with AI-driven insights and suggested actions.", icon: LayoutGrid, tags: ["Analytics", "Zero Latency"] }
+    { id: 1, title: "Workspace Initialization", description: "Create a Gaprio workspace for your organization. Users, teams, and permissions align with your existing identity system.", icon: ShieldCheck, tags: ["SSO Supported", "2FA"] },
+    { id: 2, title: "Core Workspace Connection", description: "Connect your primary workspace such as Google Workspace or Microsoft 365. Identity, files, and calendars sync to establish shared context.", icon: Globe, tags: ["OAuth 2.0", "Read-Only"] },
+    { id: 3, title: "Operational Tool Integration", description: "Communication and project tools connect next. Gaprio observes activity across conversations, tasks, and updates to understand how work actually happens.", icon: Cpu, tags: ["Webhooks", "Filtering"] },
+    { id: 4, title: "Unified Command View", description: "All connected tools come together in one dashboard. Gaprio highlights what matters, suggests next steps, and lets you act across systems from one place.", icon: LayoutGrid, tags: ["Analytics", "Zero Latency"] }
+];
+
+const pillars = [
+  {
+    id: 1,
+    title: "Context First",
+    description: "Gaprio understands why something happened, not just that it happened. It reads between the lines of your data.",
+    icon: Network
+  },
+  {
+    id: 2,
+    title: "Cross Tool Reasoning",
+    description: "Signals from one system inform actions in another. A Slack message can trigger a Jira update intelligently.",
+    icon: Workflow
+  },
+  {
+    id: 3,
+    title: "Human Controlled",
+    description: "Gaprio suggests and prepares actions, but humans stay in control of the final execution button.",
+    icon: UserCheck
+  }
 ];
 
 // --- COMPONENTS ---
@@ -155,7 +179,6 @@ const TimelineCard = ({ step, index, isLeft }) => {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className={cn(
                 "relative md:w-[45%] mb-24 md:mb-0",
-                // Helper to align the card itself to left or right half of screen
                 isLeft ? "md:mr-auto md:pr-12" : "md:ml-auto md:pl-12"
             )}
         >
@@ -166,8 +189,6 @@ const TimelineCard = ({ step, index, isLeft }) => {
             )} />
 
             <div className="group relative overflow-hidden rounded-2xl border border-zinc-800 bg-[#0a0a0a] p-8 hover:border-orange-500/30 transition-colors duration-500 backdrop-blur-sm min-h-[220px] flex flex-col justify-center">
-                
-                {/* 1. BIG NUMBER: Positioned on the "Outer" edge (Away from text) */}
                 <span className={cn(
                     "absolute top-0 text-[100px] font-bold text-zinc-900/40 font-mono transition-colors group-hover:text-orange-900/10 pointer-events-none select-none leading-none",
                     isLeft ? "left-1" : "right-2" 
@@ -175,19 +196,14 @@ const TimelineCard = ({ step, index, isLeft }) => {
                     0{step.id}
                 </span>
 
-                {/* 2. CONTENT GROUP: Icon + Text together */}
                 <div className={cn(
                     "relative z-10 flex flex-col gap-5",
-                    // Align content towards the spine (Right for Left card, Left for Right card)
                     isLeft ? "md:items-end md:text-right" : "md:items-start md:text-left"
                 )}>
-                    
-                    {/* Icon Box */}
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-zinc-800 to-black border border-white/5 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_4px_20px_-10px_rgba(255,255,255,0.1)]">
                         <step.icon className="w-6 h-6 text-orange-500" />
                     </div>
 
-                    {/* Text Content */}
                     <div>
                         <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-50 transition-colors">
                             {step.title}
@@ -197,13 +213,12 @@ const TimelineCard = ({ step, index, isLeft }) => {
                         </p>
                     </div>
                 </div>
-
-                {/* Hover Glow Effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-orange-600/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
             </div>
         </motion.div>
     );
 };
+
 // --- TIMELINE SECTION ---
 const TimelineSection = () => {
     const containerRef = useRef(null);
@@ -213,10 +228,8 @@ const TimelineSection = () => {
         offset: ["start center", "end center"]
     });
     
-    // Animate the line fill
     const scaleY = useTransform(scrollYProgress, [0, 0.95], [0, 1]);
 
-    // Detect when line hits the button to trigger "ignition"
     useMotionValueEvent(scrollYProgress, "change", (latest) => {
         if (latest > 0.95 && !active) setActive(true);
         if (latest < 0.95 && active) setActive(false);
@@ -231,12 +244,10 @@ const TimelineSection = () => {
                          whileInView={{ opacity: 1, y: 0 }}
                          viewport={{ once: true }}
                     >
-                         <h2 className="text-sm font-bold text-orange-500 tracking-[0.3em] uppercase mb-3">How It Works</h2>
-                         <h3 className="text-4xl md:text-5xl font-bold text-zinc-600 tracking-tight">The Intelligence <span className="text-white"> System</span></h3>
+                         <h3 className="text-4xl md:text-5xl font-bold text-zinc-600 tracking-tight">How Gaprio<span className="text-white"> Integrates With Your Stack</span></h3>
                     </motion.div>
                 </div>
 
-                {/* Central Spine with Magma Effect */}
                 <div className="absolute left-8 md:left-1/2 top-32 bottom-[60px] w-[3px] bg-zinc-900 -translate-x-1/2 rounded-full overflow-hidden">
                     <motion.div 
                         style={{ scaleY, transformOrigin: "top" }}
@@ -258,7 +269,6 @@ const TimelineSection = () => {
                     })}
                 </div>
 
-                {/* Connected CTA Button - Ignition Effect */}
                 <div className="mt-28 flex justify-center relative z-20">
                     <motion.button 
                         className={cn(
@@ -271,7 +281,6 @@ const TimelineSection = () => {
                          <span className="relative z-10 font-bold tracking-wide">Start Integration</span>
                          <Zap className={cn("w-5 h-5 relative z-10 transition-colors", active ? "text-white fill-white" : "text-zinc-600")} />
                          
-                         {/* Pulse Rings */}
                          {active && (
                              <>
                                 <span className="absolute inset-0 rounded-full border border-white/40 animate-[ping_1.5s_linear_infinite]" />
@@ -291,19 +300,18 @@ const IntegrationStack = () => {
         <section className="relative w-full">
             <div className="max-w-7xl mx-auto px-6">
                 
-                {/* HEADLINE: BETTER, STANDARD LEVEL */}
                 <div className="mb-32 md:sticky md:top-24 z-0 text-center md:text-left">
-                     <h2 className="text-sm font-bold text-orange-500 tracking-[0.3em] uppercase mb-8">Deep Dive</h2>
-                     <h3 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-8">
+                      <h2 className="text-sm font-bold text-orange-500 tracking-[0.3em] uppercase mb-8">Deep Dive</h2>
+                      <h3 className="text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tighter leading-[0.85] mb-8">
                         Unified <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-zinc-200 via-zinc-500 to-zinc-800">
                            Ecosystems.
                         </span>
-                     </h3>
-                     <div className="h-1 w-32 bg-gradient-to-r from-orange-500 to-transparent mb-10 md:mx-0 mx-auto" />
-                     <p className="text-zinc-400 max-w-2xl text-xl md:text-2xl leading-relaxed md:mx-0 mx-auto font-light">
-                        A closer look at how Gaprio enhances the tools your teams already rely on.
-                     </p>
+                      </h3>
+                      <div className="h-1 w-32 bg-gradient-to-r from-orange-500 to-transparent mb-10 md:mx-0 mx-auto" />
+                      <p className="text-zinc-400 max-w-2xl text-xl md:text-2xl leading-relaxed md:mx-0 mx-auto font-light">
+                         A closer look at how Gaprio enhances the tools your teams already rely on.
+                      </p>
                 </div>
 
                 <div className="relative flex flex-col items-center">
@@ -313,20 +321,17 @@ const IntegrationStack = () => {
                         return (
                             <motion.div
                                 key={tool.id}
-                                id={`integration-${tool.id}`} // Target for scrolling
+                                id={`integration-${tool.id}`} 
                                 initial={{ opacity: 0, y: 50 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                                // STRICT ORANGE/DARK THEME
                                 className="sticky w-full max-w-5xl bg-[#080808] border border-white/5 rounded-[2rem] p-8 md:p-14 mb-24 md:mb-12 shadow-[0_0_80px_-30px_rgba(0,0,0,1)] overflow-hidden"
                                 style={{ top: `${topOffset}px` }}
                             >
-                                {/* Subtle Orange Glow */}
                                 <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-600/5 blur-[120px] rounded-full pointer-events-none" />
 
                                 <div className="relative z-10 grid md:grid-cols-[1fr_2fr] gap-12 items-start">
-                                    {/* Left: Brand Identity */}
                                     <div className="flex flex-col gap-8">
                                         <div className="w-24 h-24 relative bg-[#0f0f0f] rounded-3xl p-5 border border-white/5 flex items-center justify-center shadow-inner">
                                             <Image src={tool.icon} alt={tool.name} width={64} height={64} className="object-contain" />
@@ -341,7 +346,6 @@ const IntegrationStack = () => {
                                         </button>
                                     </div>
 
-                                    {/* Right: The Solution */}
                                     <div className="flex flex-col gap-12 pt-2">
                                         <div className="space-y-10">
                                             <div className="flex gap-6 items-start">
@@ -373,12 +377,111 @@ const IntegrationStack = () => {
                             </motion.div>
                         );
                     })}
-                    <div className="h-[20vh]" />
                 </div>
             </div>
         </section>
     );
 };
+
+// --- SECTION 4: DIFFERENTIATION (NEW) ---
+const DifferentiationSection = () => {
+  return (
+    <section className="relative w-full py-32">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* HEADING */}
+        <div className="text-center mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+          >
+            <h2 className="text-sm font-bold text-orange-500 tracking-[0.3em] uppercase mb-4">Differentiation</h2>
+            <h3 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+              Integrations That <br className="hidden md:block"/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">Coordinate, Not Just Connect</span>
+            </h3>
+          </motion.div>
+        </div>
+
+        {/* PILLARS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {pillars.map((pillar, i) => (
+            <motion.div
+              key={pillar.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.2, duration: 0.6 }}
+              className="group relative bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 hover:border-orange-500/30 transition-all duration-500 overflow-hidden"
+            >
+              {/* Hover Glow */}
+              <div className="absolute -right-10 -top-10 w-32 h-32 bg-orange-600/10 rounded-full blur-[50px] group-hover:bg-orange-600/20 transition-all duration-500" />
+              
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="w-14 h-14 rounded-xl bg-orange-500/10 flex items-center justify-center mb-8 border border-orange-500/20 group-hover:scale-110 transition-transform duration-300">
+                  <pillar.icon className="w-7 h-7 text-orange-500" />
+                </div>
+                
+                <h4 className="text-2xl font-bold text-white mb-4">{pillar.title}</h4>
+                <p className="text-zinc-400 leading-relaxed font-light">{pillar.description}</p>
+                
+                {/* Decorative Line */}
+                <div className="w-full h-[1px] bg-gradient-to-r from-orange-500/20 to-transparent mt-8 group-hover:from-orange-500/50 transition-colors" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// --- SECTION 5: TRANSITION CTA (NEW) ---
+const TransitionCTA = () => {
+  return (
+    <section className="relative w-full pb-20 overflow-hidden flex items-center justify-center">
+      {/* Background Ambience */}
+      <div className="absolute inset-0">
+      </div>
+
+      <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
+        <motion.div
+           initial={{ opacity: 0, scale: 0.95 }}
+           whileInView={{ opacity: 1, scale: 1 }}
+           viewport={{ once: true }}
+           transition={{ duration: 0.8 }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-orange-400 text-sm font-bold uppercase tracking-widest mb-8">
+            <Sparkles className="w-4 h-4" />
+            <span>Next Generation</span>
+          </div>
+          
+          <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-8">
+            Integration Is Only <br/>
+            <span className="text-zinc-600">The Beginning.</span>
+          </h2>
+          
+          <p className="text-xl md:text-2xl text-zinc-400 font-light mb-12 max-w-2xl mx-auto">
+            See how Gaprio’s intelligence turns connected tools into coordinated work.
+          </p>
+          
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative px-10 py-5 bg-white text-black rounded-full font-bold text-lg overflow-hidden shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-15px_rgba(255,255,255,0.5)] transition-shadow"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              Explore Features
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </motion.button>
+        </motion.div>
+      </div>
+    </section>
+  )
+}
 
 // --- MAIN PAGE ---
 export default function UnifiedPage() {
@@ -412,7 +515,7 @@ export default function UnifiedPage() {
                 <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1] mb-8 text-white drop-shadow-2xl">
                   Your Stack. <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-200 to-zinc-500">
-                     Fully Connected.
+                      Fully Connected.
                   </span>
                 </h1>
             </motion.div>
@@ -453,6 +556,12 @@ export default function UnifiedPage() {
 
       {/* --- SECTION 3: INTEGRATION STACK --- */}
       <IntegrationStack />
+
+      {/* --- SECTION 4: DIFFERENTIATION (NEW) --- */}
+      <DifferentiationSection />
+
+      {/* --- SECTION 5: TRANSITION CTA (NEW) --- */}
+      <TransitionCTA />
 
       <div className="w-full bg-gradient-to-t from-black to-transparent" />
     </main>

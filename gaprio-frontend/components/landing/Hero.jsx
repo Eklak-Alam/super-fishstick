@@ -131,9 +131,9 @@ export default function Hero() {
             variants={itemAnim}
             className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white mb-6 leading-[1.05]"
           >
-            The AI Brain <br />
+            The AI Brain<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-200 to-amber-500">
-              for Your Enterprise
+               for Your Enterprise
             </span>
           </motion.h1>
 
@@ -141,8 +141,7 @@ export default function Hero() {
             variants={itemAnim}
             className="text-base sm:text-lg text-zinc-400 mb-10 max-w-2xl leading-relaxed font-light"
           >
-            One intelligent layer that understands your work, connects your
-            tools, and turns everyday operations into automated workflows.
+            Gaprio sits above your existing tools, understands conversations, documents, and tasks together, and turns everyday coordination into automated outcomes.
           </motion.p>
 
           <motion.div
@@ -154,7 +153,7 @@ export default function Hero() {
               suppressHydrationWarning={true}
               className="group relative h-12 px-8 rounded-3xl bg-gradient-to-t from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-600 cursor-pointer border border-orange-400/20 text-white font-medium text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto min-w-[160px] transition-all duration-300 ease-out"
             >
-              <span>Start Free Trial</span>
+              <span>Request Early Access</span>
               <ArrowRight size={16} className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300" />
             </button>
 
@@ -162,7 +161,7 @@ export default function Hero() {
             <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
               <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#050201] px-8 text-sm font-medium text-zinc-400 backdrop-blur-3xl group-hover:text-white group-hover:bg-[#0f0a05] transition-all duration-300 gap-2">
-                View Documentation
+                See How It Works
                 <BookOpen size={16} className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300" />
               </span>
             </div>

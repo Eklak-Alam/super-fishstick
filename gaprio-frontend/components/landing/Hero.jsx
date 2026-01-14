@@ -7,7 +7,7 @@ import { Points, PointMaterial, Float } from "@react-three/drei";
 import { BookOpen, ArrowRight, MessageSquare, Database, Mail, CheckSquare } from "lucide-react";
 import * as random from "maath/random/dist/maath-random.cjs";
 
-// --- 1. STABLE 3D COMPONENT (No Changes) ---
+// --- 1. STABLE 3D COMPONENT (Unchanged) ---
 function TechGlobe(props) {
   const ref = useRef();
   const [sphere] = useState(() => {
@@ -49,35 +49,17 @@ export default function Hero() {
     setIsMounted(true);
   }, []);
 
-  // --- NEW ROBUST SCROLL LOGIC ---
-  // We track the Global Window Scroll (pixels) instead of a specific ref.
-  // This works perfectly even when the element is 'sticky'.
   const { scrollY } = useScroll();
-
-  // 1. Background Parallax: Moves down 50% speed relative to scroll
-  const yBg = useTransform(scrollY, [0, 1000], ["0%", "50%"]);
-
-  // 2. Content Opacity: Fades out completely by 400px scroll
-  const opacityContent = useTransform(scrollY, [0, 400], [1, 0]);
-
-  // 3. Content Scale: Shrinks slightly for depth effect
-  const scaleContent = useTransform(scrollY, [0, 400], [1, 0.9]);
-
-  // 4. Content Blur: Adds a motion blur effect as it leaves
-  const blurContent = useTransform(scrollY, [0, 400], ["0px", "10px"]);
+  const yBg = useTransform(scrollY, [0, 1000], ["0%", "30%"]);
+  const opacityContent = useTransform(scrollY, [0, 600], [1, 0]);
 
   return (
-    <div
-      // Kept sticky top-0 so the rest of the page slides OVER this section
-      className="relative h-[100dvh] w-full sticky top-0 z-0 overflow-hidden bg-[#050201] flex flex-col items-center justify-center selection:bg-orange-500/30"
-    >
+    <section className="relative min-h-screen w-full bg-[#050201] flex flex-col items-center justify-start lg:pt-48 pt-36 pb-20 overflow-hidden perspective-[2000px] selection:bg-orange-500/30">
+      
       {/* --- 3D Background Layer --- */}
-      <div className="absolute inset-0 z-0 opacity-100">
+      <div className="absolute inset-0 z-0 opacity-100 pointer-events-none">
         {isMounted && (
-          <Canvas
-            camera={{ position: [0, 0, 1] }}
-            gl={{ antialias: true, alpha: true }}
-          >
+          <Canvas camera={{ position: [0, 0, 1] }} gl={{ antialias: true, alpha: true }}>
             <Suspense fallback={null}>
               <Float speed={2} rotationIntensity={1} floatIntensity={1}>
                 <TechGlobe />
@@ -88,10 +70,7 @@ export default function Hero() {
       </div>
 
       {/* --- Parallax Atmosphere Layer --- */}
-      <motion.div
-        style={{ y: yBg }} // Apply Parallax Y movement here
-        className="absolute inset-0 w-full h-full pointer-events-none z-10"
-      >
+      <motion.div style={{ y: yBg }} className="absolute inset-0 w-full h-full pointer-events-none z-10">
         <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
@@ -105,14 +84,10 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* --- Main Content (Fades & Scales Out) --- */}
+      {/* --- Main Text Content --- */}
       <motion.div
-        style={{ 
-          opacity: opacityContent,
-          scale: scaleContent,
-          filter: `blur(${blurContent})` // Dynamic blur
-        }}
-        className="relative z-20 mt-16 w-full max-w-6xl mx-auto px-6 flex flex-col items-center justify-center text-center gap-8"
+        style={{ opacity: opacityContent }}
+        className="relative z-20 w-full max-w-6xl mx-auto px-6 flex flex-col items-center justify-center text-center gap-8 mb-24"
       >
         <motion.div
           initial="hidden"
@@ -149,18 +124,20 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
           >
             {/* Primary Button */}
-            <button
+            <button 
               suppressHydrationWarning={true}
-              className="group relative h-12 px-8 rounded-3xl bg-gradient-to-t from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-600 cursor-pointer border border-orange-400/20 text-white font-medium text-sm tracking-wide flex items-center justify-center gap-2 w-full sm:w-auto min-w-[160px] transition-all duration-300 ease-out"
+              className="group relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
             >
-              <span>Request Early Access</span>
-              <ArrowRight size={16} className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300" />
+              <span className="relative z-10">Request Early Access</span>
+              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
             </button>
 
             {/* Secondary Button */}
-            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group">
+            {/* (Kept wider as requested previously) */}
+            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] cursor-pointer group w-auto min-w-[220px] sm:min-w-[160px]">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
-              <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#050201] px-8 text-sm font-medium text-zinc-400 backdrop-blur-3xl group-hover:text-white group-hover:bg-[#0f0a05] transition-all duration-300 gap-2">
+              <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#050201] px-6 text-sm font-medium text-zinc-400 backdrop-blur-3xl group-hover:text-white group-hover:bg-[#0f0a05] transition-all duration-300 gap-2 whitespace-nowrap">
                 See How It Works
                 <BookOpen size={16} className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300" />
               </span>
@@ -169,8 +146,43 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
+      {/* --- 3. DASHBOARD SECTION (FIXED CUTTING ISSUE) --- */}
+      <motion.div
+        initial={{ opacity: 0, y: 80, rotateX: 25 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        transition={{
+          duration: 1.2,
+          delay: 0.3,
+          type: "spring",
+          stiffness: 60,
+          damping: 25,
+        }}
+        className="w-full max-w-6xl relative perspective-1000 group z-20 mx-auto px-4"
+      >
+        {/* Glow Effect */}
+        <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-700 will-change-[opacity]" />
+
+        {/* <--- THIS IS THE FIX YOU REQUESTED --- */}
+        {/* Using your exact snippet container structure (border, padding) + object-contain */}
+        <div className="relative w-full aspect-[20/10] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-all duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-2 group-hover:shadow-orange-500/10 group-hover:border-white/20">
+          
+          <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-zinc-950 ring-1 ring-white/5 flex items-center justify-center">
+            
+            {/* <--- IMAGE FIX: Changed to 'object-contain' so it never cuts off --- */}
+            <img
+              src="/dashboard.png"
+              alt="Gaprio Dashboard Interface"
+              className="w-full h-full object-contain object-center" 
+            />
+
+            {/* Glossy Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none mix-blend-overlay" />
+          </div>
+        </div>
+      </motion.div>
+
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
-    </div>
+    </section>
   );
 }
 

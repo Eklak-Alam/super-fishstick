@@ -115,27 +115,33 @@ const ProblemSection = () => {
     <section className="w-full py-12 md:py-24 bg-[#020202] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         
-       {/* --- Header (Centered & Premium) --- */}
-        <div className="relative mb-20 flex flex-col items-center text-center z-10">
-          
-          {/* Subtle Orange Background Glow */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] md:w-[600px] h-[200px] bg-orange-600/10 blur-[100px] rounded-full pointer-events-none" />
-          
-          <h2 className="relative z-10 text-5xl md:text-7xl font-bold text-white tracking-tighter leading-[1.1] md:leading-[1.1]">
-            Your ecosystem is <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-orange-700">
+       {/* --- Header (Responsive & Premium) --- */}
+        <div className="relative mb-12 md:mb-24 flex flex-col items-center text-center z-10 px-4 md:px-0">
+
+          {/* 1. Background Glow (Adjusted for Mobile/Desktop) */}
+          <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[250px] h-[120px] md:w-[600px] md:h-[200px] bg-orange-600/20 blur-[80px] md:blur-[100px] rounded-full pointer-events-none mix-blend-screen" />
+
+          {/* 3. Main Title */}
+          <h2 className="relative z-10 text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tighter leading-[1.05]">
+            Your ecosystem is
+            {/* Mobile break for emphasis */}
+            <span className="block md:inline"> </span>
+            <span className="block mt-1 md:mt-0 text-transparent bg-clip-text bg-gradient-to-b from-orange-400 via-orange-500 to-orange-800 drop-shadow-sm">
               Disconnected.
             </span>
           </h2>
-          
+
+          {/* 4. Subtitle Paragraph */}
           <motion.p 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            className="mt-6 text-neutral-400 text-lg md:text-xl max-w-xl mx-auto font-light"
+            className="mt-5 md:mt-8 text-neutral-400 text-base sm:text-lg md:text-xl max-w-sm md:max-w-2xl mx-auto font-light leading-relaxed"
           >
-            Tools don't talk to each other. <span className="text-white">You are the bridge.</span>
+            Tools don't talk to each other. <br className="block md:hidden" />
+            <span className="text-white font-medium">You are the bridge.</span>
           </motion.p>
+          
         </div>
 
         {/* --- Kinetic Shutter Component --- */}

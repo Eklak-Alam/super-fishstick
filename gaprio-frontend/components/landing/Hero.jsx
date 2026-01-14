@@ -126,7 +126,7 @@ export default function Hero() {
             {/* Primary Button */}
             <button 
               suppressHydrationWarning={true}
-              className="group relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
+              className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
             >
               <span className="relative z-10">Request Early Access</span>
               <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />

@@ -16,23 +16,26 @@ import {
 // --- 1. HERO SECTION: THE NERVE CENTER ---
 const EnterpriseHero = () => {
   return (
-    <section className="relative min-h-screen flex flex-col justify-center items-center bg-[#020202] text-white lg:pt-44 pt-32 pb-10 lg:pb-20 overflow-hidden border-b border-white/5">
+    <section className="relative min-h-screen flex flex-col justify-center items-center bg-[#020202] text-white pt-20 md:pt-44 lg:pb-20 overflow-hidden border-b border-white/5">
       
-      {/* Dynamic Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
+      {/* --- Dynamic Background Grid --- */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] md:bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" />
       <div className="absolute top-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-orange-900/20 via-[#020202] to-[#020202]" />
-        <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
+      
+      {/* Ambient Glows - Adjusted for mobile visibility */}
+      <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[90vw] md:w-[80vw] h-[50vh] bg-orange-600/20 blur-[100px] md:blur-[150px] rounded-[100%]" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-[80vw] md:w-[60vw] h-[50vh] bg-violet-900/20 blur-[120px] md:blur-[180px] rounded-[100%]" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:30px_30px] md:bg-[size:40px_40px] opacity-[0.04]" />
 
       <div className="container mx-auto px-4 z-10 relative">
         <div className="flex flex-col items-center text-center max-w-5xl mx-auto">
 
+          {/* --- Heading --- */}
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]"
+            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 md:mb-8 leading-[1.1] drop-shadow-2xl"
           >
             The Cognitive Layer for <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-200 to-amber-500">
@@ -40,22 +43,26 @@ const EnterpriseHero = () => {
             </span>
           </motion.h1>
 
+          {/* --- Description --- */}
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+            className="text-[15px] md:text-xl text-zinc-400 max-w-3xl mx-auto mb-10 md:mb-12 leading-relaxed px-2"
           >
             Bridge the gap between disconnected systems. Gaprio provides <span className="text-white font-semibold">Shared Memory</span> and <span className="text-white font-semibold">Reasoning</span> across tools like Outlook, Teams, Salesforce, and Jira.
           </motion.p>
+          
 
+          {/* --- Buttons --- */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
+            className="flex flex-col sm:flex-row items-center gap-4 justify-center w-full sm:w-auto"
           >
-           <button 
+            {/* 1. Primary Button (Full width on mobile) */}
+            <button 
               suppressHydrationWarning={true}
               className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
             >
@@ -63,19 +70,22 @@ const EnterpriseHero = () => {
               <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
             </button>
+
+            {/* 2. Secondary Button (Reduced width on mobile) */}
+            {/* Changed w-full to w-[80%] for that specific look you asked for */}
             <div
-              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group"
+              className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-[80%] sm:w-auto min-w-[160px] cursor-pointer group"
             >
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
 
               <span
                 className="
-                              inline-flex h-full w-full items-center justify-center rounded-full 
-                              bg-[#050201] px-8 text-sm font-medium text-zinc-400 
-                              backdrop-blur-3xl 
-                              group-hover:text-white group-hover:bg-[#0f0a05] 
-                              transition-all duration-300 gap-2
-                          "
+                  inline-flex h-full w-full items-center justify-center rounded-full 
+                  bg-[#050201] px-8 text-sm font-medium text-zinc-400 
+                  backdrop-blur-3xl 
+                  group-hover:text-white group-hover:bg-[#0f0a05] 
+                  transition-all duration-300 gap-2
+                "
               >
                 View Security Specs
                 <BookOpen
@@ -87,81 +97,8 @@ const EnterpriseHero = () => {
           </motion.div>
         </div>
 
-        {/* Hero Dashboard Visual */}
-        {/* <motion.div 
-          initial={{ opacity: 0, y: 60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="mt-20 relative max-w-6xl mx-auto"
-        >
-          <div className="absolute -inset-1 bg-gradient-to-b from-orange-500/10 to-transparent rounded-t-3xl blur-2xl" />
-          <div className="relative bg-[#0a0a0a] border border-white/10 rounded-t-3xl shadow-2xl overflow-hidden border-b-0">
-            <div className="h-12 bg-[#111] border-b border-white/5 flex items-center justify-between px-6">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-zinc-700/50" />
-                <div className="w-3 h-3 rounded-full bg-zinc-700/50" />
-                <div className="w-3 h-3 rounded-full bg-zinc-700/50" />
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1 bg-black rounded border border-white/5 text-[10px] font-mono text-zinc-500">
-                <Lock size={10} /> gaprio-enterprise-core
-              </div>
-              <div className="w-16" />
-            </div>
-
-            <div className="p-8 grid grid-cols-12 gap-6 h-[400px] bg-[#050505]">
-              <div className="hidden md:block col-span-3 space-y-4">
-                <div className="bg-[#111] rounded-xl p-4 border border-white/5">
-                  <div className="text-[10px] text-zinc-500 uppercase tracking-wider font-bold mb-3">Active Contexts</div>
-                  <div className="space-y-2">
-                    {['Project Alpha', 'Q4 Financials', 'Legal Audit', 'HR Policy'].map(i => (
-                      <div key={i} className="flex items-center gap-3 text-sm text-zinc-300 p-2 hover:bg-white/5 rounded-lg cursor-pointer">
-                        <div className="w-1.5 h-1.5 rounded-full bg-orange-500" /> {i}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="bg-[#111] rounded-xl p-4 border border-white/5">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-xs text-zinc-400">Memory Usage</span>
-                    <span className="text-xs text-green-400 font-mono">14TB</span>
-                  </div>
-                  <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-                    <div className="w-[60%] h-full bg-gradient-to-r from-orange-600 to-orange-400" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-span-12 md:col-span-9 bg-[#0a0a0a] rounded-xl border border-white/5 relative overflow-hidden flex flex-col items-center justify-center p-8">
-                <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.05]" />
-                
-                <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-24 h-24 rounded-full bg-[#050505] border border-orange-500/50 flex items-center justify-center shadow-[0_0_60px_rgba(249,115,22,0.15)] relative">
-                    <Brain className="text-white" size={40} />
-                    <div className="absolute inset-0 border border-orange-500 rounded-full animate-ping opacity-20" />
-                  </div>
-                  <div className="mt-4 text-center">
-                    <div className="text-white font-bold text-lg">Gaprio Neural Core</div>
-                    <div className="text-zinc-500 text-xs font-mono mt-1">Processing 42k Events/Sec</div>
-                  </div>
-                </div>
-
-                <div className="absolute w-full h-full">
-                  <div className="absolute top-10 left-10 bg-[#151515] px-4 py-2 rounded-lg border border-white/10 text-xs text-zinc-300 flex gap-2 items-center">
-                    <Globe size={14} className="text-blue-500" /> Salesforce
-                  </div>
-                  <div className="absolute bottom-10 right-10 bg-[#151515] px-4 py-2 rounded-lg border border-white/10 text-xs text-zinc-300 flex gap-2 items-center">
-                    <Terminal size={14} className="text-green-500" /> Jira Cloud
-                  </div>
-                  <div className="absolute top-10 right-20 bg-[#151515] px-4 py-2 rounded-lg border border-white/10 text-xs text-zinc-300 flex gap-2 items-center">
-                    <Search size={14} className="text-yellow-500" /> Outlook
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div> */}
       </div>
-    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />
     </section>
   );
 };

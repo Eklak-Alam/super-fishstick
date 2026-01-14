@@ -17,13 +17,13 @@ function cn(...inputs) {
 
 // --- DATA ---
 const heroTools = [
-  { id: 'asana', label: 'Asana', image: '/companylogo/asana.png', x: 5, y: -260, mobileX: 0, mobileY: -160, color: '#ea580c', bg: 'bg-[#151515]' },
+  { id: 'asana', label: 'Asana', image: '/companylogo/asana.png', x: 5, y: -260, mobileX: 1, mobileY: -160, color: '#ea580c', bg: 'bg-[#151515]' },
   { id: 'jira', label: 'Jira', image: '/companylogo/jira.png', x: 240, y: -180, mobileX: 120, mobileY: -110, color: '#d97706', bg: 'bg-[#151515]' },
-  { id: 'ms365', label: 'MS 365', image: '/companylogo/microsoft.webp', x: 360, y: 0, mobileX: 160, mobileY: 0, color: '#2563eb', bg: 'bg-[#151515]' },
+  { id: 'ms365', label: 'MS 365', image: '/companylogo/microsoft.webp', x: 360, y: -1, mobileX: 160, mobileY: 1, color: '#2563eb', bg: 'bg-[#151515]' },
   { id: 'clickup', label: 'ClickUp', image: '/companylogo/clickup.png', x: 240, y: 180, mobileX: 120, mobileY: 110, color: '#7c3aed', bg: 'bg-[#151515]' },
-  { id: 'zoho', label: 'Zoho', image: '/companylogo/zoho.png', x: -5, y: 260, mobileX: 0, mobileY: 160, color: '#ef4444', bg: 'bg-[#151515]' },
+  { id: 'zoho', label: 'Zoho', image: '/companylogo/zoho.png', x: -5, y: 260, mobileX: 1, mobileY: 160, color: '#ef4444', bg: 'bg-[#151515]' },
   { id: 'google', label: 'Google', image: '/companylogo/google.webp', x: -240, y: 180, mobileX: -120, mobileY: 110, color: '#dc2626', bg: 'bg-[#151515]' },
-  { id: 'slack', label: 'Slack', image: '/companylogo/slack.png', x: -360, y: 0, mobileX: -160, mobileY: 0, color: '#f97316', bg: 'bg-[#151515]' },
+  { id: 'slack', label: 'Slack', image: '/companylogo/slack.png', x: -360, y: 1, mobileX: -160, mobileY: 0, color: '#f97316', bg: 'bg-[#151515]' },
   { id: 'miro', label: 'Miro', image: '/companylogo/miro.png', x: -240, y: -180, mobileX: -120, mobileY: -110, color: '#fbbf24', bg: 'bg-[#151515]' },
 ];
 
@@ -81,92 +81,109 @@ const GrainOverlay = () => (
 
 // --- DRAGGABLE NODE ---
 function DraggableNode({ tool, containerRef, isMobile }) {
-    const initialX = isMobile ? tool.mobileX : tool.x;
-    const initialY = isMobile ? tool.mobileY : tool.y;
-    const x = useSpring(initialX, { stiffness: 120, damping: 20 });
-    const y = useSpring(initialY, { stiffness: 120, damping: 20 });
-    const [pos, setPos] = useState({ x: initialX, y: initialY });
+  const initialX = isMobile ? tool.mobileX : tool.x;
+  const initialY = isMobile ? tool.mobileY : tool.y;
 
-    useEffect(() => {
-        x.set(isMobile ? tool.mobileX : tool.x);
-        y.set(isMobile ? tool.mobileY : tool.y);
-    }, [isMobile, tool.x, tool.y, tool.mobileX, tool.mobileY, x, y]);
+  const x = useSpring(initialX, { stiffness: 120, damping: 20 });
+  const y = useSpring(initialY, { stiffness: 120, damping: 20 });
+  const [pos, setPos] = useState({ x: initialX, y: initialY });
 
-    useEffect(() => {
-        const unsubX = x.on("change", (v) => setPos(p => ({ ...p, x: v })));
-        const unsubY = y.on("change", (v) => setPos(p => ({ ...p, y: v })));
-        return () => { unsubX(); unsubY(); };
-    }, [x, y]);
+  useEffect(() => {
+    x.set(isMobile ? tool.mobileX : tool.x);
+    y.set(isMobile ? tool.mobileY : tool.y);
+  }, [isMobile, tool.x, tool.y, tool.mobileX, tool.mobileY, x, y]);
 
-    const midX = pos.x / 2;
-    const midY = pos.y / 2 + 60; 
-    const gradientId = `gradient-${tool.id}`;
-
-    const scrollToStack = () => {
-        const element = document.getElementById(`integration-${tool.id}`);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
+  useEffect(() => {
+    const unsubX = x.on("change", (v) => setPos((p) => ({ ...p, x: v })));
+    const unsubY = y.on("change", (v) => setPos((p) => ({ ...p, y: v })));
+    return () => {
+      unsubX();
+      unsubY();
     };
+  }, [x, y]);
 
-    return (
-        <>
-            <svg className="absolute top-1/2 left-1/2 overflow-visible pointer-events-none" style={{ zIndex: 10 }}>
-                <defs>
-                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="white" stopOpacity="0.05" />
-                        <stop offset="100%" stopColor={tool.color} stopOpacity="0.6" />
-                    </linearGradient>
-                </defs>
-                <motion.path 
-                    d={`M 0 0 Q ${midX} ${midY} ${pos.x} ${pos.y}`}
-                    stroke={`url(#${gradientId})`}
-                    strokeWidth="4" 
-                    strokeLinecap="round"
-                    fill="none"
-                    className="opacity-80 transition-opacity duration-300" 
-                />
-            </svg>
+  const midX = pos.x / 2;
+  const midY = pos.y / 2 + (isMobile ? 30 : 60);
+  const gradientId = `gradient-${tool.id}`;
 
-            <motion.div
-                drag
-                dragConstraints={containerRef}
-                dragElastic={0.1}
-                dragMomentum={false}
-                style={{ x, y }}
-                whileHover={{ scale: 1.1, cursor: 'grab' }}
-                whileDrag={{ scale: 1.15, cursor: 'grabbing', zIndex: 100 }}
-                className={`group absolute w-[80px] h-[80px] md:w-24 md:h-24 ${tool.bg} rounded-3xl flex flex-col items-center justify-center shadow-2xl z-20 border border-white/10 backdrop-blur-md touch-none select-none overflow-visible`}
-            >
-                <div 
-                    onClick={scrollToStack}
-                    className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer"
-                >
-                    <div className="relative w-8 h-8 md:w-10 md:h-10 mb-2 pointer-events-none select-none">
-                        <Image src={tool.image} alt={tool.label} fill draggable={false} className="object-contain"/>
-                    </div>
-                    {/* LABEL ALWAYS VISIBLE */}
-                    <span className="text-[10px] md:text-[11px] text-zinc-400 font-bold uppercase tracking-wider pointer-events-none select-none transition-colors group-hover:text-white">
-                        {tool.label}
-                    </span>
-                </div>
-                
-                {/* --- BOTTOM PILL BUTTON (HALF-IN / HALF-OUT) --- */}
-                <div className="absolute -bottom-3 left-0 right-0 flex justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out z-30">
-                    <button 
-                        onClick={(e) => { e.stopPropagation(); scrollToStack(); }}
-                        className="flex items-center gap-1.5 bg-[#050505] border border-zinc-700 hover:border-orange-500/50 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-black/50 transition-colors cursor-pointer whitespace-nowrap"
-                    >
-                        <span>View Docs</span>
-                        <ArrowUpRight className="w-2.5 h-2.5 text-orange-400" />
-                    </button>
-                </div>
+  const scrollToStack = () => {
+    const element = document.getElementById(`integration-${tool.id}`);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
 
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
-                <div className={`absolute inset-0 rounded-3xl border border-transparent group-hover:border-[${tool.color}]/50 transition-colors duration-300 pointer-events-none`} style={{ borderColor: tool.color + '40' }} />
-            </motion.div>
-        </>
-    );
+  return (
+    <>
+      <svg
+        className="absolute top-1/2 left-1/2 overflow-visible pointer-events-none"
+        style={{ zIndex: 10 }}
+      >
+        <defs>
+          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.05" />
+            <stop offset="100%" stopColor={tool.color} stopOpacity="0.6" />
+          </linearGradient>
+        </defs>
+        <motion.path
+          d={`M 0 0 Q ${midX} ${midY} ${pos.x} ${pos.y}`}
+          stroke={`url(#${gradientId})`}
+          strokeWidth={isMobile ? "2" : "4"}
+          strokeLinecap="round"
+          fill="none"
+          className="opacity-80 transition-opacity duration-300"
+        />
+      </svg>
+
+      <motion.div
+        drag
+        dragConstraints={containerRef}
+        dragElastic={0.1}
+        dragMomentum={false}
+        style={{ x, y }}
+        whileHover={{ scale: 1.1, cursor: "grab" }}
+        whileDrag={{ scale: 1.15, cursor: "grabbing", zIndex: 100 }}
+        className={`group absolute w-[68px] h-[68px] md:w-24 md:h-24 ${tool.bg} rounded-2xl md:rounded-3xl flex flex-col items-center justify-center shadow-2xl z-20 border border-white/10 backdrop-blur-md touch-none select-none overflow-visible`}
+      >
+        <div
+          onClick={scrollToStack}
+          className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer"
+        >
+          <div className="relative w-7 h-7 md:w-10 md:h-10 mb-1 md:mb-2 pointer-events-none select-none">
+            <Image
+              src={tool.image}
+              alt={tool.label}
+              fill
+              draggable={false}
+              className="object-contain"
+            />
+          </div>
+          <span className="text-[9px] md:text-[11px] text-zinc-400 font-bold uppercase tracking-wider pointer-events-none select-none transition-colors group-hover:text-white">
+            {tool.label}
+          </span>
+        </div>
+
+        <div className="hidden md:flex absolute -bottom-3 left-0 right-0 justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out z-30">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              scrollToStack();
+            }}
+            className="flex items-center gap-1.5 bg-[#050505] border border-zinc-700 hover:border-orange-500/50 text-white text-[10px] font-bold px-3 py-1.5 rounded-full shadow-lg shadow-black/50 transition-colors cursor-pointer whitespace-nowrap"
+          >
+            <span>View Docs</span>
+            <ArrowUpRight className="w-2.5 h-2.5 text-orange-400" />
+          </button>
+        </div>
+
+        <div className="absolute inset-0 rounded-2xl md:rounded-3xl bg-gradient-to-tr from-white/5 to-transparent pointer-events-none" />
+        <div
+          className={`absolute inset-0 rounded-2xl md:rounded-3xl border border-transparent group-hover:border-[${tool.color}]/50 transition-colors duration-300 pointer-events-none`}
+          style={{ borderColor: tool.color + "40" }}
+        />
+      </motion.div>
+    </>
+  );
 }
 
 // --- TIMELINE CARD ---
@@ -487,80 +504,102 @@ const TransitionCTA = () => {
 export default function UnifiedPage() {
   const containerRef = useRef(null);
 
+  // --- 1. ADDED isMobile LOGIC ---
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile(); 
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
-    <main className="relative w-full lg:pt-5 pt-20 min-h-screen bg-[#020202] text-white overflow-x-hidden selection:bg-orange-500/30">
+    // --- 2. REMOVED 'pt-20' FROM MAIN to fix the black space gap ---
+    <main className="relative w-full min-h-screen bg-[#020202] text-white overflow-x-hidden selection:bg-orange-500/30">
       
-      {/* GLOBAL BACKGROUND ELEMENTS (FIXED) */}
+      {/* GLOBAL BACKGROUND ELEMENTS (YOUR EXACT CODE) */}
       <div className="fixed inset-0 z-0 pointer-events-none">
           {/* Deep Orange Radial */}
           <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[100vw] h-[80vh] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#2a1005] via-[#050505] to-transparent opacity-100" />
           {/* Grain */}
-          <GrainOverlay />
-          {/* Grid */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
       </div>
 
       {/* --- SECTION 1: HERO --- */}
-      <section className="relative w-full min-h-[100vh] flex flex-col items-center pt-20 md:pt-32 z-10">
-          
-          <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-[100px] pointer-events-none mix-blend-screen" />
-          
-          {/* UPDATED HERO HEADING */}
-          <div className="relative z-10 text-center max-w-5xl px-6 mb-8 pointer-events-none select-none">
-            <motion.div
-                 initial={{ opacity: 0, scale: 0.9 }}
-                 animate={{ opacity: 1, scale: 1 }}
-                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            >
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1] mb-8 text-white drop-shadow-2xl">
-                  Your Stack. <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-200 to-zinc-500">
-                      Fully Connected.
-                  </span>
-                </h1>
-            </motion.div>
+      <section className="relative w-full min-h-[100vh] flex flex-col items-center pt-36 md:pt-32 md:pb-10 z-10 overflow-hidden">
+        
+        {/* Glow */}
+        <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-orange-600/10 rounded-full blur-[80px] md:blur-[100px] pointer-events-none mix-blend-screen" />
 
-            <motion.p 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="text-zinc-400 text-md md:text-lg max-w-2xl mx-auto leading-relaxed font-light"
-            >
-              Gaprio connects your existing tools into a single  <span className="text-orange-500 font-medium">Intelligent Layer</span> and turns them into a unified, coordinated system of work.
-            </motion.p>
-          </div>
-
-          <div 
-            ref={containerRef}
-            className="relative w-full max-w-[1200px] h-[500px] md:h-[600px] flex items-center justify-center z-20 cursor-crosshair touch-none select-none"
+        {/* HERO HEADING */}
+        <div className="relative z-10 text-center max-w-5xl px-4 md:px-6 mb-4 md:mb-8 pointer-events-none select-none">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
           >
-            <div className="relative z-30 flex items-center justify-center pointer-events-none">
-               <div className="absolute w-40 h-40 bg-orange-500/20 blur-[60px] rounded-full animate-pulse" />
-               <div className="relative w-28 h-28 md:w-36 md:h-36 bg-[#0a0a0a] rounded-full border border-zinc-800 shadow-[0_0_50px_-10px_rgba(234,88,12,0.4)] flex items-center justify-center ring-1 ring-white/10">
-                  <div className="absolute inset-0 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite]" />
-                  <div className="absolute inset-8 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite_1s]" />
-                  <div className="relative w-12 h-12 md:w-16 md:h-16">
-                     <Image src="/logo1.png" alt="Gaprio" fill className="object-contain" />
-                  </div>
-               </div>
-            </div>
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[1] mb-6 md:mb-8 text-white drop-shadow-2xl">
+              Your Stack. <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-200 to-zinc-500">
+                Fully Connected.
+              </span>
+            </h1>
+          </motion.div>
 
-            {heroTools.map((tool) => (
-              <DraggableNode key={tool.id} tool={tool} containerRef={containerRef} />
-            ))}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="text-zinc-400 text-sm md:text-lg max-w-sm md:max-w-2xl mx-auto leading-relaxed font-light px-2"
+          >
+            Gaprio connects your existing tools into a single{" "}
+            <span className="text-orange-500 font-medium">
+              Intelligent Layer
+            </span>{" "}
+            and turns them into a unified, coordinated system of work.
+          </motion.p>
+        </div>
+
+        {/* INTERACTIVE MAP CONTAINER */}
+        <div
+          ref={containerRef}
+          className="relative w-full max-w-[1200px] h-[450px] md:h-[600px] flex items-center justify-center z-20 cursor-crosshair touch-none select-none mt-4 md:mt-0"
+        >
+          {/* CENTRAL HUB */}
+          <div className="relative z-30 flex items-center justify-center pointer-events-none">
+            <div className="absolute w-28 h-28 md:w-40 md:h-40 bg-orange-500/20 blur-[40px] md:blur-[60px] rounded-full animate-pulse" />
+            
+            <div className="relative w-20 h-20 md:w-36 md:h-36 bg-[#0a0a0a] rounded-full border border-zinc-800 shadow-[0_0_50px_-10px_rgba(234,88,12,0.4)] flex items-center justify-center ring-1 ring-white/10">
+              <div className="absolute inset-0 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite]" />
+              <div className="absolute inset-4 md:inset-8 rounded-full border border-orange-500/20 animate-[ping_3s_linear_infinite_1s]" />
+              
+              <div className="relative w-8 h-8 md:w-16 md:h-16">
+                <Image
+                  src="/logo1.png"
+                  alt="Gaprio"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </div>
           </div>
+
+          {/* RENDER NODES */}
+          {heroTools.map((tool) => (
+            <DraggableNode
+              key={tool.id}
+              tool={tool}
+              containerRef={containerRef}
+              isMobile={isMobile} // Now correctly defined
+            />
+          ))}
+        </div>
       </section>
 
-      {/* --- SECTION 2: TIMELINE / STEPS --- */}
+      {/* --- Other Sections --- */}
       <TimelineSection />
-
-      {/* --- SECTION 3: INTEGRATION STACK --- */}
       <IntegrationStack />
-
-      {/* --- SECTION 4: DIFFERENTIATION (NEW) --- */}
       <DifferentiationSection />
-
-      {/* --- SECTION 5: TRANSITION CTA (NEW) --- */}
       <TransitionCTA />
 
       <div className="w-full bg-gradient-to-t from-black to-transparent" />

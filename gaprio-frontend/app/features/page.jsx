@@ -123,17 +123,12 @@ const integrations = [
 // ... [KEEP YOUR EXISTING HERO SECTION] ...
 const HeroSection = () => {
   return (
-    <section className="relative min-h-[90vh] lg:pt-44 pt-32 flex flex-col items-center justify-start pb-32 overflow-hidden">
-      <div className="absolute top-[-25%] left-1/2 -translate-x-1/2 w-[80vw] h-[50vh] bg-orange-600/20 blur-[150px] rounded-[100%]" />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[60vw] h-[50vh] bg-violet-900/20 blur-[180px] rounded-[100%]" />
-      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:40px_40px] opacity-[0.04]" />
-
-      {/* --- Dynamic Backgrounds --- */}
-      {/* 1. Base Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,#ffffff03_1px,transparent_1px),linear-gradient(to_right,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] z-0" />
-
-      {/* 2. Orange Hero Gradient */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-orange-600/20 blur-[120px] rounded-full opacity-50 z-0 pointer-events-none mix-blend-screen" />
+    <section className="relative min-h-[100dvh] lg:min-h-[90vh] lg:pt-44 md:pt-32 pt-36 flex flex-col items-center justify-start pb-32 overflow-hidden bg-[#050201]">
+      
+      {/* --- Background Effects --- */}
+      <div className="absolute top-[-10%] md:top-[-25%] left-1/2 -translate-x-1/2 w-[90vw] md:w-[80vw] h-[40vh] md:h-[50vh] bg-orange-600/20 blur-[100px] md:blur-[150px] rounded-[100%]" />
+      <div className="absolute bottom-[-10%] right-[-5%] w-[80vw] md:w-[60vw] h-[40vh] md:h-[50vh] bg-violet-900/20 blur-[120px] md:blur-[180px] rounded-[100%]" />
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-[size:30px_30px] md:bg-[size:40px_40px] opacity-[0.04]" />
 
       <div className="container mx-auto px-4 z-10 flex flex-col items-center text-center relative">
         {/* --- Text Content --- */}
@@ -143,20 +138,23 @@ const HeroSection = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="flex flex-col items-center w-full"
         >
-          <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-8 leading-[1.05] max-w-5xl mx-auto drop-shadow-2xl">
-            The Operating System <br />
+          <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-white mb-6 md:mb-8 leading-[1.1] md:leading-[1.05] max-w-5xl mx-auto drop-shadow-2xl">
+            The Operating System <br className="hidden sm:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-orange-300 to-amber-500">
               for Enterprise Work.
             </span>
           </h1>
 
-          <p className="text-md md:text-lg text-zinc-400 mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base md:text-lg text-zinc-400 mb-10 max-w-3xl mx-auto leading-relaxed px-2">
             Stop stitching tools together with fragile workflows. Gaprio adds a
             single intelligent layer that understands context, coordinates
             actions, and orchestrates work across your entire stack.
           </p>
 
-          <div className="flex flex-row items-center justify-center gap-3 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
+          {/* --- Buttons Section --- */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
+            
+            {/* 1. Primary Button (Full width on mobile) */}
             <button 
               suppressHydrationWarning={true}
               className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
@@ -165,17 +163,20 @@ const HeroSection = () => {
               <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
             </button>
-            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group">
+
+            {/* 2. Secondary Button (Reduced width on mobile) */}
+            {/* Changed w-full to w-[80%] so it's smaller than the top button on phones */}
+            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-[80%] sm:w-auto min-w-[160px] cursor-pointer group">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
 
               <span
                 className="
-                              inline-flex h-full w-full items-center justify-center rounded-full 
-                              bg-[#050201] px-8 text-sm font-medium text-zinc-400 
-                              backdrop-blur-3xl 
-                              group-hover:text-white group-hover:bg-[#0f0a05] 
-                              transition-all duration-300 gap-2
-                          "
+                  inline-flex h-full w-full items-center justify-center rounded-full 
+                  bg-[#050201] px-8 text-sm font-medium text-zinc-400 
+                  backdrop-blur-3xl 
+                  group-hover:text-white group-hover:bg-[#0f0a05] 
+                  transition-all duration-300 gap-2
+                "
               >
                 View Documentation
                 <BookOpen
@@ -184,40 +185,7 @@ const HeroSection = () => {
                 />
               </span>
             </div>
-          </div>
-        </motion.div>
-
-        {/* --- FLOATING DASHBOARD IMAGE --- */}
-        <motion.div
-          initial={{ opacity: 0, y: 80, rotateX: 25 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{
-            duration: 1.2,
-            delay: 0.3,
-            type: "spring",
-            stiffness: 60,
-            damping: 25,
-          }}
-          className="w-full max-w-6xl relative perspective-1000 group z-20 mx-auto px-4"
-        >
-          <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-700 will-change-[opacity]" />
-
-          {/* FIX APPLIED HERE:
-              1. Removed h-[35vw], min-h, max-h.
-              2. Added aspect-video (16/9 ratio). This keeps the box shape consistent on all zooms.
-          */}
-          <div className="relative w-full aspect-[20/10] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-all duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-2 group-hover:shadow-orange-500/10 group-hover:border-white/20">
-            <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-zinc-950 ring-1 ring-white/5 flex items-center justify-center">
-              <img
-                src="/dashboard.png"
-                alt="Gaprio Dashboard Interface"
-                // object-contain: shows full image
-                // object-center: keeps it centered
-                className="w-full h-full object-contain object-center"
-              />
-
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none mix-blend-overlay" />
-            </div>
+            
           </div>
         </motion.div>
       </div>
@@ -229,7 +197,7 @@ const HeroSection = () => {
 // --- NEW COMPONENT: CORE FEATURES (Bento Grid) ---
 const CoreFeatures = () => {
   return (
-    <section className="relative py-24 bg-[#050201]">
+    <section className="relative pb-24 bg-[#050201]">
       <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="text-center mb-16">
           <motion.div

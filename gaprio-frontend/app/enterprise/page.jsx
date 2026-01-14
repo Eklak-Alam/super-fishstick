@@ -55,25 +55,14 @@ const EnterpriseHero = () => {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="flex flex-col sm:flex-row gap-4 justify-center w-full sm:w-auto"
           >
-            <button
-                          suppressHydrationWarning={true} // <--- THIS LINE FIXES THE ERROR
-                          className="
-                        group relative h-12 px-8 rounded-3xl
-                        bg-gradient-to-t from-orange-600 to-orange-500 
-                        hover:from-orange-500 hover:to-orange-600 cursor-pointer
-                        border border-orange-400/20
-                        text-white font-medium text-sm tracking-wide
-                        flex items-center justify-center gap-2
-                        w-full sm:w-auto min-w-[160px]
-                        transition-all duration-300 ease-out
-                    "
-                        >
-                          Book Architecture Review
-                          <ArrowRight
-                            size={16}
-                            className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300"
-                          />
-                        </button>
+           <button 
+              suppressHydrationWarning={true}
+              className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
+            >
+              <span className="relative z-10">Book Architecture Review</span>
+              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
+            </button>
             <div
               className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group"
             >
@@ -369,7 +358,7 @@ const EnterpriseSolution = () => {
 // --- 4. DEPLOYMENT MODELS (VISUAL CARDS) ---
 const DeploymentModels = () => {
   return (
-    <section className="pt-24 pb-10 bg-[#020202]">
+    <section className="py-24 pb-10 bg-[#020202]">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Deployment Models</h2>
@@ -395,7 +384,12 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Managed infrastructure</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Continuous updates</li>
             </ul>
-            <button className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors">Start Pilot</button>
+            <button 
+              suppressHydrationWarning={true}
+              className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors"
+            >
+              Start Pilot
+            </button>
           </motion.div>
 
           {/* 2. Private Cloud (FEATURED) */}
@@ -414,7 +408,12 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Custom model configuration</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Internal system access</li>
             </ul>
-            <button className="w-full py-3 bg-orange-600 rounded-lg text-white text-sm font-bold hover:bg-orange-500 transition-colors">Contact Engineering</button>
+            <button 
+              suppressHydrationWarning={true}
+              className="w-full py-3 bg-orange-600 rounded-lg text-white text-sm font-bold hover:bg-orange-500 transition-colors"
+            >
+              Contact Engineering
+            </button>
           </motion.div>
 
           {/* 3. On-Prem */}
@@ -432,7 +431,12 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Network isolated operation</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Compliance aligned architecture</li>
             </ul>
-            <button className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors">Request Specs</button>
+            <button 
+              suppressHydrationWarning={true}
+              className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors"
+            >
+              Request Specs
+            </button>
           </motion.div>
 
         </div>
@@ -441,46 +445,113 @@ const DeploymentModels = () => {
   );
 };
 
-
-// --- 5. INTEGRATION ROADMAP (VERTICAL TIMELINE) ---
-const IntegrationRoadmap = () => {
+const AdoptionJourney = () => {
   const steps = [
-    { title: "Identity Connection", desc: "Integrate with existing identity providers like Azure AD or Okta. Gaprio follows your authentication and access policies.", icon: Fingerprint },
-    { title: "Initial Data Sync", desc: "Connect communication and productivity tools in read only mode. Gaprio builds context without affecting live workflows.", icon: Search },
-    { title: "Memory Initialization", desc: "Historical activity is indexed to establish organizational context and decision history.", icon: Database },
-    { title: "Governance Mode", desc: "AI operates in draft mode. Human approval is required for all actions and detailed logs are enabled.", icon: ShieldCheck },
-    { title: "Orchestrated Workflows", desc: "Trusted workflows are enabled selectively. Automation scales where confidence and control are established.", icon: GitBranch }
+    { 
+      title: "Identity Connection", 
+      desc: "Connect Gaprio to your identity provider (Okta, Azure AD). Your existing authentication and access policies are enforced immediately.", 
+      icon: Fingerprint 
+    },
+    { 
+      title: "Read-Only Context", 
+      desc: "Tools are connected in read-only mode. Gaprio builds organizational context silently without affecting live workflows.", 
+      icon: Search 
+    },
+    { 
+      title: "Memory Initialization", 
+      desc: "Historical activity is indexed to establish decision history, creating a baseline of shared understanding.", 
+      icon: Database 
+    },
+    { 
+      title: "Governance Mode", 
+      desc: "AI operates in 'Draft Mode'. Human approval is required for actions, and detailed audit logs are active.", 
+      icon: ShieldCheck 
+    },
+    { 
+      title: "Orchestrated Workflows", 
+      desc: "Trusted workflows are enabled selectively. Automation scales only where confidence and control are proven.", 
+      icon: GitBranch 
+    }
   ];
 
   return (
-    <section className="pt-24 pb-10 bg-[#020202]">
-      <div className="container mx-auto px-4 max-w-4xl">
-        <h2 className="text-3xl font-bold text-white text-center mb-16">The Integration Roadmap</h2>
-        
-        <div className="relative pl-8 md:pl-0">
-          {/* Vertical Line */}
-          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2" />
+    <section className="pt-10 pb-10 md:py-24 bg-[#020202] relative overflow-hidden">
 
-          <div className="space-y-12">
+      <div className="container mx-auto px-4 max-w-7xl relative z-10">
+        
+        {/* Section Header */}
+        <div className="text-center mb-24">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-5xl font-bold text-white mb-6"
+          >
+            The Enterprise Adoption Journey
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-zinc-400 max-w-2xl mx-auto text-lg"
+          >
+            A safe, phased approach to deploying intelligence at scale.
+          </motion.p>
+        </div>
+        
+        {/* The Timeline Container */}
+        <div className="relative">
+          
+          {/* Connecting Line (Desktop: Horizontal, Mobile: Vertical) */}
+          <div className="hidden md:block absolute top-8 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500/50 to-transparent z-0" />
+          <div className="md:hidden absolute left-8 top-0 bottom-0 w-[2px] bg-gradient-to-b from-orange-500/20 via-orange-500/50 to-orange-500/20 z-0" />
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-12 md:gap-6">
             {steps.map((step, i) => (
-              <div key={i} className={`flex flex-col md:flex-row items-center gap-8 ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
-                
-                {/* Content Box */}
-                <div className="flex-1 w-full text-left md:text-right md:group-odd:text-left">
-                  <div className={`bg-[#0a0a0a] border border-white/10 p-6 rounded-xl hover:border-orange-500/30 transition-all ${i % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}>
-                    <h4 className="text-lg font-bold text-white mb-2">{step.title}</h4>
-                    <p className="text-sm text-zinc-500">{step.desc}</p>
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15 }}
+                className="relative z-10 group"
+              >
+                {/* 1. The Marker / Icon */}
+                <div className="flex flex-row md:flex-col items-start md:items-center gap-6 md:gap-0">
+                  <div className="relative shrink-0">
+                     {/* Outer Glow Ring */}
+                     <div className="w-16 h-16 rounded-full bg-[#0a0a0a] border border-orange-500/30 flex items-center justify-center relative z-10 group-hover:border-orange-500 group-hover:shadow-[0_0_30px_rgba(249,115,22,0.4)] transition-all duration-500">
+                        <step.icon size={24} className="text-zinc-500 group-hover:text-white transition-colors duration-300" />
+                     </div>
+                     {/* Mobile Connector Patch (hides line behind circle) */}
+                     <div className="md:hidden absolute inset-0 bg-[#020202] -z-10 rounded-full scale-110" />
+                  </div>
+
+                  {/* 2. The Content Card */}
+                  <div className="pt-0 md:pt-10 w-full">
+                    <div 
+                      suppressHydrationWarning={true}
+                      className="
+                        bg-[#0a0a0a] border border-white/5 p-6 rounded-2xl 
+                        hover:bg-white/[0.02] hover:border-orange-500/20 
+                        transition-all duration-300 h-full relative
+                        before:absolute before:inset-0 before:bg-gradient-to-b before:from-white/[0.02] before:to-transparent before:opacity-0 before:group-hover:opacity-100 before:transition-opacity before:duration-500 before:rounded-2xl
+                      "
+                    >
+                      <div className="text-[10px] font-mono text-orange-500 mb-3 tracking-widest uppercase opacity-70">
+                        Phase 0{i+1}
+                      </div>
+                      <h4 className="text-lg font-bold text-white mb-3 group-hover:text-orange-50 transition-colors">
+                        {step.title}
+                      </h4>
+                      <p className="text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                
-                {/* Center Node */}
-                <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-10 h-10 bg-[#000] border-2 border-orange-500 rounded-full flex items-center justify-center z-10 text-orange-500">
-                  <step.icon size={16} />
-                </div>
-                
-                {/* Empty Spacer */}
-                <div className="flex-1 hidden md:block" />
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -492,7 +563,7 @@ const IntegrationRoadmap = () => {
 // --- 6. CTA: TERMINAL STYLE ---
 const FinalCTA = () => {
   return (
-    <section className="pt-32 pb-10 bg-black relative overflow-hidden flex flex-col items-center justify-center">
+    <section className="pt-10 pb-10 md:py-20 bg-black relative overflow-hidden flex flex-col items-center justify-center">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,_var(--tw-gradient-stops))] from-orange-900/20 via-black to-black" />
       
       <div className="relative z-10 container mx-auto px-4 max-w-4xl bg-[#0a0a0a] border border-white/10 rounded-3xl p-12 shadow-2xl">
@@ -501,7 +572,7 @@ const FinalCTA = () => {
           <div className="flex-1 text-center md:text-left">
             <Building2 className="w-12 h-12 text-white mb-6 opacity-50 mx-auto md:mx-0" />
             <h2 className="text-4xl font-bold text-white mb-4">
-              odernize How Your <br /> Organization Thinks.
+              Modernize How Your <br /> Organization Thinks.
             </h2>
             <p className="text-zinc-400 mb-6">
               Gaprio adds a shared memory layer to your enterprise stack and reduces cognitive load across teams.
@@ -518,12 +589,16 @@ const FinalCTA = () => {
               <div>
                 <label className="text-xs text-zinc-500 font-mono mb-1 block">WORK EMAIL</label>
                 <input 
+                  suppressHydrationWarning={true}
                   type="email" 
                   placeholder="name@company.com" 
                   className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 outline-none transition-colors"
                 />
               </div>
-              <button className="w-full bg-orange-600 text-white font-bold rounded-lg py-3 hover:bg-orange-500 transition-all shadow-lg shadow-orange-900/20">
+              <button 
+                suppressHydrationWarning={true}
+                className="w-full bg-orange-600 text-white font-bold rounded-lg py-3 hover:bg-orange-500 transition-all shadow-lg shadow-orange-900/20"
+              >
                 Book a Demo
               </button>
               <p className="text-[10px] text-center text-zinc-600">
@@ -546,7 +621,7 @@ const EnterprisePage = () => {
       <EnterpriseSolution />
       <DeploymentModels />
       <EnterpriseProblem />
-      <IntegrationRoadmap />
+      <AdoptionJourney />
       <FinalCTA />
     </main>
   );

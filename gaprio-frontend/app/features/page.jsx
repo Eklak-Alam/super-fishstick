@@ -16,7 +16,8 @@ import {
   Workflow,
   Sparkles,
   MessageSquare,
-  FileText
+  FileText,
+  Radio
 } from 'lucide-react';
 
 // ... [KEEP YOUR EXISTING "integrations" DATA HERE] ...
@@ -156,24 +157,13 @@ const HeroSection = () => {
           </p>
 
           <div className="flex flex-row items-center justify-center gap-3 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
-            <button
+            <button 
               suppressHydrationWarning={true}
-              className="
-            group relative h-12 px-8 rounded-3xl
-            bg-gradient-to-t from-orange-600 to-orange-500 
-            hover:from-orange-500 hover:to-orange-600 cursor-pointer
-            border border-orange-400/20
-            text-white font-medium text-sm tracking-wide
-            flex items-center justify-center gap-2
-            w-full sm:w-auto min-w-[160px]
-            transition-all duration-300 ease-out
-        "
+              className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
             >
-              <span>Initialize System</span>
-              <ArrowRight
-                size={16}
-                className="text-orange-100 group-hover:translate-x-1 transition-transform duration-300"
-              />
+              <span className="relative z-10">Initialize System</span>
+              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
             </button>
             <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-full sm:w-auto min-w-[160px] cursor-pointer group">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
@@ -504,236 +494,301 @@ const UnifiedGrid = () => {
     );
 };
 
-// ... [KEEP YOUR EXISTING "NeuralArchitecture", "EnterpriseSpecs", "SpecCard", "CTASection"] ...
-
 const NeuralArchitecture = () => {
   const [activeStep, setActiveStep] = useState(0);
+
+  // Auto-advance logic
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 4);
+    }, 5000); // 5 seconds per step
+    return () => clearInterval(timer);
+  }, []);
 
   const steps = [
     {
       id: 0,
-      title: "Ingest and Organize",
-      desc: "Gaprio listens to connected tools, normalizing chaotic streams into a structured event log.",
-      icon: Database,
+      label: "STEP 01",
+      title: "Ingest",
+      fullTitle: "Ingest & Normalize",
+      desc: "Gaprio absorbs chaotic signals from your stack.",
+      color: "from-blue-500 to-cyan-500",
+      icon: Database
     },
     {
       id: 1,
-      title: "Semantic Understanding",
-      desc: "The AI analyzes context, linking user queries to relevant documents and past conversations.",
-      icon: Brain,
+      label: "STEP 02",
+      title: "Reason",
+      fullTitle: "Semantic Reasoning",
+      desc: "The AI connects dots between scattered data.",
+      color: "from-purple-500 to-pink-500",
+      icon: Brain
     },
     {
       id: 2,
-      title: "Action Planning",
-      desc: "Complex requests are broken down into a step-by-step logic chain before any action is taken.",
-      icon: GitBranch,
+      label: "STEP 03",
+      title: "Plan",
+      fullTitle: "Strategic Planning",
+      desc: "Formulating a safe execution path.",
+      color: "from-amber-500 to-orange-500",
+      icon: GitBranch
     },
     {
       id: 3,
-      title: "Controlled Execution",
-      desc: "Actions are executed in a sandboxed environment with full audit trails and rollback capabilities.",
-      icon: ShieldCheck,
+      label: "STEP 04",
+      title: "Execute",
+      fullTitle: "Secure Execution",
+      desc: "Actions run in isolated sandboxes.",
+      color: "from-emerald-500 to-green-500",
+      icon: ShieldCheck
     }
   ];
 
-  // --- RIGHT SIDE CONTENT (THE VISUALS) ---
-  const renderVisual = () => {
-    switch (activeStep) {
-      case 0: // Ingest
-        return (
-          <div className="space-y-4">
-             <div className="flex items-center justify-between text-xs font-mono text-zinc-500 mb-4 border-b border-white/5 pb-2">
-                <span>INCOMING_STREAM</span>
-                <span className="text-green-500 flex items-center gap-1"><Activity size={10} /> ACTIVE</span>
+  // --- RESPONSIVE VISUALIZERS ---
+
+  const IngestVisual = () => (
+    <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+      {/* Central Hub */}
+      <div className="relative z-10 w-24 h-24 md:w-32 md:h-32 rounded-full bg-black border border-blue-500/50 shadow-[0_0_60px_rgba(59,130,246,0.3)] flex items-center justify-center">
+        <Database className="text-blue-500 w-8 h-8 md:w-12 md:h-12" />
+        <div className="absolute inset-0 border border-blue-500/20 rounded-full animate-[spin_10s_linear_infinite]" />
+      </div>
+
+      {/* Orbiting Particles */}
+      {[0, 60, 120, 180, 240, 300].map((deg, i) => (
+        <motion.div
+          key={i}
+          className="absolute"
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ 
+            opacity: [0, 1, 0], 
+            scale: [0.5, 1, 0],
+            x: [Math.cos(deg * (Math.PI / 180)) * 140, 0],
+            y: [Math.sin(deg * (Math.PI / 180)) * 140, 0] 
+          }}
+          transition={{ 
+            duration: 2.5, 
+            repeat: Infinity, 
+            delay: i * 0.3,
+            ease: "easeInOut"
+          }}
+        >
+           <div className="w-8 h-8 rounded-lg bg-blue-900/40 border border-blue-500/30 backdrop-blur-md flex items-center justify-center">
+              <Zap size={14} className="text-blue-400" />
+           </div>
+        </motion.div>
+      ))}
+      
+      <div className="absolute bottom-6 md:bottom-10 text-center w-full px-4">
+        <div className="text-[10px] font-mono text-blue-400 uppercase tracking-widest mb-1">Stream Velocity</div>
+        <div className="text-xl md:text-2xl font-bold text-white">24k events/sec</div>
+      </div>
+    </div>
+  );
+
+  const ReasonVisual = () => (
+    <div className="relative w-full h-full flex items-center justify-center">
+      {/* Nodes Grid */}
+      <div className="grid grid-cols-3 gap-8 md:gap-12 relative z-10">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((n, i) => (
+          <motion.div
+            key={n}
+            initial={{ scale: 0.8, opacity: 0.5 }}
+            animate={{ 
+              scale: [0.8, 1.2, 0.8], 
+              opacity: [0.5, 1, 0.5],
+              backgroundColor: ["rgba(168,85,247,0.1)", "rgba(168,85,247,0.4)", "rgba(168,85,247,0.1)"]
+            }}
+            transition={{ duration: 2, delay: i * 0.1, repeat: Infinity }}
+            className="w-3 h-3 md:w-4 md:h-4 rounded-full border border-purple-500/50 relative"
+          >
+             {i % 2 === 0 && (
+                <div className="absolute top-1/2 left-1/2 w-16 md:w-24 h-[1px] bg-purple-500/30 -z-10 origin-left rotate-45" />
+             )}
+          </motion.div>
+        ))}
+      </div>
+      
+      {/* Floating Card */}
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="absolute z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 px-4 py-3 bg-black/90 border border-purple-500/30 rounded-xl backdrop-blur-xl shadow-2xl"
+      >
+         <div className="flex items-center gap-2 mb-2">
+            <Brain className="text-purple-500 w-4 h-4" />
+            <span className="text-sm font-bold text-white">Pattern Detected</span>
+         </div>
+         <p className="text-[10px] text-purple-200 leading-tight">Correlating Jira Ticket #402 with Slack Thread "Q4 Plans".</p>
+         <div className="mt-3 h-1 w-full bg-purple-900/50 rounded-full overflow-hidden">
+            <motion.div 
+               initial={{ width: 0 }}
+               animate={{ width: "100%" }}
+               transition={{ duration: 1.5 }}
+               className="h-full bg-purple-500" 
+            />
+         </div>
+      </motion.div>
+    </div>
+  );
+
+  const PlanVisual = () => (
+    <div className="relative w-full h-full flex flex-col items-center justify-center gap-6">
+       <div className="px-3 py-1.5 rounded border border-amber-500/50 bg-amber-500/10 text-amber-500 text-[10px] font-mono uppercase">Request Inbound</div>
+       <div className="w-[1px] h-6 md:h-8 bg-amber-500/30" />
+       
+       <div className="grid grid-cols-2 gap-4 md:gap-8 w-full max-w-sm px-4">
+          <div className="flex flex-col items-center">
+             <div className="w-full h-14 md:h-16 rounded-lg border border-zinc-700 bg-zinc-900/50 flex items-center justify-center text-xs text-zinc-500">Check Perms</div>
+             <div className="w-[1px] h-4 bg-zinc-700 mt-2" />
+             <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e] mt-2" />
+          </div>
+          <div className="flex flex-col items-center">
+             <div className="w-full h-14 md:h-16 rounded-lg border border-amber-500 bg-amber-900/10 flex items-center justify-center text-xs text-amber-200 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                Build Graph
              </div>
-             {/* Mock Items */}
-             {[
-               { icon: MessageSquare, src: "Slack", txt: "Marketing Channel: Q4 updates...", time: "now" },
-               { icon: FileText, src: "Notion", txt: "Doc: Product Requirements v2", time: "2ms ago" },
-               { icon: Zap, src: "Linear", txt: "Issue #492 created", time: "15ms ago" },
-             ].map((item, i) => (
-               <motion.div 
-                 key={i}
-                 initial={{ opacity: 0, x: 20 }}
-                 animate={{ opacity: 1, x: 0 }}
-                 transition={{ delay: i * 0.1 }}
-                 className="flex items-center gap-4 p-3 rounded-lg bg-zinc-900/50 border border-white/5"
-               >
-                 <div className="p-2 bg-zinc-800 rounded-md text-zinc-400"><item.icon size={16} /></div>
-                 <div className="flex-1 min-w-0">
-                    <div className="flex justify-between mb-1">
-                       <span className="text-xs font-bold text-white">{item.src}</span>
-                       <span className="text-[10px] text-zinc-600 font-mono">{item.time}</span>
-                    </div>
-                    <div className="text-xs text-zinc-500 truncate">{item.txt}</div>
-                 </div>
-                 <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-               </motion.div>
-             ))}
+             <div className="w-[1px] h-4 bg-amber-500 mt-2" />
+             <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse mt-2" />
           </div>
-        );
+       </div>
+    </div>
+  );
 
-      case 1: // Understanding
-        return (
-          <div className="h-full flex flex-col justify-center">
-            <div className="bg-zinc-900/50 rounded-xl border border-white/10 p-4 mb-6">
-               <div className="flex items-center gap-3 mb-2">
-                  <div className="w-8 h-8 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-500">
-                     <Search size={16} />
-                  </div>
-                  <div className="text-sm text-white">"Find the Q3 budget report"</div>
-               </div>
-               <div className="h-1 w-full bg-zinc-800 rounded-full overflow-hidden">
-                  <motion.div 
-                    initial={{ width: "0%" }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="h-full bg-orange-500/50" 
-                  />
-               </div>
-            </div>
-
-            <div className="space-y-2">
-               <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest mb-2">Vector Matches Found</div>
-               <div className="flex items-center gap-3 p-3 rounded-lg border border-green-500/20 bg-green-500/5">
-                  <div className="text-xs font-mono text-green-500">98% Match</div>
-                  <div className="text-xs text-zinc-300">Finance_Q3_Overview.pdf</div>
-               </div>
-               <div className="flex items-center gap-3 p-3 rounded-lg border border-white/5 bg-zinc-900/20 opacity-60">
-                  <div className="text-xs font-mono text-zinc-500">45% Match</div>
-                  <div className="text-xs text-zinc-400">Q3_Team_Outing.png</div>
-               </div>
-            </div>
+  const ExecuteVisual = () => (
+    <div className="relative w-full h-full flex flex-col items-center justify-center font-mono p-4 md:p-10">
+       <div className="w-full max-w-md bg-black/90 rounded-lg border border-emerald-500/20 shadow-2xl overflow-hidden text-left">
+          <div className="bg-emerald-900/10 px-3 py-2 border-b border-emerald-500/10 flex items-center gap-2">
+             <Terminal size={12} className="text-emerald-500" />
+             <span className="text-[10px] text-emerald-500/70">GAPRIO_RUNNER_V1</span>
           </div>
-        );
-
-      case 2: // Planning
-        return (
-          <div className="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[2px] before:bg-zinc-800">
-             {[
-               { title: "Identify Intent", status: "complete", detail: "Search Query" },
-               { title: "Check Permissions", status: "complete", detail: "User: Admin" },
-               { title: "Formulate Response", status: "processing", detail: "Summarizing Data..." }
-             ].map((step, i) => (
-                <div key={i} className="relative">
-                   <div className={`absolute -left-[21px] top-1 w-3 h-3 rounded-full border-2 ${step.status === 'processing' ? 'border-orange-500 bg-black animate-pulse' : 'border-green-500 bg-green-500'}`} />
-                   <div className="p-3 rounded-lg border border-white/10 bg-zinc-900/40">
-                      <div className="flex items-center justify-between mb-1">
-                         <span className="text-sm font-bold text-white">{step.title}</span>
-                         {step.status === 'complete' && <CheckCircle2 size={14} className="text-green-500" />}
-                      </div>
-                      <span className="text-xs text-zinc-500 font-mono">{step.detail}</span>
-                   </div>
-                </div>
-             ))}
-          </div>
-        );
-
-      case 3: // Execution
-        return (
-          <div className="h-full flex flex-col">
-             <div className="flex items-center justify-center py-8">
-                <div className="relative">
-                   <div className="absolute inset-0 bg-green-500/20 blur-xl rounded-full" />
-                   <ShieldCheck size={64} className="text-green-500 relative z-10" />
-                </div>
+          <div className="p-4 text-[10px] md:text-xs space-y-2 leading-relaxed">
+             <p className="text-zinc-500">$ init_sandbox --secure --isolate</p>
+             <p className="text-emerald-500/80">{`> Sandbox initialized in 12ms`}</p>
+             <p className="text-zinc-500">$ execute_workflow --id=992</p>
+             <div className="flex gap-1 py-1">
+                <span className="text-emerald-500">████████</span>
+                <span className="text-emerald-900">░░░</span>
              </div>
-             <div className="bg-black/50 rounded-lg p-4 font-mono text-[10px] text-zinc-400 border border-white/5 flex-1 overflow-hidden">
-                <div className="flex items-center gap-2 text-green-400 mb-2">
-                   <Lock size={10} /> Secure Sandbox Active
-                </div>
-                <div className="space-y-1 opacity-70">
-                   <p>{`> Initiating secure handshake...`}</p>
-                   <p>{`> Validating API tokens... OK`}</p>
-                   <p>{`> Encrypting payload (AES-256)...`}</p>
-                   <p className="text-white">{`> POST /api/v1/execute`}</p>
-                   <p className="text-green-400">{`> 200 OK - Action Completed`}</p>
-                   <p>{`> Writing to audit log...`}</p>
-                </div>
-             </div>
+             <p className="text-white">{`> SUCCESS: Ticket Created`}</p>
+             <p className="text-white">{`> SUCCESS: Slack Notified`}</p>
           </div>
-        );
-      default: return null;
-    }
-  };
+       </div>
+       <div className="absolute bottom-6 md:bottom-10 flex items-center gap-2 text-emerald-500 text-[10px] uppercase tracking-widest">
+          <Lock size={12} /> Encrypted Transmission
+       </div>
+    </div>
+  );
 
   return (
-    <section className="pt-24 pb-10 border-y border-white/5 relative bg-[#050201]">
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="mb-16">
-          <h2 className="text-orange-500 font-mono text-sm tracking-widest uppercase mb-3">Under the Hood</h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-white">Intelligence, Explained</h3>
+    <section className="py-14 md:pt-24 md:pb-10 bg-[#020202] border-y border-white/5 overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl">
+        
+        {/* HEADER */}
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4 md:mb-6">
+            The Intelligence Pipeline
+          </h2>
+          <p className="text-lg md:text-xl text-zinc-400 max-w-2xl">
+            Watch how Gaprio transforms raw noise into structured action.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          {/* LEFT SIDE: Navigation */}
-          <div className="lg:col-span-5 space-y-4">
-            {steps.map((step, index) => (
-              <div 
-                key={step.id}
-                onClick={() => setActiveStep(index)}
-                className={`cursor-pointer p-6 rounded-xl border transition-all duration-300 relative overflow-hidden group ${activeStep === index ? "bg-zinc-900 border-orange-500/50" : "bg-transparent border-white/5 hover:bg-zinc-900/50 hover:border-white/10"}`}
-              >
-                {activeStep === index && (
-                  <motion.div 
-                    layoutId="activeGlow"
-                    className="absolute left-0 top-0 bottom-0 w-1 bg-orange-500" 
-                  />
-                )}
-                <div className="flex items-start gap-4">
-                  <div className={`mt-1 p-2 rounded-lg transition-colors ${activeStep === index ? "text-orange-500 bg-orange-500/10" : "text-zinc-500 bg-zinc-800"}`}>
-                    <step.icon size={20} />
+        {/* CONTAINER */}
+        <div className="flex flex-col rounded-3xl overflow-hidden border border-white/10 bg-zinc-900/20">
+          
+          {/* 1. CONTROLS (ALWAYS ON TOP) */}
+          <div className="grid grid-cols-2 md:grid-cols-4 bg-zinc-900/40 border-b border-white/10">
+            {steps.map((step, index) => {
+              const isActive = activeStep === index;
+              return (
+                <button
+                  key={step.id}
+                  onClick={() => setActiveStep(index)}
+                  className={`
+                    relative p-4 md:p-6 text-left transition-all duration-300 
+                    border-r border-b md:border-b-0 border-white/5 last:border-r-0 last:border-b-0 nth-2:border-r-0 md:nth-2:border-r
+                    ${isActive ? 'bg-white/[0.05]' : 'hover:bg-white/[0.02]'}
+                  `}
+                >
+                  {/* Active Indicator (Top) */}
+                  {isActive && (
+                    <motion.div 
+                      layoutId="activeTabLine"
+                      className={`absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r ${step.color}`} 
+                    />
+                  )}
+                  
+                  <div className="flex flex-col h-full justify-between gap-2 md:gap-4">
+                    <div className="flex items-center justify-between">
+                       <span className={`text-[9px] md:text-[10px] font-mono uppercase tracking-widest ${isActive ? 'text-white' : 'text-zinc-600'}`}>
+                         {step.label}
+                       </span>
+                       <step.icon size={16} className={`hidden md:block ${isActive ? 'text-white' : 'text-zinc-700'}`} />
+                    </div>
+                    <div>
+                      <h3 className={`text-sm md:text-lg font-bold mb-1 ${isActive ? 'text-white' : 'text-zinc-500'}`}>
+                        <span className="md:hidden">{step.title}</span>
+                        <span className="hidden md:inline">{step.fullTitle}</span>
+                      </h3>
+                      <p className={`text-xs line-clamp-2 hidden md:block ${isActive ? 'text-zinc-400' : 'text-zinc-600'}`}>
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className={`text-lg font-bold mb-1 transition-colors ${activeStep === index ? "text-white" : "text-zinc-400 group-hover:text-zinc-200"}`}>
-                      {step.title}
-                    </h4>
-                    <p className="text-sm text-zinc-500 leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
+                </button>
+              );
+            })}
           </div>
 
-          {/* RIGHT SIDE: Visual Content */}
-          <div className="lg:col-span-7">
-            <div className="relative h-full min-h-[400px] bg-[#0a0a0a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden flex flex-col">
-              
-              {/* Window Header */}
-              <div className="flex items-center justify-between px-4 py-3 bg-[#111] border-b border-white/5">
-                 <div className="flex gap-2">
-                   <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
-                   <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
-                   <div className="w-2.5 h-2.5 rounded-full bg-zinc-700" />
-                 </div>
-                 <div className="text-[10px] text-zinc-600 font-mono uppercase tracking-wider">
-                   System_Visualizer
-                 </div>
-                 <div className="w-8" />
-              </div>
+          {/* 2. VISUAL STAGE (ALWAYS ON BOTTOM) */}
+          <div className="relative w-full aspect-square md:aspect-[21/9] bg-black overflow-hidden group">
+            
+            {/* Ambient Background */}
+            <motion.div 
+               animate={{ 
+                 background: `radial-gradient(circle at center, ${steps[activeStep].color.includes('blue') ? '#3b82f6' : steps[activeStep].color.includes('purple') ? '#a855f7' : steps[activeStep].color.includes('amber') ? '#f59e0b' : '#10b981'}15 0%, transparent 70%)` 
+               }}
+               className="absolute inset-0 z-0 transition-colors duration-1000"
+            />
+            
+            {/* Grid Pattern */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:30px_30px] md:bg-[size:40px_40px] z-0 pointer-events-none" />
 
-              {/* Window Body */}
-              <div className="relative flex-1 bg-[#050505] p-6 lg:p-8 overflow-hidden flex flex-col">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeStep}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 1.05 }}
-                    transition={{ duration: 0.2 }}
-                    className="h-full"
-                  >
-                    {renderVisual()}
-                  </motion.div>
-                </AnimatePresence>
-                
-                {/* Background Grid Pattern */}
-                <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:24px_24px] z-0" />
-              </div>
+            {/* Content Switcher */}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.4 }}
+                className="absolute inset-0 z-10 p-4 md:p-12"
+              >
+                 {activeStep === 0 && <IngestVisual />}
+                 {activeStep === 1 && <ReasonVisual />}
+                 {activeStep === 2 && <PlanVisual />}
+                 {activeStep === 3 && <ExecuteVisual />}
+              </motion.div>
+            </AnimatePresence>
+
+            {/* Stage Footer UI */}
+            <div className="absolute bottom-0 left-0 w-full px-4 py-2 md:px-6 md:py-3 border-t border-white/10 flex justify-between items-center bg-black/60 backdrop-blur-md z-20">
+               <div className="flex gap-4">
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                     <Radio size={10} className={activeStep % 2 === 0 ? "text-white animate-pulse" : "text-zinc-600"} />
+                     <span className="text-[10px] font-mono text-zinc-400 uppercase">Live</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 md:gap-2">
+                     <Cpu size={10} className="text-zinc-600" />
+                     <span className="text-[10px] font-mono text-zinc-400 uppercase">12ms</span>
+                  </div>
+               </div>
+               <div className="text-[10px] font-mono text-zinc-600">
+                  ID: 8829-AFX
+               </div>
             </div>
           </div>
+
         </div>
       </div>
     </section>

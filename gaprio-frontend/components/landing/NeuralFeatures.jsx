@@ -222,15 +222,35 @@ export default function EcosystemIntegration() {
             
             {/* Primary Button - Added suppressHydrationWarning to ignore extension IDs */}
             <button 
-              suppressHydrationWarning={true}
-              className="group relative h-12 md:h-14 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center gap-2 overflow-hidden"
-            >
-              <span className="relative z-10">Request Early Access</span>
-              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-              
-              {/* Shine Effect */}
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
-            </button>
+  suppressHydrationWarning={true}
+  className="
+    group relative h-12 md:h-14 px-8 cursor-pointer 
+    rounded-full overflow-hidden 
+    
+    /* 1. RESTING STATE: Lighter/Brighter Gradient */
+    bg-gradient-to-br from-orange-400 to-orange-500
+    
+    /* Typography & Layout */
+    text-white font-bold text-lg tracking-wide
+    flex items-center justify-center gap-2
+    
+    /* Simple colored shadow (Glows slightly) */
+    shadow-lg shadow-orange-500/30
+    
+    /* Interactions */
+    active:scale-95
+    transition-all duration-300
+  "
+>
+  {/* 2. HOVER EFFECT: Darker Orange fills from bottom to top */
+   /* We use 'bg-orange-600' so it gets darker/richer on hover */
+  }
+  <div className="absolute inset-0 bg-orange-600 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0" />
+
+  {/* 3. CONTENT (Stays on top) */}
+  <span className="relative z-10">Request Early Access</span>
+  <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+</button>
 
             {/* Secondary Button - Added suppressHydrationWarning */}
             <button 

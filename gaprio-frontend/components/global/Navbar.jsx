@@ -52,7 +52,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const navLinks = [
-    { name: 'Home', href: '/' },
+    { name: 'Brain', href: '/' },
     { name: 'Features', href: '/features' },
     { name: 'Integration', href: '/integration' },
     { name: 'Enterprise', href: '/enterprise' },

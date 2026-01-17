@@ -232,10 +232,6 @@ const ProblemSection = () => {
                         <p className="text-neutral-400 text-sm md:text-lg leading-relaxed max-w-md line-clamp-3 md:line-clamp-none">
                            {item.desc}
                         </p>
-                        
-                        <div className="flex items-center gap-2 mt-4 md:mt-6 text-orange-500 text-sm font-bold">
-                           See the gap <ArrowUpRight size={16} />
-                        </div>
                     </motion.div>
                 </div>
 

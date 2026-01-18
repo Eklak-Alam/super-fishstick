@@ -62,14 +62,38 @@ const EnterpriseHero = () => {
             className="flex flex-col sm:flex-row items-center gap-4 justify-center w-full sm:w-auto"
           >
             {/* 1. Primary Button (Full width on mobile) */}
+
             <button 
-              suppressHydrationWarning={true}
-              className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
-            >
-              <span className="relative z-10">Book Architecture Review</span>
-              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
-            </button>
+                        suppressHydrationWarning={true}
+                        className="
+                          group relative cursor-pointer 
+                          h-12 w-full sm:w-auto min-w-[200px] px-8 
+                          rounded-full overflow-hidden 
+                          
+                          /* 1. RESTING STATE: Lighter/Brighter Gradient */
+                          bg-gradient-to-br from-orange-400 to-orange-500
+                          
+                          /* Typography & Layout */
+                          text-white font-bold text-lg tracking-wide
+                          flex items-center justify-center gap-2
+                          
+                          /* Simple colored shadow (Glows slightly) */
+                          shadow-lg shadow-orange-500/30
+                          
+                          /* Interactions */
+                          active:scale-95
+                          transition-all duration-300
+                        "
+                      >
+                        {/* 2. HOVER EFFECT: Darker Orange fills from bottom to top */
+                        /* We use 'bg-orange-600' so it gets darker/richer on hover */
+                        }
+                        <div className="absolute inset-0 bg-orange-600 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0" />
+            
+                        {/* 3. CONTENT (Stays on top) */}
+                        <span className="relative z-10">Book Architecture Review</span>
+                        <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </button>
 
             {/* 2. Secondary Button (Reduced width on mobile) */}
             {/* Changed w-full to w-[80%] for that specific look you asked for */}

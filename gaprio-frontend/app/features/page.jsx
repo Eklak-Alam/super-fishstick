@@ -156,13 +156,36 @@ const HeroSection = () => {
             
             {/* 1. Primary Button (Full width on mobile) */}
             <button 
-              suppressHydrationWarning={true}
-              className="group cursor-pointer relative h-12 px-8 rounded-full bg-gradient-to-b from-orange-400 to-orange-600 text-black font-semibold text-lg hover:shadow-[0_0_25px_rgba(249,115,22,0.4)] transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden w-full sm:w-auto min-w-[200px]"
-            >
-              <span className="relative z-10">Initialize System</span>
-              <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-              <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out rounded-full" />
-            </button>
+            suppressHydrationWarning={true}
+            className="
+              group relative cursor-pointer 
+              h-12 w-full sm:w-auto min-w-[200px] px-8 
+              rounded-full overflow-hidden 
+              
+              /* 1. RESTING STATE: Lighter/Brighter Gradient */
+              bg-gradient-to-br from-orange-400 to-orange-500
+              
+              /* Typography & Layout */
+              text-white font-bold text-lg tracking-wide
+              flex items-center justify-center gap-2
+              
+              /* Simple colored shadow (Glows slightly) */
+              shadow-lg shadow-orange-500/30
+              
+              /* Interactions */
+              active:scale-95
+              transition-all duration-300
+            "
+          >
+            {/* 2. HOVER EFFECT: Darker Orange fills from bottom to top */
+            /* We use 'bg-orange-600' so it gets darker/richer on hover */
+            }
+            <div className="absolute inset-0 bg-orange-600 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0" />
+
+            {/* 3. CONTENT (Stays on top) */}
+            <span className="relative z-10">Initialize System</span>
+            <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
 
             {/* 2. Secondary Button (Reduced width on mobile) */}
             {/* Changed w-full to w-[80%] so it's smaller than the top button on phones */}
@@ -931,10 +954,18 @@ const CTASection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-          <button className="h-14 px-8 rounded-full bg-white text-black font-bold text-lg hover:bg-zinc-200 transition-colors flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-            Get Started <ArrowRight size={20} />
-          </button>
-          <button className="h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
+          <button className="relative cursor-pointer group h-14 px-8 rounded-full bg-white text-black font-bold text-lg overflow-hidden flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95">
+  
+  {/* The Orange Background Layer (Slides up from bottom) */}
+  <span className=" cursor-pointer absolute inset-0 w-full h-full bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+  {/* The Content Layer (Stays on top, turns white on hover) */}
+  <span className="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors duration-300">
+    Get Started <ArrowRight size={20} />
+  </span>
+
+</button>
+          <button className="cursor-pointer h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
              <Globe size={20} className="text-zinc-500" />Explore Integrations
           </button>
         </div>

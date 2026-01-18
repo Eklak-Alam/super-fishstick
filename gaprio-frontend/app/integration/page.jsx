@@ -487,9 +487,13 @@ const TransitionCTA = () => {
           <motion.button 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative px-10 py-5 bg-white text-black rounded-full font-bold text-lg overflow-hidden shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-15px_rgba(255,255,255,0.5)] transition-shadow"
+            className="group cursor-pointer relative px-10 py-5 bg-white text-black rounded-full font-bold text-lg overflow-hidden shadow-[0_0_40px_-10px_rgba(255,255,255,0.3)] hover:shadow-[0_0_60px_-15px_rgba(255,255,255,0.5)] transition-all"
           >
-            <span className="relative z-10 flex items-center gap-2">
+            {/* The Orange Background Layer (Slides up from bottom) */}
+            <span className="absolute inset-0 w-full h-full bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+            {/* The Content Layer (Stays on top, turns white on hover) */}
+            <span className="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors duration-300">
               Explore Features
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </span>

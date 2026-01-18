@@ -124,11 +124,17 @@ export default function Navbar() {
 
           {/* --- 3. Actions (Right) --- */}
           <div className="flex-1 flex items-center justify-end gap-4">
-            <Link 
+           <Link 
               href="/register"
-              className="hidden md:flex items-center gap-2 rounded-full py-2.5 px-6 bg-white text-black text-sm font-bold tracking-tight active:scale-95 transition-transform"
+              className="relative group hidden md:flex items-center gap-2 rounded-full py-2.5 px-6 bg-white text-black text-sm font-bold tracking-tight overflow-hidden active:scale-95 transition-transform"
             >
-              Get Started 
+              {/* The Orange Background Layer (Hidden initially, slides up on hover) */}
+              <span className="absolute inset-0 w-full h-full bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+
+              {/* The Text Content (Must be z-10 to sit on top of the orange layer) */}
+              <span className="relative z-10 flex items-center gap-2 group-hover:text-white transition-colors duration-300">
+                Get Started 
+              </span>
             </Link>
 
             {/* --- Hamburger Icon --- */}

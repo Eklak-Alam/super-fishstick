@@ -4,6 +4,10 @@ import NeuralFeatures from '@/components/landing/NeuralFeatures';
 import DraggableCanvas from '@/components/landing/DraggableCanvas';
 import BentoGrid from '@/components/landing/BentoGrid';
 import ProblemSection from '@/components/landing/ProblemSection';
+import OrangeProtocol from '@/components/landing/Problem';
+import CleanInterface from '@/components/landing/Problem';
+import PremiumOrange from '@/components/landing/Problem';
+import ProfessionalProblemSection from '@/components/landing/Problem';
 
 export default function Home() {
   return (
@@ -22,6 +26,7 @@ export default function Home() {
           This makes it slide ON TOP of the sticky Hero.
       */}
       <div className="relative z-10 bg-[#020202]">
+        <ProfessionalProblemSection />
         <ProblemSection />
         <HorizontalScroll />
         <BentoGrid />

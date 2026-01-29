@@ -981,9 +981,9 @@ const FeaturesPage = () => {
     <main className="bg-[#020202] min-h-screen selection:bg-orange-500/30 selection:text-white font-sans text-white overflow-x-hidden">
       <HeroSection />
       <CoreFeatures /> {/* <--- ADDED HERE */}
-      <UnifiedGrid />
       <NeuralArchitecture />
       <EnterpriseSpecs />
+      <UnifiedGrid /> 
       <CTASection />
     </main>
   );

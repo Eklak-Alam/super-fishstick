@@ -122,13 +122,13 @@ export default function CinematicFooter() {
           </p>
 
           <div className="flex items-center gap-6 md:gap-8">
-             <Link href="#" className="text-zinc-600 text-[10px] uppercase tracking-widest hover:text-orange-400 transition-colors">Privacy</Link>
-             <Link href="#" className="text-zinc-600 text-[10px] uppercase tracking-widest hover:text-orange-400 transition-colors">Terms</Link>
+             <Link href="/" className="text-zinc-600 text-[10px] uppercase tracking-widest hover:text-orange-400 transition-colors">Privacy</Link>
+             <Link href="/" className="text-zinc-600 text-[10px] uppercase tracking-widest hover:text-orange-400 transition-colors">Terms</Link>
              
              <div className="flex items-center gap-4 md:gap-5 pl-4 md:pl-5 border-l border-zinc-900">
-                <SocialIcon Icon={BsLinkedin} />
-                <SocialIcon Icon={Twitter} />
-                <SocialIcon Icon={Instagram} />
+                <SocialIcon Icon={BsLinkedin} link='https://www.linkedin.com/company/gaprio/' />
+                <SocialIcon Icon={Twitter} link='https://www.instagram.com/gaprio_labs?igsh=eTV1N3M0eHZveWN2' />
+                <SocialIcon Icon={Instagram} link='https://x.com/Gaprio_Labs' />
              </div>
           </div>
         </div>
@@ -138,10 +138,11 @@ export default function CinematicFooter() {
   );
 }
 
-function SocialIcon({ Icon }) {
+function SocialIcon({ Icon, link }) {
   return (
     <a 
-      href="#" 
+      href={link} 
+      target="_blank"
       className="text-zinc-500 hover:text-orange-500 transition-colors duration-300 hover:scale-110"
     >
       <Icon size={16} />

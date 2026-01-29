@@ -602,8 +602,8 @@ export default function UnifiedPage() {
 
       {/* --- Other Sections --- */}
       <TimelineSection />
-      <IntegrationStack />
       <DifferentiationSection />
+      <IntegrationStack />
       <TransitionCTA />
 
       <div className="w-full bg-gradient-to-t from-black to-transparent" />

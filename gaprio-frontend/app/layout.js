@@ -103,7 +103,7 @@ export default function RootLayout({ children }) {
         <QueryProvider>
           {/* 3. Removed ProgressBarProvider (it caused the crash) */}
           <SmoothScroll>
-            <Navbar /> 
+            {/* <Navbar />  */}
 
             <main className="relative z-10 bg-[#020202] w-full">
               {children}

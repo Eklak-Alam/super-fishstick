@@ -191,7 +191,7 @@ export default function Hero() {
         {/* Using your exact snippet container structure (border, padding) + object-contain */}
         <div className="relative w-full aspect-[20/10] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-all duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-2 group-hover:shadow-orange-500/10 group-hover:border-white/20">
           
-          <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-zinc-950 ring-1 ring-white/5 flex items-center justify-center">
+          <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-black ring-1 ring-white/5 flex items-center justify-center">
             
             {/* <--- IMAGE FIX: Changed to 'object-contain' so it never cuts off --- */}
             <img

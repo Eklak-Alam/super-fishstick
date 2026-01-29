@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ArrowRight, Sparkles } from "lucide-react"; 
+import Link from "next/link";
 
 export default function EcosystemIntegration() {
   return (
@@ -221,7 +222,8 @@ export default function EcosystemIntegration() {
           >
             
             {/* Primary Button - Added suppressHydrationWarning to ignore extension IDs */}
-            <button 
+            <Link
+            href='/register'
   suppressHydrationWarning={true}
   className="
     group relative h-12 md:h-14 px-8 cursor-pointer 
@@ -250,15 +252,16 @@ export default function EcosystemIntegration() {
   {/* 3. CONTENT (Stays on top) */}
   <span className="relative z-10">Request Early Access</span>
   <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-</button>
+</Link>
 
             {/* Secondary Button - Added suppressHydrationWarning */}
-            <button 
+            <Link
+            href='/integration'
               suppressHydrationWarning={true}
-              className="h-12 md:h-14 px-8 rounded-full border border-white/10 bg-white/5 text-white font-medium text-lg hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+              className="h-12 md:h-14 flex justify-center items-center px-8 rounded-full border border-white/10 bg-white/5 text-white font-medium text-lg hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
             >
               Explore Integrations
-            </button>
+            </Link>
             
           </motion.div>
         </div>

@@ -12,6 +12,7 @@ import {
   AlertTriangle,
   BookOpen
 } from 'lucide-react';
+import Link from 'next/link';
 
 // --- 1. HERO SECTION: THE NERVE CENTER ---
 const EnterpriseHero = () => {
@@ -63,7 +64,8 @@ const EnterpriseHero = () => {
           >
             {/* 1. Primary Button (Full width on mobile) */}
 
-            <button 
+            <Link
+            href='/register'
                         suppressHydrationWarning={true}
                         className="
                           group relative cursor-pointer 
@@ -93,11 +95,12 @@ const EnterpriseHero = () => {
                         {/* 3. CONTENT (Stays on top) */}
                         <span className="relative z-10">Book Architecture Review</span>
                         <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                      </button>
+                      </Link>
 
             {/* 2. Secondary Button (Reduced width on mobile) */}
             {/* Changed w-full to w-[80%] for that specific look you asked for */}
-            <div
+            <Link
+            href='/integration'
               className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-[80%] sm:w-auto min-w-[160px] cursor-pointer group"
             >
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
@@ -117,7 +120,7 @@ const EnterpriseHero = () => {
                   className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300"
                 />
               </span>
-            </div>
+            </Link>
           </motion.div>
         </div>
 
@@ -345,12 +348,13 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Managed infrastructure</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-blue-500"/> Continuous updates</li>
             </ul>
-            <button 
+            <Link
+            href='/register'
               suppressHydrationWarning={true}
               className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors"
             >
               Start Pilot
-            </button>
+            </Link>
           </motion.div>
 
           {/* 2. Private Cloud (FEATURED) */}
@@ -369,12 +373,13 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Custom model configuration</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-orange-500"/> Internal system access</li>
             </ul>
-            <button 
+            <Link
+            href='/register'
               suppressHydrationWarning={true}
               className="w-full py-3 bg-orange-600 rounded-lg text-white text-sm font-bold hover:bg-orange-500 transition-colors"
             >
               Contact Engineering
-            </button>
+            </Link>
           </motion.div>
 
           {/* 3. On-Prem */}
@@ -392,12 +397,13 @@ const DeploymentModels = () => {
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Network isolated operation</li>
               <li className="flex gap-2"><CheckCircle2 size={16} className="text-green-500"/> Compliance aligned architecture</li>
             </ul>
-            <button 
+            <Link
+            href='/register'
               suppressHydrationWarning={true}
               className="w-full py-3 border border-white/10 rounded-lg text-white text-sm hover:bg-white/5 transition-colors"
             >
               Request Specs
-            </button>
+            </Link>
           </motion.div>
 
         </div>
@@ -556,12 +562,13 @@ const FinalCTA = () => {
                   className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 outline-none transition-colors"
                 />
               </div>
-              <button 
+              <Link
+              href='/register'
                 suppressHydrationWarning={true}
                 className="w-full bg-orange-600 text-white font-bold rounded-lg py-3 hover:bg-orange-500 transition-all shadow-lg shadow-orange-900/20"
               >
                 Book a Demo
-              </button>
+              </Link>
               <p className="text-[10px] text-center text-zinc-600">
                 Deployment typically completes within days. No long term commitment required.
               </p>

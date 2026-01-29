@@ -15,30 +15,30 @@ import {
 const QUADS = [
   {
     id: 1,
-    label: "01 // SILOS",
-    title: "Data Fragmentation",
-    desc: "Data is trapped in isolated pockets. Teams operate on assumptions, not facts. Velocity dies in the gap between systems.",
+    label: "SILOS",
+    title: "DATA FRAGMENTATION",
+    desc: "Information lives across disconnected tools. Each system holds a partial truth, but no system understands the whole picture. Teams act on assumptions because context never fully converges.",
     icon: Binary,
   },
   {
     id: 2,
-    label: "02 // CONTEXT",
-    title: "Cognitive Decay",
-    desc: "Engineers switch contexts 15x an hour. This isn't multitasking; it's the systematic destruction of deep work.",
+    label: "CONTEXT",
+    title: "COGNITIVE DECAY",
+    desc: "Knowledge workers are forced to constantly shift attention between tools, conversations, and priorities. Focus fragments. Understanding degrades. Important details slip through without anyone noticing.",
     icon: Workflow,
   },
   {
     id: 3,
-    label: "03 // FRICTION",
-    title: "Manual Overhead",
-    desc: "Deployments are brittle manual rituals. You are burning expensive engineering cycles on repetitive robot work.",
+    label: "FRICTION",
+    title: "MANUAL OVERHEAD",
+    desc: "Routine coordination work still depends on human intervention. Tasks are copied, updates are repeated, and follow ups are manual. High skill teams spend time doing low leverage work.",
     icon: ScanLine,
   },
   {
     id: 4,
-    label: "04 // RISK",
-    title: "Security Blindspots",
-    desc: "Surface scans miss deep-layer dependencies. Without introspection, you are shipping vulnerabilities faster than features.",
+    label: "RISK",
+    title: "SECURITY BLINDSPOTS",
+    desc: "When systems operate independently, visibility breaks down. Permissions drift, dependencies are missed, and actions happen without full context. Risk accumulates quietly until it surfaces too late.",
     icon: ShieldAlert,
   }
 ];
@@ -83,7 +83,7 @@ export default function QuadrantScanner() {
 
       {/* --- HEADER --- */}
       <div className="relative z-10 text-center mb-16 max-w-4xl mx-auto">
-        <motion.div 
+        {/* <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           className="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 shadow-[0_0_20px_-5px_rgba(255,69,0,0.3)] backdrop-blur-md"
@@ -92,14 +92,14 @@ export default function QuadrantScanner() {
           <span className="text-[11px] font-mono text-[#FF4500] font-bold tracking-widest uppercase">
             System Diagnostics Active
           </span>
-        </motion.div>
+        </motion.div> */}
         
         <h2 className="text-5xl md:text-7xl font-bold text-white tracking-tighter mb-6">
-          CRITICAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF4500] via-orange-400 to-white">FAILURE</span> MODES
+          CRITICAL <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF4500] via-orange-400 to-white">FAILURE MODES</span>
         </h2>
         
         <p className="text-neutral-500 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-          Your architecture isn't breaking all at once. <br className="hidden md:block"/>It's decaying silently in four specific quadrants.
+          Your systems are not failing all at once. <br className="hidden md:block"/>They are quietly degrading across four structural fault lines.
         </p>
       </div>
 

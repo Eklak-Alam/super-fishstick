@@ -6,6 +6,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Float } from "@react-three/drei";
 import { BookOpen, ArrowRight, MessageSquare, Database, Mail, CheckSquare } from "lucide-react";
 import * as random from "maath/random/dist/maath-random.cjs";
+import Link from "next/link";
 
 // --- 1. STABLE 3D COMPONENT (Unchanged) ---
 function TechGlobe(props) {
@@ -124,8 +125,9 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto items-center justify-center"
           >
             {/* Primary Button */}
-           <button 
+           <Link
             suppressHydrationWarning={true}
+            href='/register'
             className="
               group relative cursor-pointer 
               h-12 w-full sm:w-auto min-w-[200px] px-8 
@@ -154,17 +156,17 @@ export default function Hero() {
             {/* 3. CONTENT (Stays on top) */}
             <span className="relative z-10">Request Early Access</span>
             <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </Link>
 
             {/* Secondary Button */}
             {/* (Kept wider as requested previously) */}
-            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] cursor-pointer group w-auto min-w-[220px] sm:min-w-[160px]">
+            <Link href='/integration' className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] cursor-pointer group w-auto min-w-[220px] sm:min-w-[160px]">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
               <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#050201] px-6 text-sm font-medium text-zinc-400 backdrop-blur-3xl group-hover:text-white group-hover:bg-[#0f0a05] transition-all duration-300 gap-2 whitespace-nowrap">
                 See How It Works
                 <BookOpen size={16} className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300" />
               </span>
-            </div>
+            </Link>
           </motion.div>
         </motion.div>
       </motion.div>

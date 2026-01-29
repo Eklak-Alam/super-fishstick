@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import Link from 'next/link';
 
 // --- UTILS ---
 function cn(...inputs) {
@@ -287,7 +288,8 @@ const TimelineSection = () => {
                 </div>
 
                 <div className="mt-28 flex justify-center relative z-20">
-                    <motion.button 
+                    <Link 
+                    href='/integration'
                         className={cn(
                             "group cursor-pointer relative px-10 py-5 rounded-full flex items-center gap-4 overflow-hidden transition-all duration-500 border",
                             active 
@@ -304,7 +306,7 @@ const TimelineSection = () => {
                                 <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-red-500 opacity-100" />
                              </>
                          )}
-                    </motion.button>
+                    </Link>
                 </div>
             </div>
         </section>

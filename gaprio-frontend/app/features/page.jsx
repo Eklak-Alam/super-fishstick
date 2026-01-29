@@ -19,6 +19,7 @@ import {
   FileText,
   Radio
 } from 'lucide-react';
+import Link from 'next/link';
 
 // ... [KEEP YOUR EXISTING "integrations" DATA HERE] ...
 const integrations = [
@@ -155,7 +156,8 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5 mb-16 sm:mb-24 w-full max-w-md sm:max-w-none">
             
             {/* 1. Primary Button (Full width on mobile) */}
-            <button 
+            <Link
+            href='/register'
             suppressHydrationWarning={true}
             className="
               group relative cursor-pointer 
@@ -185,11 +187,11 @@ const HeroSection = () => {
             {/* 3. CONTENT (Stays on top) */}
             <span className="relative z-10">Initialize System</span>
             <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </Link>
 
             {/* 2. Secondary Button (Reduced width on mobile) */}
             {/* Changed w-full to w-[80%] so it's smaller than the top button on phones */}
-            <div className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-[80%] sm:w-auto min-w-[160px] cursor-pointer group">
+            <Link href='/integration' className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] w-[80%] sm:w-auto min-w-[160px] cursor-pointer group">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
 
               <span
@@ -207,7 +209,7 @@ const HeroSection = () => {
                   className="text-zinc-600 group-hover:text-orange-500 transition-colors duration-300"
                 />
               </span>
-            </div>
+            </Link>
             
           </div>
         </motion.div>
@@ -954,7 +956,7 @@ const CTASection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-          <button className="relative cursor-pointer group h-14 px-8 rounded-full bg-white text-black font-bold text-lg overflow-hidden flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95">
+          <Link href='/register' className="relative cursor-pointer group h-14 px-8 rounded-full bg-white text-black font-bold text-lg overflow-hidden flex items-center gap-2 shadow-[0_0_20px_rgba(255,255,255,0.3)] transition-all active:scale-95">
   
   {/* The Orange Background Layer (Slides up from bottom) */}
   <span className=" cursor-pointer absolute inset-0 w-full h-full bg-orange-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
@@ -964,10 +966,10 @@ const CTASection = () => {
     Get Started <ArrowRight size={20} />
   </span>
 
-</button>
-          <button className="cursor-pointer h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
+</Link>
+          <Link href='/integration' className="cursor-pointer h-14 px-8 rounded-full bg-zinc-900 text-white border border-zinc-800 font-bold text-lg hover:bg-zinc-800 transition-colors flex items-center gap-2">
              <Globe size={20} className="text-zinc-500" />Explore Integrations
-          </button>
+          </Link>
         </div>
       </div>
     </section>

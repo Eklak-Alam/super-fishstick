@@ -552,28 +552,39 @@ const FinalCTA = () => {
 
           {/* Form */}
           <div className="flex-1 w-full">
-            <form className="space-y-4 bg-[#111] p-6 rounded-2xl border border-white/5">
-              <div>
-                <label className="text-xs text-zinc-500 font-mono mb-1 block">WORK EMAIL</label>
-                <input 
-                  suppressHydrationWarning={true}
-                  type="email" 
-                  placeholder="name@company.com" 
-                  className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 outline-none transition-colors"
-                />
-              </div>
-              <Link
-              href='/register'
-                suppressHydrationWarning={true}
-                className="w-full bg-orange-600 text-white font-bold rounded-lg py-3 hover:bg-orange-500 transition-all shadow-lg shadow-orange-900/20"
-              >
-                Book a Demo
-              </Link>
-              <p className="text-[10px] text-center text-zinc-600">
-                Deployment typically completes within days. No long term commitment required.
-              </p>
-            </form>
-          </div>
+      {/* 1. Added onSubmit preventDefault to stop page reload on 'Enter' key 
+      */}
+      <form 
+        onSubmit={(e) => e.preventDefault()} 
+        className="space-y-4 bg-[#111] p-6 rounded-2xl border border-white/5"
+      >
+        <div>
+          <label className="text-xs text-zinc-500 font-mono mb-1 block">
+            WORK EMAIL
+          </label>
+          <input
+            type="email"
+            placeholder="name@company.com"
+            className="w-full bg-[#0a0a0a] border border-white/10 rounded-lg px-4 py-3 text-white focus:border-orange-500 outline-none transition-colors"
+          />
+        </div>
+
+        {/* 2. Fixed the Link Styling:
+              - Added 'flex items-center justify-center' to perfectly center text.
+              - Added 'block' to ensure it fills the width properly.
+        */}
+        <Link
+          href="/register"
+          className="flex items-center justify-center w-full bg-orange-600 text-white font-bold rounded-lg py-3 hover:bg-orange-500 transition-all shadow-lg shadow-orange-900/20 cursor-pointer"
+        >
+          Book a Demo
+        </Link>
+
+        <p className="text-[10px] text-center text-zinc-600">
+          Deployment typically completes within days. No long term commitment required.
+        </p>
+      </form>
+    </div>
 
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { useRef, useState, useEffect, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial, Float } from "@react-three/drei";
@@ -53,6 +53,34 @@ export default function Hero() {
   const { scrollY } = useScroll();
   const yBg = useTransform(scrollY, [0, 1000], ["0%", "30%"]);
   const opacityContent = useTransform(scrollY, [0, 600], [1, 0]);
+
+  // --- TILT LOGIC START ---
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  // Physics for smooth mouse tracking
+  const mouseX = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseY = useSpring(y, { stiffness: 150, damping: 15 });
+
+  // Map mouse position to rotation (Inverted for natural tilt)
+  const rotateX = useTransform(mouseY, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseX, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseXFromCenter = e.clientX - rect.left - width / 2;
+    const mouseYFromCenter = e.clientY - rect.top - height / 2;
+    x.set(mouseXFromCenter / width);
+    y.set(mouseYFromCenter / height);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+  // --- TILT LOGIC END ---
 
   return (
     <section className="relative min-h-screen w-full bg-[#050201] flex flex-col items-center justify-start lg:pt-48 pt-36 pb-20 overflow-hidden perspective-[2000px] selection:bg-orange-500/30">
@@ -132,34 +160,20 @@ export default function Hero() {
               group relative cursor-pointer 
               h-12 w-full sm:w-auto min-w-[200px] px-8 
               rounded-full overflow-hidden 
-              
-              /* 1. RESTING STATE: Lighter/Brighter Gradient */
               bg-gradient-to-br from-orange-400 to-orange-500
-              
-              /* Typography & Layout */
               text-white font-bold text-lg tracking-wide
               flex items-center justify-center gap-2
-              
-              /* Simple colored shadow (Glows slightly) */
               shadow-lg shadow-orange-500/30
-              
-              /* Interactions */
               active:scale-95
               transition-all duration-300
             "
           >
-            {/* 2. HOVER EFFECT: Darker Orange fills from bottom to top */
-            /* We use 'bg-orange-600' so it gets darker/richer on hover */
-            }
             <div className="absolute inset-0 bg-orange-600 translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0" />
-
-            {/* 3. CONTENT (Stays on top) */}
             <span className="relative z-10">Request Early Access</span>
             <ArrowRight className="relative z-10 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
 
             {/* Secondary Button */}
-            {/* (Kept wider as requested previously) */}
             <Link href='/integration' className="relative inline-flex h-12 overflow-hidden rounded-full p-[1px] cursor-pointer group w-auto min-w-[220px] sm:min-w-[160px]">
               <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#000000_0%,#333333_50%,#f97316_100%)]" />
               <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-[#050201] px-6 text-sm font-medium text-zinc-400 backdrop-blur-3xl group-hover:text-white group-hover:bg-[#0f0a05] transition-all duration-300 gap-2 whitespace-nowrap">
@@ -171,7 +185,7 @@ export default function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* --- 3. DASHBOARD SECTION (FIXED CUTTING ISSUE) --- */}
+      {/* --- 3. DASHBOARD SECTION (3D TILT ENABLED) --- */}
       <motion.div
         initial={{ opacity: 0, y: 80, rotateX: 25 }}
         animate={{ opacity: 1, y: 0, rotateX: 0 }}
@@ -182,18 +196,30 @@ export default function Hero() {
           stiffness: 60,
           damping: 25,
         }}
-        className="w-full max-w-6xl relative perspective-1000 group z-20 mx-auto px-4"
+        // Added perspective style here for 3D depth
+        style={{ perspective: "1200px" }}
+        className="w-full max-w-6xl relative z-20 mx-auto px-4 group"
       >
-        {/* Glow Effect */}
+        {/* Glow Effect (Moved outside tilt container to stay grounded) */}
         <div className="absolute -inset-4 sm:-inset-8 bg-gradient-to-r from-orange-500/30 via-purple-500/20 to-blue-500/20 blur-2xl sm:blur-3xl opacity-40 group-hover:opacity-70 transition-opacity duration-700 will-change-[opacity]" />
 
-        {/* <--- THIS IS THE FIX YOU REQUESTED --- */}
-        {/* Using your exact snippet container structure (border, padding) + object-contain */}
-        <div className="relative w-full aspect-[20/10] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-all duration-500 ease-out group-hover:scale-[1.01] group-hover:-translate-y-2 group-hover:shadow-orange-500/10 group-hover:border-white/20">
+        {/* <--- INTERACTIVE TILT CONTAINER ---> */}
+        <motion.div
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{
+            rotateX,
+            rotateY,
+            transformStyle: "preserve-3d", // Keeps children in 3D space
+          }}
+          className="relative w-full aspect-[20/10] rounded-xl sm:rounded-2xl border border-white/10 bg-zinc-900/80 p-2 sm:p-3 shadow-2xl backdrop-blur-md transition-colors duration-500 ease-out hover:border-white/20 hover:shadow-orange-500/10"
+        >
           
-          <div className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-black ring-1 ring-white/5 flex items-center justify-center">
+          <div 
+            className="relative w-full h-full overflow-hidden rounded-lg sm:rounded-[14px] bg-black ring-1 ring-white/5 flex items-center justify-center"
+            style={{ transform: "translateZ(30px)" }} // Pushes image forward for depth inside the card
+          >
             
-            {/* <--- IMAGE FIX: Changed to 'object-contain' so it never cuts off --- */}
             <img
               src="/dashboard.png"
               alt="Gaprio Dashboard Interface"
@@ -203,7 +229,7 @@ export default function Hero() {
             {/* Glossy Overlay */}
             <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent pointer-events-none mix-blend-overlay" />
           </div>
-        </div>
+        </motion.div>
       </motion.div>
 
       <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#050201] to-transparent z-10 pointer-events-none" />

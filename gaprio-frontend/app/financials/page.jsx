@@ -68,7 +68,7 @@ export default function FinancialPage() {
                 Net Result
               </span>
               <span className="text-4xl md:text-5xl font-mono font-medium text-white border-b-2 border-[#EA812E] pb-1">
-                - {economics.netBurn}
+                {economics.netBurn}
               </span>
             </div>
           </div>

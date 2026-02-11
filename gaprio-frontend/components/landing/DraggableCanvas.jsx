@@ -7,13 +7,13 @@ import { Sparkles, Activity, ShieldCheck, Zap } from "lucide-react";
 
 // --- CONFIGURATION WITH DYNAMIC DATA ---
 const TOOLS = [
-  { id: 'asana', label: 'Asana', image: '/companylogo/asana.png', x: 1, y: -300, mobileX: 0, mobileY: -220, color: '#ea580c', latency: '12ms', status: 'Synced', uptime: '99.99%' },
+  { id: 'asana', label: 'Asana', image: '/companylogo/asana.png', x: 1, y: -300, mobileX: 1, mobileY: -220, color: '#ea580c', latency: '12ms', status: 'Synced', uptime: '99.99%' },
   { id: 'jira', label: 'Jira', image: '/companylogo/jira.png', x: 280, y: -200, mobileX: 140, mobileY: -110, color: '#d97706', latency: '45ms', status: 'Processing', uptime: '99.8%' },
-  { id: 'ms365', label: 'MS 365', image: '/companylogo/microsoft.webp', x: 400, y: 0, mobileX: 160, mobileY: 0, color: '#2563eb', latency: '18ms', status: 'Connected', uptime: '99.95%' },
+  { id: 'ms365', label: 'MS 365', image: '/companylogo/microsoft.webp', x: 400, y: 1, mobileX: 160, mobileY: 1, color: '#2563eb', latency: '18ms', status: 'Connected', uptime: '99.95%' },
   { id: 'clickup', label: 'ClickUp', image: '/companylogo/clickup.png', x: 280, y: 200, mobileX: 140, mobileY: 110, color: '#7c3aed', latency: '22ms', status: 'Active', uptime: '99.9%' },
-  { id: 'zoho', label: 'Zoho', image: '/companylogo/zoho.png', x: -1, y: 300, mobileX: 0, mobileY: 220, color: '#ef4444', latency: '30ms', status: 'Secure', uptime: '99.5%' },
+  { id: 'zoho', label: 'Zoho', image: '/companylogo/zoho.png', x: -1, y: 300, mobileX: 1, mobileY: 220, color: '#ef4444', latency: '30ms', status: 'Secure', uptime: '99.5%' },
   { id: 'google', label: 'Google', image: '/companylogo/google.webp', x: -280, y: 200, mobileX: -140, mobileY: 110, color: '#dc2626', latency: '8ms', status: 'Optimized', uptime: '99.99%' },
-  { id: 'slack', label: 'Slack', image: '/companylogo/slack.png', x: -400, y: 0, mobileX: -160, mobileY: 0, color: '#f97316', latency: '15ms', status: 'Live', uptime: '100%' },
+  { id: 'slack', label: 'Slack', image: '/companylogo/slack.png', x: -400, y: 1, mobileX: -160, mobileY: 1, color: '#f97316', latency: '15ms', status: 'Live', uptime: '100%' },
   { id: 'miro', label: 'Miro', image: '/companylogo/miro.png', x: -280, y: -200, mobileX: -140, mobileY: -110, color: '#fbbf24', latency: '25ms', status: 'Cached', uptime: '99.9%' },
 ];
 

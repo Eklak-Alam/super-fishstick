@@ -13,7 +13,7 @@ export const year1Data = {
     clients: "0",
     totalRevenue: "₹0",
     totalExpense: "₹11.75 Lakh",
-    netBurn: "₹11.75 Lakh",
+    netBurn: " - ₹11.75 Lakh",
   },
   periods: [
     {
@@ -34,15 +34,15 @@ export const year1Data = {
           name: "Subscriptions",
           total: "₹70k",
           items: [
-            { label: "MS 365", cost: "11.5k" },
-            { label: "Notion", cost: "11k" },
-            { label: "Claude", cost: "9.2k" },
-            { label: "Miro", cost: "8.7k" },
-            { label: "Jira", cost: "8k" },
-            { label: "ClickUp", cost: "6.5k" },
-            { label: "Asana", cost: "6k" },
-            { label: "Google Workspace", cost: "5.2k" },
-            { label: "Slack", cost: "4k" },
+            { label: "MS 365", cost: "₹11.5k" },
+            { label: "Notion", cost: "₹11k" },
+            { label: "Claude", cost: "₹9.2k" },
+            { label: "Miro", cost: "₹8.7k" },
+            { label: "Jira", cost: "₹8k" },
+            { label: "ClickUp", cost: "₹6.5k" },
+            { label: "Asana", cost: "₹6k" },
+            { label: "Google Workspace", cost: "₹5.2k" },
+            { label: "Slack", cost: "₹4k" },
           ],
         },
         {

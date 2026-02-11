@@ -4,18 +4,20 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ArrowUp, ArrowUpRight, Instagram, Twitter } from "lucide-react"; // Added ArrowUp
+import { ArrowUp, ArrowUpRight, Instagram, Twitter } from "lucide-react";
 import { BsLinkedin } from "react-icons/bs";
-import { Saira } from "next/font/google";
+import { Inter } from "next/font/google";
 
-const saira = Saira({ 
+// 1. Changed font to Inter
+const inter = Inter({ 
   subsets: ['latin'], 
   weight: ['400', '500', '600', '700', '900'] 
 });
 
 const navLinks = [
-  { label: 'Privacy', href: '/privacy' },
-  { label: 'Terms', href: '/terms' },
+  { label: 'Privacy', href: '/' },
+  { label: 'Terms', href: '/' },
+  { label: 'Sources', href: '/sources' },
   { label: 'Financials', href: '/financials' },
 ];
 
@@ -29,13 +31,14 @@ export default function TitanFooter() {
   };
 
   return (
-    <footer className="relative w-full bg-[#020202] text-white min-h-[85vh] flex flex-col justify-between pt-24 pb-8 overflow-hidden font-sans">
+    <footer className={`relative w-full bg-[#020202] text-white min-h-[85vh] flex flex-col justify-between pt-24 pb-8 overflow-hidden border-t border-white/5 ${inter.className}`}>
       
       {/* =========================================
-          1. THE BRAND ARENA (CENTERED)
+          1. THE BRAND ARENA (Upper Section)
       ========================================= */}
-      <div className="flex-grow flex items-center justify-center w-full relative z-10 select-none mb-12 md:mb-0">
-        <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 scale-[0.85] md:scale-100 overflow-visible">
+      {/* Added md:pr-24 to create the requested right margin offset */}
+      <div className="flex-grow flex items-center justify-center md:justify-center w-full relative z-10 select-none mb-12 md:mb-0">
+        <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 scale-[0.85] md:scale-100 overflow-visible md:pr-24">
             
             {/* LOGO */}
             <motion.div 
@@ -43,7 +46,8 @@ export default function TitanFooter() {
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-                <div className="absolute inset-0 bg-[#F97316]/20 blur-[60px] rounded-full scale-75 opacity-50" />
+                {/* Smoother blur for better blending */}
+                <div className="absolute inset-0 bg-[#F97316]/20 blur-[80px] rounded-full scale-90 opacity-40" />
                 <Image 
                     src="/logo1.png" 
                     alt="Gaprio Logo" 
@@ -114,14 +118,18 @@ export default function TitanFooter() {
             
             <div className="flex flex-col-reverse md:flex-row items-center gap-8">
                 
-                {/* Back to Top Button */}
+                {/* --- BACK TO TOP BUTTON --- */}
                 <button 
                     onClick={scrollToTop}
-                    className="group flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-zinc-500 hover:text-[#F97316] transition-colors"
+                    className="group flex items-center gap-3 px-6 py-3 rounded-full bg-zinc-900/50 border border-white/10 hover:border-[#F97316] transition-all duration-300 active:scale-95"
                 >
-                    Back to Top
-                    <div className="w-6 h-6 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-[#F97316] transition-colors">
-                        <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 group-hover:text-white transition-colors">
+                        Back to Top
+                    </span>
+                    {/* Sliding Arrow Animation */}
+                    <div className="relative w-3.5 h-3.5 overflow-hidden">
+                        <ArrowUp className="absolute inset-0 w-full h-full text-[#F97316] transition-transform duration-300 group-hover:-translate-y-full" />
+                        <ArrowUp className="absolute inset-0 w-full h-full text-[#F97316] translate-y-full transition-transform duration-300 group-hover:translate-y-0" />
                     </div>
                 </button>
 
@@ -140,7 +148,7 @@ export default function TitanFooter() {
 }
 
 // ===============================================
-// DESKTOP TEXT (Updated Color #F97316)
+// DESKTOP TEXT (Updated for Inter)
 // ===============================================
 function DesktopTextReveal() {
     const textRef = useRef(null);
@@ -165,9 +173,10 @@ function DesktopTextReveal() {
             onMouseMove={handleMouseMove}
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
-            className={`relative cursor-crosshair transform scale-x-[1.25] origin-left ml-4 px-8 ${saira.className}`}
+            // Removed scale-x-[1.25] because Inter looks better natural
+            className="relative cursor-crosshair ml-4 px-8"
         >
-            <h1 className="text-[14vw] font-black leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px #222" }}>
+            <h1 className="text-[13vw] font-black leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px #333" }}>
                 GAPRIO
             </h1>
             <motion.div 
@@ -179,7 +188,7 @@ function DesktopTextReveal() {
                     WebkitMaskImage: useTransform([smoothX, smoothY], ([x, y]) => `radial-gradient(circle 250px at ${x}px ${y}px, black, transparent)`)
                 }}
             >
-                <h1 className="text-[14vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
+                <h1 className="text-[13vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
                     style={{ backgroundImage: `linear-gradient(135deg, #F97316 0%, #FFFFFF 100%)` }}>
                     GAPRIO
                 </h1>
@@ -189,12 +198,12 @@ function DesktopTextReveal() {
 }
 
 // ===============================================
-// MOBILE TEXT (Updated Color #F97316)
+// MOBILE TEXT (Updated for Inter)
 // ===============================================
 function MobileTextReveal() {
     return (
-        <div className={`relative transform scale-x-[1.15] px-4 ${saira.className}`}>
-            <h1 className="text-[18vw] font-black leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px #222" }}>
+        <div className="relative px-4">
+            <h1 className="text-[17vw] font-black leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px #333" }}>
                 GAPRIO
             </h1>
             <motion.div 
@@ -210,7 +219,7 @@ function MobileTextReveal() {
                     WebkitMaskRepeat: "no-repeat"
                 }}
             >
-                <h1 className="text-[18vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
+                <h1 className="text-[17vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
                     style={{ backgroundImage: `linear-gradient(135deg, #F97316 0%, #FFFFFF 100%)` }}>
                     GAPRIO
                 </h1>
@@ -220,7 +229,7 @@ function MobileTextReveal() {
 }
 
 // ===============================================
-// LIQUID SOCIAL (Updated Color #F97316)
+// LIQUID SOCIAL
 // ===============================================
 const LiquidSocial = ({ Icon, link }) => {
     return (

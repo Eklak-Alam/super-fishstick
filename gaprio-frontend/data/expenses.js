@@ -18,7 +18,7 @@ export const year1Data = {
   periods: [
     {
       title: "Phase 1: R&D",
-      timeline: "Apr - Sep",
+      timeline: "Apr'26 - Sep'26",
       totalCost: "₹4 Lakh",
       categories: [
         {
@@ -57,7 +57,7 @@ export const year1Data = {
     },
     {
       title: "Phase 2: Pilot & Infra",
-      timeline: "Oct - Mar",
+      timeline: "Oct'26 - Mar'27",
       totalCost: "₹7.75 Lakh",
       categories: [
         {
@@ -79,7 +79,7 @@ export const year1Data = {
           total: "₹75k",
           items: [
             { label: "Backend Hosting", cost: "₹65.8k" },
-            { label: "Claude API", cost: "₹9.2k" },
+            { label: "Claude AI", cost: "₹9.2k" },
           ],
         },
       ],
@@ -100,12 +100,12 @@ export const year2Data = {
     clients: "1 (On-Prem)",
     totalRevenue: "₹1.85 Cr",
     totalExpense: "₹1.54 Cr",
-    netBurn: "+₹31 Lakh (Profit)",
+    netBurn: "₹31 Lakh ",
   },
   periods: [
     {
       title: "Annual Operations",
-      timeline: "Apr - Mar",
+      timeline: "Apr'27 - Mar'28",
       totalCost: "₹1.54 Cr",
       categories: [
         {
@@ -179,12 +179,12 @@ export const year3Data = {
     clients: "5 (On-Prem)",
     totalRevenue: "₹9.5 Cr",
     totalExpense: "₹6.3 Cr",
-    netBurn: "+₹3.2 Cr (Profit)",
+    netBurn: "₹3.2 Cr ",
   },
   periods: [
     {
       title: "Annual Operations",
-      timeline: "Apr - Mar",
+      timeline: "Apr'28 - Mar'29",
       totalCost: "₹6.3 Cr",
       categories: [
         {

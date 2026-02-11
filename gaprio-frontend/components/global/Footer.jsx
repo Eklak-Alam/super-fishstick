@@ -17,7 +17,7 @@ const navLinks = [
   { label: 'Platforms', href: '/integration' },
   { label: 'Features', href: '/features' },
   { label: 'Sources', href: '/sources' },
-  { label: 'Team', href: '/financials' }, // or '/about'
+  { label: 'Financials', href: '/financials' }, // or '/about'
 ];
 
 export default function TitanFooter() {

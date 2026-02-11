@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
-import { ArrowUpRight, Instagram, Twitter } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { ArrowUp, ArrowUpRight, Instagram, Twitter } from "lucide-react"; // Added ArrowUp
 import { BsLinkedin } from "react-icons/bs";
 import { Saira } from "next/font/google";
 
@@ -14,32 +14,36 @@ const saira = Saira({
 });
 
 const navLinks = [
-  { label: 'Platforms', href: '/integration' },
-  { label: 'Features', href: '/features' },
-  { label: 'Sources', href: '/sources' },
-  { label: 'Financials', href: '/financials' }, // or '/about'
+  { label: 'Privacy', href: '/privacy' },
+  { label: 'Terms', href: '/terms' },
+  { label: 'Financials', href: '/financials' },
 ];
+
+const THEME_ORANGE = "#F97316";
 
 export default function TitanFooter() {
   const currentYear = new Date().getFullYear();
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    // CHANGE 1: Background is #020202, Removed border-t, single unified block
     <footer className="relative w-full bg-[#020202] text-white min-h-[85vh] flex flex-col justify-between pt-24 pb-8 overflow-hidden font-sans">
       
       {/* =========================================
-          1. THE BRAND ARENA
+          1. THE BRAND ARENA (CENTERED)
       ========================================= */}
       <div className="flex-grow flex items-center justify-center w-full relative z-10 select-none mb-12 md:mb-0">
-        <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 scale-[0.85] md:scale-100 overflow-visible">
+        <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 scale-[0.85] md:scale-100 overflow-visible">
             
-            {/* LOGO (Floating Jewel) */}
+            {/* LOGO */}
             <motion.div 
-                className="relative w-[18vw] h-[18vw] md:w-[11vw] md:h-[11vw] shrink-0 flex items-center justify-center"
+                className="relative w-[18vw] h-[18vw] md:w-[10vw] md:h-[10vw] shrink-0 flex items-center justify-center"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
             >
-                <div className="absolute inset-0 bg-orange-500/20 blur-[60px] rounded-full scale-75 opacity-50" />
+                <div className="absolute inset-0 bg-[#F97316]/20 blur-[60px] rounded-full scale-75 opacity-50" />
                 <Image 
                     src="/logo1.png" 
                     alt="Gaprio Logo" 
@@ -49,14 +53,10 @@ export default function TitanFooter() {
                 />
             </motion.div>
 
-            {/* --- RESPONSIVE TEXT REVEAL --- */}
-            
-            {/* A. DESKTOP VERSION (Mouse Interactive) - Hidden on Mobile */}
+            {/* RESPONSIVE TEXT REVEAL */}
             <div className="hidden md:block">
                 <DesktopTextReveal />
             </div>
-
-            {/* B. MOBILE VERSION (Auto-Scanning) - Hidden on Desktop */}
             <div className="block md:hidden">
                 <MobileTextReveal />
             </div>
@@ -69,8 +69,7 @@ export default function TitanFooter() {
       ========================================= */}
       <div className="w-full max-w-[1600px] mx-auto px-6 md:px-12 relative z-20">
         
-        {/* REMOVED THE BORDER-T HERE for seamless look */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-0 pt-12 pb-12 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-0 pt-12 pb-12 items-start border-t border-white/5">
             
             {/* LEFT: Heading */}
             <div className="flex flex-col items-start gap-8">
@@ -81,12 +80,12 @@ export default function TitanFooter() {
                 
                 <a 
                   href="mailto:contact@gaprio.in" 
-                  className="group flex items-center gap-3 text-xl text-zinc-400 hover:text-[#EC9138] transition-colors duration-300"
+                  className="group flex items-center gap-3 text-xl text-zinc-400 hover:text-[#F97316] transition-colors duration-300"
                 >
-                   <span className="border-b border-white/10 group-hover:border-[#EC9138] pb-0.5 transition-all">
-                     contact@gaprio.in
-                   </span>
-                   <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
+                    <span className="border-b border-white/10 group-hover:border-[#F97316] pb-0.5 transition-all">
+                      contact@gaprio.in
+                    </span>
+                    <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:-translate-y-1 group-hover:translate-x-1" />
                 </a>
             </div>
 
@@ -99,26 +98,38 @@ export default function TitanFooter() {
                 className="group relative text-lg md:text-xl font-light text-zinc-500 hover:text-white transition-colors duration-300"
                 >
                 {item.label}
-                
-                {/* Animated Orange Underline */}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#EC9138] transition-all duration-300 group-hover:w-full" />
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#F97316] transition-all duration-300 group-hover:w-full" />
                 </Link>
             ))}
             </div>
         </div>
 
         {/* BOTTOM: Footer Meta */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-6 pb-2 text-xs uppercase tracking-widest text-zinc-700 font-bold">
-            <p>&copy; {currentYear} Gaprio Inc.</p>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-6 pb-2 border-t border-white/5">
             
-            <div className="flex items-center gap-8">
-                <Link href="/" className="hover:text-[#EC9138] transition-colors">Privacy</Link>
-                <Link href="/" className="hover:text-[#EC9138] transition-colors">Terms</Link>
+            {/* Copyright */}
+            <p className="text-xs uppercase tracking-widest text-zinc-700 font-bold">
+                &copy; {currentYear} Gaprio Inc.
+            </p>
+            
+            <div className="flex flex-col-reverse md:flex-row items-center gap-8">
                 
-                <div className="flex items-center gap-4 pl-8 border-l border-white/10">
+                {/* Back to Top Button */}
+                <button 
+                    onClick={scrollToTop}
+                    className="group flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-zinc-500 hover:text-[#F97316] transition-colors"
+                >
+                    Back to Top
+                    <div className="w-6 h-6 rounded-full border border-zinc-800 flex items-center justify-center group-hover:border-[#F97316] transition-colors">
+                        <ArrowUp size={12} className="group-hover:-translate-y-0.5 transition-transform" />
+                    </div>
+                </button>
+
+                {/* Socials */}
+                <div className="flex items-center gap-4 pl-0 md:pl-8 md:border-l border-white/10">
                     <LiquidSocial Icon={BsLinkedin} link='https://www.linkedin.com/company/gaprio/' />
-                    <LiquidSocial Icon={Twitter} link='https://www.instagram.com/gaprio_labs' />
-                    <LiquidSocial Icon={Instagram} link='https://x.com/Gaprio_Labs' />
+                    <LiquidSocial Icon={Twitter} link='https://twitter.com/gaprio_labs' />
+                    <LiquidSocial Icon={Instagram} link='https://instagram.com/Gaprio_Labs' />
                 </div>
             </div>
         </div>
@@ -129,7 +140,7 @@ export default function TitanFooter() {
 }
 
 // ===============================================
-// COMPONENT A: DESKTOP TEXT (Mouse Interactive)
+// DESKTOP TEXT (Updated Color #F97316)
 // ===============================================
 function DesktopTextReveal() {
     const textRef = useRef(null);
@@ -169,7 +180,7 @@ function DesktopTextReveal() {
                 }}
             >
                 <h1 className="text-[14vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
-                    style={{ backgroundImage: `linear-gradient(135deg, #EC9138 0%, #FFB060 50%, #EC9138 100%)` }}>
+                    style={{ backgroundImage: `linear-gradient(135deg, #F97316 0%, #FFFFFF 100%)` }}>
                     GAPRIO
                 </h1>
             </motion.div>
@@ -178,42 +189,29 @@ function DesktopTextReveal() {
 }
 
 // ===============================================
-// COMPONENT B: MOBILE TEXT (Auto-Scanning)
+// MOBILE TEXT (Updated Color #F97316)
 // ===============================================
 function MobileTextReveal() {
-    // This creates an automatic spotlight that moves back and forth
     return (
         <div className={`relative transform scale-x-[1.15] px-4 ${saira.className}`}>
-            {/* The Ghost Outline */}
             <h1 className="text-[18vw] font-black leading-none tracking-tighter text-transparent" style={{ WebkitTextStroke: "1px #222" }}>
                 GAPRIO
             </h1>
-
-            {/* The Auto-Moving Reveal */}
             <motion.div 
                 className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                animate={{ 
-                    // Move the mask position from left (-100%) to right (200%)
-                    maskPosition: ["-100% 0", "200% 0"]
-                }}
-                transition={{ 
-                    duration: 4, // 4 seconds per scan
-                    repeat: Infinity, 
-                    ease: "linear",
-                    repeatType: "mirror" // Goes back and forth
-                }}
+                animate={{ maskPosition: ["-100% 0", "200% 0"] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "linear", repeatType: "mirror" }}
                 style={{
-                    // CSS Mask that looks like a searchlight beam
                     maskImage: "linear-gradient(90deg, transparent 0%, black 50%, transparent 100%)",
                     WebkitMaskImage: "linear-gradient(90deg, transparent 0%, black 50%, transparent 100%)",
-                    maskSize: "50% 100%", // The beam is 50% width of the text
+                    maskSize: "50% 100%",
                     WebkitMaskSize: "50% 100%",
                     maskRepeat: "no-repeat",
                     WebkitMaskRepeat: "no-repeat"
                 }}
             >
                 <h1 className="text-[18vw] font-black leading-none tracking-tighter text-transparent bg-clip-text"
-                    style={{ backgroundImage: `linear-gradient(135deg, #EC9138 0%, #FFB060 50%, #EC9138 100%)` }}>
+                    style={{ backgroundImage: `linear-gradient(135deg, #F97316 0%, #FFFFFF 100%)` }}>
                     GAPRIO
                 </h1>
             </motion.div>
@@ -221,11 +219,13 @@ function MobileTextReveal() {
     );
 }
 
-// --- LIQUID SOCIAL ---
+// ===============================================
+// LIQUID SOCIAL (Updated Color #F97316)
+// ===============================================
 const LiquidSocial = ({ Icon, link }) => {
     return (
         <a href={link} target="_blank" className="group relative w-10 h-10 overflow-hidden rounded-full border border-white/10 flex items-center justify-center bg-white/5">
-            <div className="absolute inset-0 bg-[#EC9138] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]" />
+            <div className="absolute inset-0 bg-[#F97316] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.76,0,0.24,1)]" />
             <Icon size={16} className="relative z-10 text-zinc-400 group-hover:text-black transition-colors duration-300 group-hover:scale-110" />
         </a>
     )

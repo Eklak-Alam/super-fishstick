@@ -13,6 +13,13 @@ const saira = Saira({
   weight: ['400', '500', '600', '700', '900'] 
 });
 
+const navLinks = [
+  { label: 'Platforms', href: '/integration' },
+  { label: 'Features', href: '/features' },
+  { label: 'Resources', href: '/resources' },
+  { label: 'Team', href: '/financials' }, // or '/about'
+];
+
 export default function TitanFooter() {
   const currentYear = new Date().getFullYear();
 
@@ -85,16 +92,18 @@ export default function TitanFooter() {
 
             {/* RIGHT: Navigation */}
             <div className="flex flex-col md:flex-row gap-6 md:gap-12 md:justify-end md:items-start pt-2">
-                {['How It Works', 'Platforms', 'Features', 'Team'].map((item) => (
-                    <Link 
-                        key={item} 
-                        href={item === 'Team' ? '#team' : `/${item.toLowerCase().replace(/\s/g, '-')}`}
-                        className="group relative text-lg md:text-xl font-light text-zinc-500 hover:text-white transition-colors duration-300"
-                    >
-                        {item}
-                        <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#EC9138] transition-all duration-300 group-hover:w-full" />
-                    </Link>
-                ))}
+            {navLinks.map((item) => (
+                <Link
+                key={item.label}
+                href={item.href}
+                className="group relative text-lg md:text-xl font-light text-zinc-500 hover:text-white transition-colors duration-300"
+                >
+                {item.label}
+                
+                {/* Animated Orange Underline */}
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#EC9138] transition-all duration-300 group-hover:w-full" />
+                </Link>
+            ))}
             </div>
         </div>
 

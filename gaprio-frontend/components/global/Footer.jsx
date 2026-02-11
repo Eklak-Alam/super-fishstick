@@ -16,7 +16,7 @@ const saira = Saira({
 const navLinks = [
   { label: 'Platforms', href: '/integration' },
   { label: 'Features', href: '/features' },
-  { label: 'Resources', href: '/resources' },
+  { label: 'Sources', href: '/sources' },
   { label: 'Team', href: '/financials' }, // or '/about'
 ];
 

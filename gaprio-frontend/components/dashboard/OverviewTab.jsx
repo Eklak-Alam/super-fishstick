@@ -1,179 +1,199 @@
 'use client';
-import { motion } from 'framer-motion';
 import { 
-    Mail, MessageSquare, CheckSquare, Zap, 
-    Activity, Clock, ArrowUpRight, ShieldCheck 
+    Clock, Settings, ArrowRight, Activity, Zap, Mail, MessageSquare, ShieldCheck, CheckSquare, LayoutTemplate, ListTodo, Briefcase
 } from 'lucide-react';
-import StatCard from './StatCard';
+import Image from 'next/image';
 
-export default function OverviewTab({ user, googleData, slackData }) {
-    
-    // --- Metrics Calculation ---
+export default function OverviewTab({ user, googleData, slackData, setActiveTab }) {
     const connections = user?.connections || [];
     const activeConnections = connections.length;
     
-    const emailCount = googleData.emails?.length || 0;
-    const meetingCount = googleData.meetings?.length || 0;
-    const channelCount = slackData.channels?.length || 0;
+    const emailCount = googleData?.emails?.length || 0;
+    const meetingCount = googleData?.meetings?.length || 0;
+    const channelCount = slackData?.channels?.length || 0;
 
-    // --- Time Greeting ---
     const hour = new Date().getHours();
     const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
 
     return (
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto space-y-8 pb-10">
+        <div className="w-full max-w-[1800px] mx-auto space-y-6 pb-12">
             
-            {/* --- Hero Section --- */}
-            <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-600/20 to-purple-600/20 border border-white/10 p-8 md:p-10">
-                <div className="relative z-10">
-                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                        {greeting}, <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">{user.full_name?.split(' ')[0]}</span>
-                    </h1>
-                    <p className="text-zinc-300 max-w-xl text-sm md:text-base leading-relaxed">
-                        Your workspace is running at optimal performance. You have <strong className="text-white">{meetingCount} meetings</strong> scheduled today and <strong className="text-white">{emailCount} unread emails</strong> pending.
-                    </p>
-                </div>
+            {/* --- FULL WIDTH HERO CONSOLE --- */}
+            <div className="bg-[#0a0a0a] border border-zinc-800 rounded-xl flex flex-col overflow-hidden shadow-2xl">
                 
-                {/* Background Decoration */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 blur-[100px] rounded-full pointer-events-none" />
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 blur-[100px] rounded-full pointer-events-none" />
+                <div className="p-6 md:p-10 flex flex-col md:flex-row md:items-center justify-between gap-6 relative">
+                    <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-500/5 via-transparent to-transparent pointer-events-none" />
+                    
+                    <div className="relative z-10">
+                        <h1 className="text-2xl md:text-3xl font-semibold text-zinc-100 mb-3 tracking-tight">
+                            {greeting}, <span className="text-white">{user?.full_name?.split(' ')[0]}</span>.
+                        </h1>
+                        <p className="text-sm text-zinc-400 max-w-2xl leading-relaxed">
+                            System overview is live. You have <strong className="text-zinc-200">{meetingCount} scheduled events</strong> and <strong className="text-zinc-200">{emailCount} pending payloads</strong> requiring your attention across your connected ecosystem today.
+                        </p>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-2 xl:grid-cols-4 border-t border-zinc-800 bg-[#050505] divide-x divide-zinc-800 border-b-0 xl:divide-y-0 divide-y">
+                    <MetricSegment label="Active Connections" value={activeConnections} sub="Nodes online" icon={Zap} onClick={() => {}} activeColor="bg-orange-500" />
+                    <MetricSegment label="Recent Emails" value={emailCount} sub="Unread in inbox" icon={Mail} onClick={() => setActiveTab('google')} activeColor="bg-orange-500" isActionable />
+                    <MetricSegment label="Slack Intelligence" value={channelCount} sub="Active workspaces" icon={MessageSquare} onClick={() => setActiveTab('slack')} activeColor="bg-orange-500" isActionable />
+                    
+                    <div className="relative flex flex-col p-6 lg:p-8 bg-[#050505]">
+                        <div className="flex items-center gap-2 mb-3 text-zinc-400">
+                            <Activity size={16} />
+                            <span className="text-[10px] font-bold uppercase tracking-widest">System Status</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <span className="text-3xl font-semibold text-white tracking-tight">100%</span>
+                            <div className="flex items-center justify-center w-6 h-6 rounded-full bg-green-500/10">
+                                <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></span>
+                            </div>
+                        </div>
+                        <span className="text-xs text-zinc-500 mt-2 font-medium">All infrastructure operational</span>
+                    </div>
+                </div>
             </div>
 
-            {/* --- Stats Grid --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <StatCard 
-                    label="Total Connections" 
-                    value={activeConnections} 
-                    icon={Zap} 
-                    color="text-yellow-400" 
-                    bg="bg-yellow-400/10" 
-                    trend="+1 this week"
-                />
-                <StatCard 
-                    label="Recent Emails" 
-                    value={emailCount} 
-                    icon={Mail} 
-                    color="text-red-400" 
-                    bg="bg-red-400/10" 
-                    sub="Syncing live"
-                />
-                <StatCard 
-                    label="Slack Channels" 
-                    value={channelCount} 
-                    icon={MessageSquare} 
-                    color="text-purple-400" 
-                    bg="bg-purple-400/10" 
-                    sub="Active workspaces"
-                />
-                <StatCard 
-                    label="System Health" 
-                    value="100%" 
-                    icon={Activity} 
-                    color="text-green-400" 
-                    bg="bg-green-400/10" 
-                    sub="All systems operational"
-                />
-            </div>
-
-            {/* --- Split View: Recent Activity & Quick Actions --- */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* --- FULL WIDTH SPLIT --- */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 
                 {/* 1. Recent Activity Feed */}
-                <div className="lg:col-span-2 bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 shadow-xl">
-                    <div className="flex items-center justify-between mb-6">
-                        <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                            <Clock size={18} className="text-zinc-500" /> Recent Activity
+                <div className="lg:col-span-2 xl:col-span-3 bg-[#0a0a0a] border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+                    <div className="p-5 border-b border-zinc-800 flex justify-between items-center bg-[#050505]/50">
+                        <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
+                            <Clock size={16} className="text-orange-500" /> Recent Activity Log
                         </h3>
-                        <span className="text-xs text-zinc-500 bg-white/5 px-3 py-1 rounded-full border border-white/5">Real-time</span>
+                        <span className="flex items-center gap-1.5 text-[10px] font-bold text-orange-500 uppercase tracking-widest bg-orange-500/10 px-2.5 py-1 rounded">
+                            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span> Live
+                        </span>
                     </div>
 
-                    <div className="space-y-1">
-                        {/* Google Activity */}
-                        {googleData.emails?.slice(0, 3).map((email, i) => (
-                            <ActivityRow 
-                                key={`email-${i}`}
-                                icon={Mail}
-                                color="text-red-400"
-                                bg="bg-red-500/10"
-                                title={email.subject}
-                                subtitle={`Email from ${email.from.split('<')[0]}`}
-                                time="Just now"
-                            />
+                    <div className="flex-1 p-2 grid grid-cols-1 md:grid-cols-2 gap-2">
+                        {googleData?.emails?.slice(0, 4).map((email, i) => (
+                            <ActivityRow key={`email-${i}`} icon={Mail} title={email.subject || 'No Subject'} subtitle={email.from?.split('<')[0] || 'Unknown Sender'} time="Just now" onClick={() => setActiveTab('google')} />
                         ))}
-                        
-                        {/* Slack Activity */}
-                        {slackData.channels?.slice(0, 3).map((channel, i) => (
-                            <ActivityRow 
-                                key={`slack-${i}`}
-                                icon={MessageSquare}
-                                color="text-purple-400"
-                                bg="bg-purple-500/10"
-                                title={`#${channel.name}`}
-                                subtitle={`${channel.members_count} members active`}
-                                time="Active today"
-                            />
+                        {slackData?.channels?.slice(0, 4).map((channel, i) => (
+                            <ActivityRow key={`slack-${i}`} icon={MessageSquare} title={`#${channel.name}`} subtitle={`${channel.members_count} active members`} time="Today" onClick={() => setActiveTab('slack')} />
                         ))}
 
-                        {/* Fallback */}
-                        {!emailCount && !channelCount && (
-                            <div className="py-10 text-center text-zinc-500 text-sm">
-                                No recent activity to display. Connect apps to see data here.
+                        {(!emailCount && !channelCount) && (
+                            <div className="col-span-full flex flex-col items-center justify-center p-16 text-center">
+                                <Activity size={24} className="text-zinc-700 mb-4" />
+                                <p className="text-sm text-zinc-300 font-semibold">Timeline is clear</p>
+                                <p className="text-[13px] text-zinc-500 mt-1 max-w-[250px] mx-auto">Connect your infrastructure to begin syncing real-time data.</p>
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* 2. System Status / Quick Info */}
-                <div className="bg-[#0a0a0a] border border-white/10 rounded-3xl p-6 shadow-xl flex flex-col">
-                    <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-2">
-                        <ShieldCheck size={18} className="text-zinc-500" /> Connection Status
-                    </h3>
-                    
-                    <div className="space-y-3 flex-1">
-                        <StatusItem label="Google Workspace" isConnected={connections.some(c => c.provider === 'google')} />
-                        <StatusItem label="Slack" isConnected={connections.some(c => c.provider === 'slack')} />
-                        <StatusItem label="Asana" isConnected={connections.some(c => c.provider === 'asana')} />
-                        <StatusItem label="Miro" isConnected={connections.some(c => c.provider === 'miro')} />
-                        <StatusItem label="Jira" isConnected={connections.some(c => c.provider === 'jira')} />
-                        <StatusItem label="Zoho CRM" isConnected={connections.some(c => c.provider === 'zoho')} />
+                {/* 2. Integrations List */}
+                <div className="col-span-1 bg-[#0a0a0a] border border-zinc-800 rounded-xl flex flex-col overflow-hidden">
+                    <div className="p-5 border-b border-zinc-800 flex justify-between items-center bg-[#050505]/50">
+                        <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
+                            <ShieldCheck size={16} className="text-zinc-400" /> Active Nodes
+                        </h3>
+                        <Settings size={14} className="text-zinc-600 hover:text-white cursor-pointer transition-colors" />
                     </div>
-
-                    <div className="mt-6 pt-6 border-t border-white/5">
-                        <p className="text-xs text-zinc-500 text-center">Gaprio Workspace v2.0 • Stable Build</p>
+                    
+                    <div className="p-3 space-y-1">
+                        <IntegrationItem label="Google Workspace" imageSrc="/companylogo/google.webp" isConnected={connections.some(c => c.provider === 'google')} onClick={() => setActiveTab('google')} />
+                        <IntegrationItem label="Slack" imageSrc="/companylogo/slack.png" isConnected={connections.some(c => c.provider === 'slack')} onClick={() => setActiveTab('slack')} />
+                        <IntegrationItem label="Asana" imageSrc="/companylogo/asana.png" isConnected={connections.some(c => c.provider === 'asana')} onClick={() => setActiveTab('asana')} />
+                        <IntegrationItem label="Miro" imageSrc="/companylogo/miro.png" isConnected={connections.some(c => c.provider === 'miro')} onClick={() => setActiveTab('miro')} />
+                        <IntegrationItem label="Jira Software" imageSrc="/companylogo/jira.png" isConnected={connections.some(c => c.provider === 'jira')} onClick={() => setActiveTab('jira')} />
+                        <IntegrationItem label="Zoho CRM" imageSrc="/companylogo/zoho.png" isConnected={connections.some(c => c.provider === 'zoho')} onClick={() => setActiveTab('zoho')} />
                     </div>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 
 // --- SUB-COMPONENTS ---
 
-function ActivityRow({ icon: Icon, color, bg, title, subtitle, time }) {
+function MetricSegment({ label, value, sub, icon: Icon, onClick, activeColor, isActionable }) {
     return (
-        <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors group cursor-default">
-            <div className={`p-2.5 rounded-xl ${bg} ${color} border border-white/5 shrink-0`}>
-                <Icon size={18} />
+        <button 
+            onClick={onClick}
+            className={`relative flex flex-col text-left p-6 lg:p-8 bg-[#050505] transition-all duration-300 outline-none
+                ${isActionable ? 'hover:bg-zinc-900 cursor-pointer group' : 'cursor-default'}
+            `}
+        >
+            {isActionable && (
+                <div className={`absolute top-0 left-0 h-full w-1 ${activeColor} opacity-0 group-hover:opacity-100 transition-opacity`} />
+            )}
+
+            <div className={`flex items-center gap-2 mb-3 text-zinc-400 ${isActionable && 'group-hover:text-zinc-200 transition-colors'}`}>
+                <Icon size={16} />
+                <span className="text-[10px] font-bold uppercase tracking-widest">{label}</span>
             </div>
-            <div className="flex-1 min-w-0">
-                <h4 className="text-sm font-medium text-zinc-200 truncate group-hover:text-white transition-colors">{title}</h4>
-                <p className="text-xs text-zinc-500 truncate">{subtitle}</p>
+            
+            <div className="flex items-baseline gap-3 mb-2">
+                <span className="text-3xl font-semibold text-white tracking-tight">{value}</span>
+                {isActionable && (
+                    <ArrowRight size={14} className="text-zinc-600 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                )}
             </div>
-            <div className="text-xs text-zinc-600 whitespace-nowrap">{time}</div>
-        </div>
+            
+            <span className="text-xs text-zinc-500 font-medium">{sub}</span>
+        </button>
     );
 }
 
-function StatusItem({ label, isConnected }) {
+function ActivityRow({ icon: Icon, title, subtitle, time, onClick }) {
     return (
-        <div className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/5">
-            <span className="text-sm text-zinc-300">{label}</span>
-            <div className="flex items-center gap-2">
-                <span className={`text-[10px] uppercase font-bold ${isConnected ? 'text-green-500' : 'text-zinc-600'}`}>
-                    {isConnected ? 'Online' : 'Offline'}
-                </span>
-                <span className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]' : 'bg-zinc-700'}`} />
+        <button 
+            onClick={onClick}
+            className="w-full flex items-center justify-between p-3.5 rounded-lg hover:bg-zinc-900 transition-all duration-200 group text-left outline-none border border-transparent hover:border-zinc-800/50"
+        >
+            <div className="flex items-center gap-4 min-w-0">
+                <div className="w-10 h-10 rounded-lg bg-[#050505] border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-orange-500 group-hover:border-orange-500/30 transition-colors shrink-0 shadow-inner">
+                    <Icon size={18} />
+                </div>
+                <div className="min-w-0">
+                    <h4 className="text-sm font-medium text-zinc-200 truncate">{title}</h4>
+                    <p className="text-[13px] text-zinc-500 truncate mt-0.5">{subtitle}</p>
+                </div>
             </div>
-        </div>
+            <div className="text-[11px] text-zinc-600 font-mono hidden sm:block whitespace-nowrap pl-4">{time}</div>
+        </button>
+    );
+}
+
+function IntegrationItem({ label, imageSrc, isConnected, onClick }) {
+    return (
+        <button 
+            onClick={onClick}
+            className="w-full flex items-center justify-between p-3 rounded-lg border border-transparent hover:bg-zinc-900 hover:border-zinc-800 transition-all outline-none group"
+        >
+            <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lgrelative flex items-center justify-center transition-colors shadow-inner">
+                    {/* 👇 ADDED style={{ width: "auto", height: "auto" }} to fix Next.js warning */}
+                    <Image 
+                        src={imageSrc} 
+                        alt={label} 
+                        width={16} 
+                        height={16} 
+                        className={`object-contain ${!isConnected && 'transition-all'}`} 
+                        style={{ width: "auto", height: "auto" }}
+                    />
+                </div>
+                <span className="text-sm font-medium text-zinc-300 group-hover:text-zinc-100 transition-colors">
+                    {label}
+                </span>
+            </div>
+
+            {isConnected ? (
+                <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest">Active</span>
+                    <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                </div>
+            ) : (
+                <span className="text-[11px] font-medium text-zinc-600 group-hover:text-orange-500 transition-colors">
+                    Connect
+                </span>
+            )}
+        </button>
     );
 }

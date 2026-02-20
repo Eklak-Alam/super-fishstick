@@ -12,18 +12,26 @@ router.post('/google/email/draft', protect, integrationController.createDraft);
 router.post('/google/calendar/create', protect, integrationController.createMeeting);
 
 // ===========================
-// 🟣 SLACK ROUTES
+// 🟣 SLACK ROUTES 
 // ===========================
-router.get('/slack/channels', protect, integrationController.getSlackData);
-router.get('/slack/users', protect, integrationController.getSlackUsers);
+router.get('/slack/channels', protect, integrationController.getSlackData); 
+router.get('/slack/messages', protect, integrationController.getSlackMessages);
 router.post('/slack/message', protect, integrationController.sendSlackMessage);
+router.put('/slack/message', protect, integrationController.updateSlackMessage);
+router.delete('/slack/message', protect, integrationController.deleteSlackMessage);
+router.post('/slack/channel/create', protect, integrationController.createSlackChannel);
+router.post('/slack/dm/open', protect, integrationController.openSlackDM);
 
 // ===========================
-// 🟠 ASANA ROUTES
+// 🟠 ASANA ROUTES (FULL CRUD)
 // ===========================
 router.get('/asana/dashboard', protect, integrationController.getAsanaData);
 router.post('/asana/tasks', protect, integrationController.createAsanaTask);
+router.put('/asana/tasks/:taskId', protect, integrationController.updateAsanaTask);        // 👈 NEW: Edit Task
+router.delete('/asana/tasks/:taskId', protect, integrationController.deleteAsanaTask);     // 👈 NEW: Delete Task
 router.put('/asana/tasks/:taskId/complete', protect, integrationController.completeAsanaTask);
+router.post('/asana/projects', protect, integrationController.createAsanaProject);
+router.delete('/asana/projects/:projectId', protect, integrationController.deleteAsanaProject);
 
 // ===========================
 // 🎨 MIRO ROUTES

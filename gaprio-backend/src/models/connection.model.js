@@ -4,18 +4,15 @@ class ConnectionModel {
     // 1. Smart Upsert: Only update refresh_token if we got a new one
     static async upsert({ userId, provider, providerUserId, accessToken, refreshToken, expiresAt, metadata }) {
         
-        // Dynamic SQL generation to protect the refresh_token
         let updateFields = [
             "access_token = VALUES(access_token)",
-            "expires_at = VALUES(expires_at)",
-            "metadata = VALUES(metadata)",
             "updated_at = NOW()"
         ];
 
-        // Only add refresh_token to the UPDATE list if it's NOT null
-        if (refreshToken) {
-            updateFields.push("refresh_token = VALUES(refresh_token)");
-        }
+        // Dynamically add fields only if they exist so we don't overwrite good data with nulls
+        if (expiresAt) updateFields.push("expires_at = VALUES(expires_at)");
+        if (refreshToken) updateFields.push("refresh_token = VALUES(refresh_token)");
+        if (metadata) updateFields.push("metadata = VALUES(metadata)");
 
         const sql = `
             INSERT INTO user_connections 
@@ -25,14 +22,16 @@ class ConnectionModel {
             ${updateFields.join(', ')}
         `;
         
+        // 👇 THE FIX: Force every single parameter to be either the real value or standard SQL 'null'. 
+        // This completely eliminates the 'undefined' crash.
         const [result] = await db.execute(sql, [
-            userId, 
-            provider, 
-            providerUserId, 
-            accessToken, 
-            refreshToken, 
-            expiresAt, 
-            JSON.stringify(metadata)
+            userId || null, 
+            provider || null, 
+            providerUserId || null, 
+            accessToken || null, 
+            refreshToken || null, 
+            expiresAt || null, 
+            metadata ? JSON.stringify(metadata) : null
         ]);
         
         return result;
@@ -56,14 +55,23 @@ class ConnectionModel {
     static async updateTokens(userId, provider, accessToken, refreshToken, expiresAt) {
         let sql, params;
         
-        // Some providers (like Google) might not return a new refresh token every time.
-        // If refreshToken is provided, update it. Otherwise, keep the old one.
         if (refreshToken) {
             sql = `UPDATE user_connections SET access_token = ?, refresh_token = ?, expires_at = ?, updated_at = NOW() WHERE user_id = ? AND provider = ?`;
-            params = [accessToken, refreshToken, expiresAt, userId, provider];
+            params = [
+                accessToken || null, 
+                refreshToken || null, 
+                expiresAt || null, 
+                userId, 
+                provider
+            ];
         } else {
             sql = `UPDATE user_connections SET access_token = ?, expires_at = ?, updated_at = NOW() WHERE user_id = ? AND provider = ?`;
-            params = [accessToken, expiresAt, userId, provider];
+            params = [
+                accessToken || null, 
+                expiresAt || null, 
+                userId, 
+                provider
+            ];
         }
         await db.execute(sql, params);
     }

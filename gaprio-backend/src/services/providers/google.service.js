@@ -1,9 +1,12 @@
 const { google } = require('googleapis');
+const stream = require('stream');
 const ConnectionModel = require('../../models/connection.model');
 
 class GoogleService {
     
-    // --- 1. Auth Configuration ---
+    // ==========================================
+    // 1. AUTH CONFIGURATION
+    // ==========================================
     static getOAuthClient() {
         return new google.auth.OAuth2(
             process.env.GOOGLE_CLIENT_ID,
@@ -20,12 +23,13 @@ class GoogleService {
             access_type: 'offline', // Essential for Refresh Token
             response_type: 'code',
             prompt: 'consent',
+            // 🚨 "God Mode" Scopes Added Here
             scope: [
                 'https://www.googleapis.com/auth/userinfo.profile',
                 'https://www.googleapis.com/auth/userinfo.email',
-                'https://www.googleapis.com/auth/gmail.modify', // Read, send, draft, delete
-                'https://www.googleapis.com/auth/drive.readonly',
-                'https://www.googleapis.com/auth/calendar.events' // Read & Write Events
+                'https://mail.google.com/',                     // Full Gmail Access
+                'https://www.googleapis.com/auth/drive',        // Full Drive Access
+                'https://www.googleapis.com/auth/calendar'      // Full Calendar Access
             ].join(' '),
             state: userId
         };
@@ -44,7 +48,9 @@ class GoogleService {
         return data;
     }
 
-    // --- 2. The Core Client with Auto-Refresh ---
+    // ==========================================
+    // 2. CORE CLIENT (WITH AUTO-REFRESH)
+    // ==========================================
     static async getAuthenticatedClient(userId) {
         const connection = await ConnectionModel.findByUserIdAndProvider(userId, 'google');
         if (!connection) throw new Error('Google account not connected');
@@ -57,23 +63,19 @@ class GoogleService {
             expiry_date: new Date(connection.expires_at).getTime()
         });
 
-        // Check if token is expired (or expires in < 5 mins)
         const isExpired = Date.now() >= (new Date(connection.expires_at).getTime() - 5 * 60 * 1000);
 
         if (isExpired && connection.refresh_token) {
             console.log(`🔄 Refreshing Google Token for User ${userId}...`);
             try {
-                // googleapis handles the refresh logic internally if refresh_token is set, 
-                // but we explicitly call it to update our DB.
                 const { credentials } = await oauth2Client.refreshAccessToken();
-                
                 const newExpiresAt = new Date(credentials.expiry_date);
                 
                 await ConnectionModel.updateTokens(
                     userId, 
                     'google', 
                     credentials.access_token, 
-                    credentials.refresh_token || connection.refresh_token, // Keep old if not rotated
+                    credentials.refresh_token || connection.refresh_token, 
                     newExpiresAt
                 );
 
@@ -87,13 +89,16 @@ class GoogleService {
         return oauth2Client;
     }
 
-    // --- 3. Gmail Features ---
-
-    static async getRecentEmails(userId) {
+    // ==========================================
+    // 3. GMAIL FEATURES (CRUD)
+    // ==========================================
+    
+    // READ Emails
+    static async getRecentEmails(userId, maxResults = 10) {
         const auth = await this.getAuthenticatedClient(userId);
         const gmail = google.gmail({ version: 'v1', auth });
         
-        const response = await gmail.users.messages.list({ userId: 'me', maxResults: 10, q: 'is:inbox' });
+        const response = await gmail.users.messages.list({ userId: 'me', maxResults, q: 'is:inbox' });
         const messages = response.data.messages || [];
 
         return Promise.all(messages.map(async (msg) => {
@@ -110,6 +115,7 @@ class GoogleService {
         }));
     }
 
+    // CREATE (Send) Email
     static async sendEmail(userId, { to, subject, body }) {
         const auth = await this.getAuthenticatedClient(userId);
         const gmail = google.gmail({ version: 'v1', auth });
@@ -123,13 +129,13 @@ class GoogleService {
             '',
             body
         ];
-        const message = messageParts.join('\n');
-        const encodedMessage = Buffer.from(message).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        const encodedMessage = Buffer.from(messageParts.join('\n')).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
         await gmail.users.messages.send({ userId: 'me', requestBody: { raw: encodedMessage } });
         return { success: true };
     }
 
+    // CREATE Draft
     static async createDraft(userId, { to, subject, body }) {
         const auth = await this.getAuthenticatedClient(userId);
         const gmail = google.gmail({ version: 'v1', auth });
@@ -143,23 +149,35 @@ class GoogleService {
             '',
             body
         ];
-        const message = messageParts.join('\n');
-        const encodedMessage = Buffer.from(message).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+        const encodedMessage = Buffer.from(messageParts.join('\n')).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
         const res = await gmail.users.drafts.create({ userId: 'me', requestBody: { message: { raw: encodedMessage } } });
         return { success: true, id: res.data.id };
     }
 
-    // --- 4. Calendar Features ---
+    // DELETE Email (Moves to Trash)
+    static async deleteEmail(userId, messageId) {
+        const auth = await this.getAuthenticatedClient(userId);
+        const gmail = google.gmail({ version: 'v1', auth });
 
-    static async getUpcomingMeetings(userId) {
+        await gmail.users.messages.trash({ userId: 'me', id: messageId });
+        return { success: true, message: 'Email moved to trash' };
+    }
+
+
+    // ==========================================
+    // 4. CALENDAR FEATURES (CRUD)
+    // ==========================================
+
+    // READ Meetings
+    static async getUpcomingMeetings(userId, maxResults = 10) {
         const auth = await this.getAuthenticatedClient(userId);
         const calendar = google.calendar({ version: 'v3', auth });
         
         const response = await calendar.events.list({
             calendarId: 'primary',
             timeMin: new Date().toISOString(),
-            maxResults: 10,
+            maxResults,
             singleEvents: true,
             orderBy: 'startTime',
         });
@@ -174,6 +192,7 @@ class GoogleService {
         }));
     }
 
+    // CREATE Meeting
     static async createMeeting(userId, { summary, description, startTime, endTime, attendees = [] }) {
         const auth = await this.getAuthenticatedClient(userId);
         const calendar = google.calendar({ version: 'v3', auth });
@@ -187,7 +206,7 @@ class GoogleService {
             conferenceData: {
                 createRequest: {
                     requestId: Math.random().toString(36).substring(7),
-                    conferenceSolutionKey: { type: 'hangoutsMeet' } // Generates GMeet Link
+                    conferenceSolutionKey: { type: 'hangoutsMeet' }
                 }
             }
         };
@@ -198,26 +217,90 @@ class GoogleService {
             conferenceDataVersion: 1
         });
 
-        return {
-            id: response.data.id,
-            link: response.data.hangoutLink,
-            htmlLink: response.data.htmlLink
-        };
+        return { id: response.data.id, link: response.data.hangoutLink, htmlLink: response.data.htmlLink };
     }
 
-    // --- 5. Drive Features ---
+    // UPDATE Meeting
+    static async updateMeeting(userId, eventId, { summary, description, startTime, endTime }) {
+        const auth = await this.getAuthenticatedClient(userId);
+        const calendar = google.calendar({ version: 'v3', auth });
 
-    static async getRecentFiles(userId) {
+        // First fetch the existing event to keep attendees/links intact
+        const existingEvent = await calendar.events.get({ calendarId: 'primary', eventId });
+        
+        const updatedEvent = {
+            ...existingEvent.data,
+            summary: summary || existingEvent.data.summary,
+            description: description || existingEvent.data.description,
+            start: startTime ? { dateTime: new Date(startTime).toISOString() } : existingEvent.data.start,
+            end: endTime ? { dateTime: new Date(endTime).toISOString() } : existingEvent.data.end,
+        };
+
+        const response = await calendar.events.update({
+            calendarId: 'primary',
+            eventId: eventId,
+            resource: updatedEvent
+        });
+
+        return { success: true, id: response.data.id };
+    }
+
+    // DELETE Meeting
+    static async deleteMeeting(userId, eventId) {
+        const auth = await this.getAuthenticatedClient(userId);
+        const calendar = google.calendar({ version: 'v3', auth });
+
+        await calendar.events.delete({ calendarId: 'primary', eventId });
+        return { success: true, message: 'Meeting canceled' };
+    }
+
+
+    // ==========================================
+    // 5. DRIVE FEATURES (CRUD)
+    // ==========================================
+
+    // READ Files
+    static async getRecentFiles(userId, maxResults = 10) {
         const auth = await this.getAuthenticatedClient(userId);
         const drive = google.drive({ version: 'v3', auth });
         
         const response = await drive.files.list({
-            pageSize: 10,
+            pageSize: maxResults,
             fields: 'files(id, name, mimeType, webViewLink, iconLink, modifiedTime)',
             orderBy: 'modifiedTime desc'
         });
         
         return response.data.files;
+    }
+
+    // CREATE (Upload) File
+    static async uploadFile(userId, { name, mimeType, bufferText }) {
+        const auth = await this.getAuthenticatedClient(userId);
+        const drive = google.drive({ version: 'v3', auth });
+
+        // Convert string/text buffer to a readable stream for Google API
+        const bufferStream = new stream.PassThrough();
+        bufferStream.end(Buffer.from(bufferText));
+
+        const response = await drive.files.create({
+            requestBody: { name, mimeType },
+            media: {
+                mimeType: mimeType,
+                body: bufferStream
+            },
+            fields: 'id, name, webViewLink'
+        });
+
+        return response.data;
+    }
+
+    // DELETE File
+    static async deleteFile(userId, fileId) {
+        const auth = await this.getAuthenticatedClient(userId);
+        const drive = google.drive({ version: 'v3', auth });
+
+        await drive.files.delete({ fileId });
+        return { success: true, message: 'File deleted permanently' };
     }
 }
 

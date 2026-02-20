@@ -3,9 +3,9 @@ import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
     Briefcase, DollarSign, Calendar, TrendingUp, 
-    Plus, UserPlus, X, Search, Filter, Layers, BarChart3
+    Plus, UserPlus, X, Search, Filter, Layers, BarChart3, Zap
 } from 'lucide-react';
-import ConnectState from './ConnectState';
+import Image from 'next/image';
 import api from '@/lib/axios';
 
 export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
@@ -17,21 +17,18 @@ export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [filterStage, setFilterStage] = useState('All');
 
-    // --- Derived State (Metrics & Filtering) ---
-    const deals = data.deals || [];
+    // --- Derived State ---
+    const deals = data?.deals || [];
     
-    // Calculate Total Pipeline Value
     const totalPipeline = useMemo(() => {
         return deals.reduce((acc, deal) => {
-            // Remove non-numeric chars (e.g. "$", ",") to sum
             const val = parseFloat(String(deal.amount).replace(/[^0-9.-]+/g,"")) || 0;
             return acc + val;
         }, 0).toLocaleString();
     }, [deals]);
 
-    // Filter Logic
     const filteredDeals = deals.filter(deal => {
-        const matchesSearch = deal.name.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = deal.name?.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesStage = filterStage === 'All' || deal.stage === filterStage;
         return matchesSearch && matchesStage;
     });
@@ -43,10 +40,10 @@ export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
 
     const getStageColor = (stage) => {
         const s = stage?.toLowerCase() || '';
-        if (s.includes('won') || s.includes('closed')) return { bg: 'bg-emerald-500/10', text: 'text-emerald-400', border: 'border-emerald-500/20', glow: 'group-hover:shadow-[0_0_20px_rgba(16,185,129,0.1)]' };
-        if (s.includes('negotiation') || s.includes('review')) return { bg: 'bg-amber-500/10', text: 'text-amber-400', border: 'border-amber-500/20', glow: 'group-hover:shadow-[0_0_20px_rgba(245,158,11,0.1)]' };
-        if (s.includes('lost')) return { bg: 'bg-red-500/10', text: 'text-red-400', border: 'border-red-500/20', glow: 'group-hover:shadow-[0_0_20px_rgba(239,68,68,0.1)]' };
-        return { bg: 'bg-blue-500/10', text: 'text-blue-400', border: 'border-blue-500/20', glow: 'group-hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]' };
+        if (s.includes('won') || s.includes('closed')) return 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20';
+        if (s.includes('negotiation') || s.includes('review')) return 'bg-orange-500/10 text-orange-400 border-orange-500/30';
+        if (s.includes('lost')) return 'bg-red-500/10 text-red-400 border-red-500/20';
+        return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
     };
 
     // --- Actions ---
@@ -84,169 +81,172 @@ export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
         } finally { setLoading(false); }
     };
 
-    if (!isConnected) return <ConnectState icon={Briefcase} title="Connect Zoho CRM" onClick={handleAuth} />;
+    // --- DISCONNECTED STATE (Clean Dotted Border) ---
+    if (!isConnected) {
+        return (
+            <div className="w-full h-full flex flex-col items-center justify-center min-h-[70vh] bg-[#050505] rounded-3xl border-2 border-dashed border-zinc-800 p-6">
+                <div className="flex flex-col items-center text-center max-w-md">
+                    <div className="w-20 h-20 mb-6 rounded-2xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-4 shadow-sm">
+                        <Image src="/companylogo/zoho.png" alt="Zoho" width={48} height={48} className="object-contain" priority />
+                    </div>
+                    <h2 className="text-2xl font-bold text-white mb-3 tracking-tight">Connect Zoho CRM</h2>
+                    <p className="text-sm text-zinc-500 mb-8 leading-relaxed">
+                        Sync your deals, track pipeline metrics, and capture leads seamlessly from your workspace.
+                    </p>
+                    <button 
+                        onClick={handleAuth}
+                        className="flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-sm font-bold transition-all active:scale-95 shadow-md"
+                    >
+                        <Zap size={16} /> Initialize Connection
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
+    // --- CONNECTED DASHBOARD ---
     return (
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="max-w-7xl mx-auto h-full flex flex-col relative pb-6">
             
-            {/* --- DASHBOARD HEADER --- */}
-            <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-8 gap-6 shrink-0">
-                
-                {/* Title & Status */}
+            {/* Header Area */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-6 shrink-0">
                 <div>
-                    <h2 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                        <Briefcase className="text-yellow-500" size={28} /> Sales Command
-                    </h2>
-                    <div className="flex items-center gap-4 mt-2 text-sm">
-                        <div className="flex items-center gap-2 text-zinc-400">
-                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#22c55e]" /> 
-                            Zoho CRM Sync Active
+                    <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                        <div className="w-8 h-8 bg-zinc-900 border border-zinc-800 rounded-lg flex items-center justify-center p-1.5 shadow-sm">
+                            <Image src="/companylogo/zoho.png" alt="Zoho" width={20} height={20} className="object-contain" />
                         </div>
+                        Sales Pipeline
+                    </h2>
+                    <div className="flex items-center gap-2 mt-2 text-xs font-medium text-zinc-500">
+                        <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" /> 
+                        Zoho CRM Active
                     </div>
                 </div>
 
-                {/* Stats & Actions */}
-                <div className="flex flex-col md:flex-row gap-4 w-full xl:w-auto">
-                    {/* Quick Stats */}
-                    <div className="flex gap-4 flex-1 md:flex-none">
-                        <div className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 flex-1 md:w-40">
-                            <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Pipeline Value</p>
-                            <p className="text-lg font-bold text-white">${totalPipeline}</p>
+                <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                    <div className="flex gap-3 flex-1 sm:flex-none">
+                        <div className="bg-[#0a0a0a] border border-zinc-800/80 rounded-xl px-4 py-2.5 flex-1 sm:w-36">
+                            <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-0.5">Total Value</p>
+                            <p className="text-lg font-bold text-white tracking-tight">${totalPipeline}</p>
                         </div>
-                        <div className="bg-[#0f0f0f] border border-white/10 rounded-xl px-4 py-2 flex-1 md:w-32">
-                            <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Active Deals</p>
-                            <p className="text-lg font-bold text-white">{deals.length}</p>
+                        <div className="bg-[#0a0a0a] border border-zinc-800/80 rounded-xl px-4 py-2.5 flex-1 sm:w-28">
+                            <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-0.5">Active</p>
+                            <p className="text-lg font-bold text-white tracking-tight">{deals.length} Deals</p>
                         </div>
                     </div>
-
-                    {/* Action Buttons */}
-                    <div className="flex gap-3">
-                        <button onClick={() => setActiveModal('create_lead')} className="btn-secondary flex-1 md:flex-none flex items-center justify-center gap-2">
-                            <UserPlus size={16}/> Lead
+                    <div className="flex gap-2">
+                        <button onClick={() => setActiveModal('create_lead')} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-zinc-800 rounded-xl text-xs font-bold transition-colors">
+                            <UserPlus size={14}/> Lead
                         </button>
-                        <button onClick={() => setActiveModal('create_deal')} className="btn-primary-yellow flex-1 md:flex-none flex items-center justify-center gap-2">
-                            <Plus size={16}/> Deal
+                        <button onClick={() => setActiveModal('create_deal')} className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition-colors">
+                            <Plus size={14}/> Deal
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* --- FILTERS & SEARCH --- */}
-            <div className="flex flex-col md:flex-row gap-4 mb-6 shrink-0">
+            {/* Filters & Search */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6 shrink-0">
                 <div className="relative flex-1">
-                    <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                    <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
                     <input 
                         type="text" 
-                        placeholder="Search deals by name..." 
-                        className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white focus:border-yellow-500/50 outline-none transition-all placeholder:text-zinc-600"
+                        placeholder="Search deals..." 
+                        className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-xl py-2.5 pl-9 pr-4 text-sm text-white focus:border-orange-500/50 outline-none transition-colors placeholder:text-zinc-600"
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="relative w-full md:w-64">
-                    <Filter size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                <div className="relative w-full sm:w-56">
+                    <Filter size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500" />
                     <select 
-                        className="w-full bg-[#0a0a0a] border border-white/10 rounded-xl py-2.5 pl-10 pr-4 text-sm text-zinc-300 focus:border-yellow-500/50 outline-none appearance-none cursor-pointer"
+                        className="w-full bg-[#0a0a0a] border border-zinc-800 rounded-xl py-2.5 pl-9 pr-4 text-sm text-zinc-300 focus:border-orange-500/50 outline-none appearance-none cursor-pointer transition-colors"
                         onChange={(e) => setFilterStage(e.target.value)}
                     >
                         <option value="All">All Stages</option>
-                        <option value="Identify Decision Makers">Identify Decision Makers</option>
-                        <option value="Proposal/Price Quote">Proposal/Price Quote</option>
-                        <option value="Negotiation/Review">Negotiation/Review</option>
+                        <option value="Identify Decision Makers">Discovery</option>
+                        <option value="Proposal/Price Quote">Proposal</option>
+                        <option value="Negotiation/Review">Negotiation</option>
                         <option value="Closed Won">Closed Won</option>
                         <option value="Closed Lost">Closed Lost</option>
                     </select>
                 </div>
             </div>
 
-            {/* --- DEALS GRID --- */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-10">
-                <AnimatePresence mode='popLayout'>
-                    {filteredDeals.length > 0 ? filteredDeals.map((deal, index) => {
-                        const style = getStageColor(deal.stage);
-                        return (
-                            <motion.div 
-                                key={deal.id}
-                                layout
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
-                                transition={{ duration: 0.2, delay: index * 0.05 }}
-                                className={`group bg-[#0a0a0a] border border-white/10 rounded-2xl p-5 hover:border-white/20 transition-all hover:-translate-y-1 shadow-lg relative overflow-hidden ${style.glow}`}
-                            >
-                                {/* Subtle Background Gradient based on stage */}
-                                <div className={`absolute inset-0 bg-gradient-to-br from-transparent to-transparent opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none ${style.bg.replace('bg-', 'from-').replace('/10', '/5')}`} />
-
-                                <div className="relative z-10 flex flex-col h-full">
-                                    {/* Top Row */}
-                                    <div className="flex justify-between items-start mb-4">
-                                        <div className={`w-10 h-10 rounded-full flex items-center justify-center border transition-colors ${style.bg} ${style.border}`}>
-                                            <DollarSign size={18} className={style.text} />
-                                        </div>
-                                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full border tracking-wide uppercase ${style.bg} ${style.text} ${style.border}`}>
-                                            {deal.stage === 'Identify Decision Makers' ? 'Discovery' : deal.stage}
-                                        </span>
-                                    </div>
-
-                                    {/* Content */}
-                                    <div className="flex-1">
-                                        <h3 className="text-base font-bold text-white mb-1 line-clamp-1" title={deal.name}>{deal.name}</h3>
-                                        <p className="text-2xl font-bold text-zinc-200 tracking-tight">{deal.amount}</p>
-                                    </div>
-
-                                    {/* Footer */}
-                                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-4 border-t border-white/5 mt-4">
-                                        <div className="flex items-center gap-1.5">
-                                            <Calendar size={14} className="text-zinc-600" />
-                                            <span>{deal.date || 'No Date'}</span>
-                                        </div>
-                                        {deal.probability != null && (
-                                            <div className="flex items-center gap-1.5">
-                                                <BarChart3 size={14} className={deal.probability > 50 ? 'text-green-500' : 'text-zinc-600'} />
-                                                <span>{deal.probability}%</span>
-                                            </div>
-                                        )}
-                                    </div>
+            {/* Deals Grid (Clean, No Scale Animations) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 flex-1 min-h-0 overflow-y-auto custom-scrollbar pb-10" data-lenis-prevent="true">
+                {filteredDeals.length > 0 ? filteredDeals.map((deal) => {
+                    const style = getStageColor(deal.stage);
+                    return (
+                        <div 
+                            key={deal.id}
+                            className="bg-[#0a0a0a] border border-zinc-800/80 rounded-2xl p-4 hover:bg-zinc-900/50 transition-colors flex flex-col h-full"
+                        >
+                            <div className="flex justify-between items-start mb-3">
+                                <div className={`w-8 h-8 rounded-lg flex items-center justify-center border ${style}`}>
+                                    <DollarSign size={14} />
                                 </div>
-                            </motion.div>
-                        );
-                    }) : (
-                        <div className="col-span-full h-64 flex flex-col items-center justify-center text-center opacity-40 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
-                            <Layers size={48} className="mb-4 text-zinc-700" />
-                            <h3 className="text-lg font-bold text-zinc-500">No deals found</h3>
-                            <p className="text-zinc-600 text-sm mt-1">Try adjusting your filters or create a new deal.</p>
+                                <span className={`text-[9px] font-bold px-2 py-0.5 rounded border uppercase tracking-wide ${style}`}>
+                                    {deal.stage === 'Identify Decision Makers' ? 'Discovery' : deal.stage}
+                                </span>
+                            </div>
+
+                            <div className="flex-1 mb-4">
+                                <h3 className="text-sm font-bold text-zinc-100 mb-1 line-clamp-2" title={deal.name}>{deal.name}</h3>
+                                <p className="text-lg font-bold text-zinc-400">{deal.amount}</p>
+                            </div>
+
+                            <div className="flex items-center justify-between text-[11px] font-medium text-zinc-500 pt-3 border-t border-zinc-800/80">
+                                <div className="flex items-center gap-1.5">
+                                    <Calendar size={12} />
+                                    <span>{deal.date || 'No Date'}</span>
+                                </div>
+                                {deal.probability != null && (
+                                    <div className="flex items-center gap-1.5">
+                                        <BarChart3 size={12} className={deal.probability > 50 ? 'text-green-500' : 'text-zinc-500'} />
+                                        <span>{deal.probability}%</span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    )}
-                </AnimatePresence>
+                    );
+                }) : (
+                    <div className="col-span-full h-48 flex flex-col items-center justify-center text-center opacity-60 border border-dashed border-zinc-800 rounded-2xl bg-zinc-900/20">
+                        <Layers size={32} className="mb-3 text-zinc-600" />
+                        <h3 className="text-sm font-bold text-zinc-400">No deals found</h3>
+                        <p className="text-xs text-zinc-600 mt-1">Adjust filters or create a new deal.</p>
+                    </div>
+                )}
             </div>
 
-            {/* --- MODALS --- */}
+            {/* --- CLEAN MODALS --- */}
             <AnimatePresence>
                 {activeModal && (
                     <Modal onClose={() => setActiveModal(null)} title={activeModal === 'create_deal' ? "Create New Deal" : "Capture New Lead"}>
-                        <form onSubmit={activeModal === 'create_deal' ? handleCreateDeal : handleCreateLead} className="space-y-5">
+                        <form onSubmit={activeModal === 'create_deal' ? handleCreateDeal : handleCreateLead} className="space-y-4">
                             
-                            {/* Form Fields - Deal */}
                             {activeModal === 'create_deal' && (
                                 <>
                                     <InputGroup label="Deal Name" placeholder="e.g. Q4 Marketing Contract" onChange={e => setFormData({...formData, dealName: e.target.value})} autoFocus />
                                     <InputGroup label="Amount ($)" type="number" placeholder="5000" onChange={e => setFormData({...formData, amount: e.target.value})} />
                                     <div>
-                                        <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider ml-1 mb-1.5 block">Stage</label>
+                                        <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5 block">Stage</label>
                                         <div className="relative">
-                                            <select className="input-field appearance-none cursor-pointer" onChange={e => setFormData({...formData, stage: e.target.value})}>
-                                                <option value="Identify Decision Makers">Identify Decision Makers</option>
-                                                <option value="Proposal/Price Quote">Proposal/Price Quote</option>
-                                                <option value="Negotiation/Review">Negotiation/Review</option>
+                                            <select 
+                                                className="w-full bg-[#050505] border border-zinc-800 rounded-xl py-3 pl-3 pr-10 text-sm text-zinc-200 focus:border-orange-500/50 outline-none appearance-none cursor-pointer transition-colors" 
+                                                onChange={e => setFormData({...formData, stage: e.target.value})}
+                                            >
+                                                <option value="Identify Decision Makers">Discovery</option>
+                                                <option value="Proposal/Price Quote">Proposal</option>
+                                                <option value="Negotiation/Review">Negotiation</option>
                                                 <option value="Closed Won">Closed Won</option>
                                                 <option value="Closed Lost">Closed Lost</option>
                                             </select>
-                                            <TrendingUp size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none" />
+                                            <TrendingUp size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none" />
                                         </div>
                                     </div>
                                 </>
                             )}
 
-                            {/* Form Fields - Lead */}
                             {activeModal === 'create_lead' && (
                                 <>
                                     <InputGroup label="Last Name" placeholder="Doe" onChange={e => setFormData({...formData, lastName: e.target.value})} autoFocus />
@@ -255,7 +255,7 @@ export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
                                 </>
                             )}
 
-                            <button disabled={loading} className="btn-primary-yellow w-full py-3 text-sm font-bold mt-2">
+                            <button disabled={loading} className="w-full mt-4 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-xl text-sm font-bold transition-colors disabled:opacity-50">
                                 {loading ? 'Processing...' : (activeModal === 'create_deal' ? 'Create Deal' : 'Save Lead')}
                             </button>
                         </form>
@@ -267,29 +267,25 @@ export default function ZohoWorkspace({ isConnected, data, user, onRefresh }) {
     );
 }
 
-// --- REUSABLE SUB-COMPONENTS ---
+// --- SUB-COMPONENTS ---
 
 function Modal({ children, onClose, title }) {
     return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
             <motion.div 
-                initial={{ scale: 0.95, opacity: 0, y: 10 }} 
-                animate={{ scale: 1, opacity: 1, y: 0 }} 
-                exit={{ scale: 0.95, opacity: 0, y: 10 }} 
-                className="w-full max-w-md bg-[#0a0a0a] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+                initial={{ opacity: 0, y: 10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                exit={{ opacity: 0, y: 10 }} 
+                transition={{ duration: 0.2 }}
+                className="w-full max-w-md bg-[#0a0a0a] border border-zinc-800 rounded-2xl shadow-2xl flex flex-col"
             >
-                <div className="flex justify-between items-center p-5 border-b border-white/5 bg-white/[0.02]">
-                    <div className="flex items-center gap-3">
-                        <div className="p-1.5 bg-yellow-500/20 rounded-lg">
-                            <Briefcase size={16} className="text-yellow-500" />
-                        </div>
-                        <h2 className="text-lg font-bold text-white tracking-tight">{title}</h2>
-                    </div>
-                    <button onClick={onClose} className="p-1.5 text-zinc-500 hover:text-white hover:bg-white/10 rounded-full transition-colors">
-                        <X size={18}/>
+                <div className="flex justify-between items-center p-4 border-b border-zinc-800 bg-[#050505]/50">
+                    <h2 className="text-sm font-bold text-white tracking-tight">{title}</h2>
+                    <button onClick={onClose} className="p-1 text-zinc-500 hover:text-white transition-colors">
+                        <X size={16}/>
                     </button>
                 </div>
-                <div className="p-6">
+                <div className="p-5">
                     {children}
                 </div>
             </motion.div>
@@ -300,14 +296,14 @@ function Modal({ children, onClose, title }) {
 function InputGroup({ label, type = "text", placeholder, onChange, autoFocus }) {
     return (
         <div>
-            <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-wider ml-1 mb-1.5 block">{label}</label>
+            <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-1.5 block">{label}</label>
             <input 
                 type={type} 
                 placeholder={placeholder} 
-                className="input-field" 
                 onChange={onChange} 
                 required 
                 autoFocus={autoFocus}
+                className="w-full bg-[#050505] border border-zinc-800 rounded-xl py-3 px-3 text-sm text-zinc-200 focus:border-orange-500/50 outline-none transition-colors placeholder:text-zinc-700"
             />
         </div>
     );

@@ -6,7 +6,9 @@
   "scripts": {
     "db:init": "node src/database/init.db.js",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "backend": "nodemon server.js",
+    "tunnel": "D:\\cloudflared\\cloudflared.exe --config D:\\cloudflared\\config.yml tunnel run gaprio-backend",
+    "dev": "concurrently \"npm run backend\" \"npm run tunnel\""
   },
   "keywords": [],
   "author": "",
@@ -36,6 +38,7 @@
     "redis": "^5.10.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
     "nodemon": "^3.1.11"
   }
 }

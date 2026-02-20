@@ -4,7 +4,8 @@ import SmoothScroll from '@/components/global/SmoothScroll';
 import QueryProvider from '@/providers/QueryProvider';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import AwardWinningFooter from '@/components/global/Footer';
-import NextTopLoader from 'nextjs-toploader'; // <--- 1. Import this
+import NextTopLoader from 'nextjs-toploader';
+import { Analytics } from '@vercel/analytics/react'; // <--- 1. Imported Vercel Analytics here
 
 // Optimized fonts
 const inter = Inter({
@@ -84,9 +85,7 @@ export default function RootLayout({ children }) {
     >
       <body className={`${inter.className} antialiased bg-[#020202] text-white`}>
         
-        {/* 2. Add NextTopLoader here. 
-            zIndex={99999} ensures it is ALWAYS on top of your Navbar 
-        */}
+        {/* NextTopLoader */}
         <NextTopLoader
           color="#FF5722"
           initialPosition={0.08}
@@ -96,12 +95,11 @@ export default function RootLayout({ children }) {
           showSpinner={false}
           easing="ease"
           speed={200}
-          shadow={false}  // <--- Optimized: Removed shadow to make it faster & cleaner
+          shadow={false}
           zIndex={99999}
         />
 
         <QueryProvider>
-          {/* 3. Removed ProgressBarProvider (it caused the crash) */}
           <SmoothScroll>
             <Navbar /> 
 
@@ -128,6 +126,10 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+
+        {/* 2. Added Vercel Analytics Component right here before closing body */}
+        <Analytics />
+        
       </body>
     </html>
   );
